@@ -3,6 +3,8 @@ import axios from "axios";
 
 import "../css/App.css";
 
+import NewCar from "./NewCar";
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -13,34 +15,31 @@ class App extends Component {
         };
     }
     render() {
+        console.log(this.state);
         return (
             <div className="App">
-                <p className="App-intro">
-                    To get started, edit
-                    {" "}
-                    <code>src/App.js</code>
-                    {" "}
-                    and save to reload.
-                </p>
+                <NewCar />
             </div>
         );
     }
     componentWillMount() {
-        console.log(this.state);
-        axios.get("/cars").then(function(response) {
-            console.log(response);
-            this.setState({ cars: response });
-        });
-        axios.get("/reservations").then(function(response) {
-            console.log(response);
-            this.setState({ reservations: response });
-        });
-        axios.get("/reviews").then(function(response) {
-            console.log(response);
-            this.setState({
-                reviews: response
-            });
-        });
+        axios.get("/cars").then(
+            function(response) {
+                this.setState({ cars: response.data });
+            }.bind(this)
+        );
+        axios.get("/reservations").then(
+            function(response) {
+                this.setState({ reservations: response.data });
+            }.bind(this)
+        );
+        axios.get("/reviews").then(
+            function(response) {
+                this.setState({
+                    reviews: response.data
+                });
+            }.bind(this)
+        );
     }
 }
 
