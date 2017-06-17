@@ -21,7 +21,6 @@ class NewCar extends Component {
     }
 
     render() {
-        console.log(this.state);
         return (
             <div>
                 <input
