@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import times from "../times";
-// import weekDays from "../weekDays";
+import weekDays from "../weekDays";
 import ampm from "../ampm";
 
 class StartReservation extends Component {
@@ -74,10 +74,11 @@ class StartReservation extends Component {
             </div>
         );
     }
-    // let start_day = weekDays.today.getDay();
 
     componentWillMount() {
         let today = new Date();
+        let start_day = weekDays.today.getDay();
+        console.log(start_day);
         if (today.getHours() >= 12) {
             this.setState({ start_AMPM: "PM", end_AMPM: "PM" });
         } else {
@@ -95,6 +96,7 @@ class StartReservation extends Component {
         });
     }
     updateStart_Date() {
+        //trying to get into the weekdays object to pull out name of weekday instead of JS day number
         // var weekDay = weekDays.this.state.start_day;
         this.setState({
             start_date: new Date(
