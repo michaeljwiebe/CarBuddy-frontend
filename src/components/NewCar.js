@@ -17,7 +17,7 @@ class NewCar extends Component {
         this.updateMPG = this.updateMPG.bind(this);
         this.updatePrice = this.updatePrice.bind(this);
         this.updateLocation = this.updateLocation.bind(this);
-        this.saveCar = this.saveCar.bind(this);
+        this.handleAddCar = this.handleAddCar.bind(this);
     }
 
     render() {
@@ -44,26 +44,12 @@ class NewCar extends Component {
                     placeholder="Price"
                 />
                 <button onClick={this.updateLocation}>Get location</button>
-                <button onClick={this.saveCar}>Save Car</button>
+                <button onClick={this.handleAddCar}>Add Car</button>
             </div>
         );
     }
-
-    saveCar() {
-        axios
-            .post("/cars", {
-                data: {
-                    make_model: this.state.make_model,
-                    year: this.state.year,
-                    MPG: this.state.year,
-                    price: this.state.year,
-                    lat: this.state.lat,
-                    lng: this.state.lng
-                }
-            })
-            .then(function(response) {
-                console.log(response);
-            });
+    handleAddCar() {
+        this.props.addCar(this.state);
     }
 
     updateLocation() {

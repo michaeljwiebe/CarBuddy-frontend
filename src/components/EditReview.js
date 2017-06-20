@@ -10,6 +10,7 @@ class EditReview extends Component {
             id: props.reviewToEdit.id
         };
         this.handleUpdateReview = this.handleUpdateReview.bind(this);
+        this.handleCloseUpdateReview = this.handleCloseUpdateReview.bind(this);
         this.updateTitle = this.updateTitle.bind(this);
         this.updateDescription = this.updateDescription.bind(this);
         this.updateRating = this.updateRating.bind(this);
@@ -24,11 +25,15 @@ class EditReview extends Component {
                 />
                 <input onChange={this.updateRating} value={this.state.rating} />
                 <div onClick={this.handleUpdateReview}>Update Review</div>
+                <div onClick={this.handleCloseUpdateReview}>Cancel Edit</div>
             </div>
         );
     }
     handleUpdateReview() {
         this.props.updateReview(this.state);
+    }
+    handleCloseUpdateReview() {
+        this.props.closeUpdateReview(this.state);
     }
     updateTitle(event) {
         this.setState({ title: event.target.value });
