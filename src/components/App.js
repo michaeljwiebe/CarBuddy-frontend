@@ -1,9 +1,7 @@
 //Start time to end time calculation, how to access weekdays?
-//DatePicker react component?
-//returning nothing for user sign in -- set sessions not working?
-//make things not show up if not signed in
 //work on editReview
-//fix state.signIn
+//passing in review object, why does reviewToEdit show "object Object" when i log state after clicking edit?
+//how to access review from reviewtoedit?
 
 import React, { Component } from "react";
 import axios from "axios";
@@ -15,6 +13,7 @@ import SignUp from "./SignUp";
 import NewCar from "./NewCar";
 import StartReservation from "./StartReservation";
 import StartReview from "./StartReview";
+import EditReview from "./EditReview";
 
 class App extends Component {
     constructor(props) {
@@ -24,14 +23,12 @@ class App extends Component {
             reviews: [],
             reservations: [],
             user: "",
-            signIn: true,
-            signUp: false,
             car_id: null,
             reserveCar: false,
             reviewCar: false,
-            editReview: false,
-            viewReviews: false,
-            viewReservations: false
+            reviewToEdit: null
+            // viewReviews: false,
+            // viewReservations: false
         };
         this.signIn = this.signIn.bind(this);
         this.signOut = this.signOut.bind(this);
@@ -45,6 +42,7 @@ class App extends Component {
         this.closeReview = this.closeReview.bind(this);
         this.editReview = this.editReview.bind(this);
     }
+
     render() {
         let newReservation;
         let newReview;
@@ -53,6 +51,7 @@ class App extends Component {
         let signUpComponent;
         let signOutBtn;
         let carsAndReviews;
+        let reviewEditor;
 
         if (this.state.user === "") {
             signUpComponent = <SignUp createUser={this.createUser} />;
@@ -71,9 +70,13 @@ class App extends Component {
                                         <div>{review.title}</div>
                                         <div>{review.description}</div>
                                         <div>{review.rating}</div>
-                                        <button onClick={this.editReview}>
+                                        <button
+                                            onClick={this.editReview}
+                                            value={JSON.stringify(review)}
+                                        >
                                             Edit
                                         </button>
+                                        <div>{reviewEditor}</div>
                                     </div>
                                 );
                             } else {
@@ -81,7 +84,6 @@ class App extends Component {
                             }
                         }.bind(this)
                     );
-                    console.log(reviews);
                     return (
                         <div key={index}>
                             <div className="car-make-model">
@@ -123,19 +125,28 @@ class App extends Component {
                 />
             );
         }
+        if (this.state.reviewToEdit !== null) {
+            console.log(this.state.reviewToEdit);
+            reviewEditor = (
+                <EditReview
+                    reviewToEdit={this.state.reviewToEdit}
+                    updateReview={this.updateReview}
+                />
+            );
+        }
 
-        console.log("state:");
+        console.log("App state:");
         console.log(this.state);
 
         return (
             <div className="App">
                 <div>
-                    <div>{newCar}</div>
-                    <div>{}</div>
                     <div>{signInComponent}</div>
                     <div>{signUpComponent}</div>
                     <div>{signOutBtn}</div>
+                    <div>{newCar}</div>
                     <div>{carsAndReviews}</div>
+                    <div>{reviewEditor}</div>
                     <div>{newReservation}</div>
                     <div>{newReview}</div>
                 </div>
@@ -150,8 +161,19 @@ class App extends Component {
     closeReview(props) {
         this.setState({ reviewCar: false });
     }
-    editReview() {
-        this.setState({ editReview: true });
+    updateReview(props) {
+        axios({
+            method: "patch",
+            url: "/reviews/" + props.id,
+            params: {
+                title: props.title,
+                description: props.description,
+                rating: props.rating
+            }
+        });
+    }
+    editReview(event) {
+        this.setState({ reviewToEdit: JSON.parse(event.target.value) });
     }
 
     startReview(event) {
