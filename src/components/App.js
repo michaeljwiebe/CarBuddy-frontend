@@ -41,6 +41,7 @@ class App extends Component {
         this.closeReservation = this.closeReservation.bind(this);
         this.closeReview = this.closeReview.bind(this);
         this.editReview = this.editReview.bind(this);
+        this.updateReview = this.updateReview.bind(this);
     }
 
     render() {
@@ -170,7 +171,11 @@ class App extends Component {
                 description: props.description,
                 rating: props.rating
             }
-        });
+        }).then(
+            function(response) {
+                this.setState({ reviews: response.data });
+            }.bind(this)
+        );
     }
     editReview(event) {
         this.setState({ reviewToEdit: JSON.parse(event.target.value) });
