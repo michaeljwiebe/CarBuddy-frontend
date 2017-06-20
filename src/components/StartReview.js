@@ -6,13 +6,13 @@ class StartReview extends Component {
         this.state = {
             title: "",
             description: "",
-            rating: "",
-            car_id: props.car_id
+            rating: ""
         };
         this.updateTitle = this.updateTitle.bind(this);
         this.updateDescription = this.updateDescription.bind(this);
         this.updateRating = this.updateRating.bind(this);
         this.makeReview = this.makeReview.bind(this);
+        this.handleCloseReview = this.handleCloseReview.bind(this);
     }
     render() {
         console.log(this.state);
@@ -36,7 +36,8 @@ class StartReview extends Component {
                     placeholder="Rating"
                     value={this.state.rating}
                 />
-                <div onClick={this.makeReview}>Post Review</div>
+                <button onClick={this.makeReview}>Post Review</button>
+                <button onClick={this.handleCloseReview}>Close Review</button>
             </div>
         );
     }
@@ -45,9 +46,11 @@ class StartReview extends Component {
         this.setState({
             title: "",
             description: "",
-            rating: "",
-            car_id: null
+            rating: ""
         });
+    }
+    handleCloseReview() {
+        this.props.closeReview();
     }
     updateTitle(event) {
         this.setState({ title: event.target.value });

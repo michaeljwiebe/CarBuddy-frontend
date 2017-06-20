@@ -23,11 +23,13 @@ class StartReservation extends Component {
             end_AMPM: "",
             car_id: props.car_id
         };
+        this.updateStart_Date = this.updateStart_Date.bind(this);
         this.updateStart_Time = this.updateStart_Time.bind(this);
         this.updateEnd_Time = this.updateEnd_Time.bind(this);
         this.updateStart_AMPM = this.updateStart_AMPM.bind(this);
         this.updateEnd_AMPM = this.updateEnd_AMPM.bind(this);
         this.makeReservation = this.makeReservation.bind(this);
+        this.handleCloseReservation = this.handleCloseReservation.bind(this);
     }
 
     render() {
@@ -38,6 +40,7 @@ class StartReservation extends Component {
         let ampmsList = ampm.map(function(ampm, index) {
             return <option key={index} value={ampm}>{ampm}</option>;
         });
+
         return (
             <div>
                 From
@@ -71,14 +74,15 @@ class StartReservation extends Component {
                     {ampmsList}
                 </select>
                 <button onClick={this.makeReservation}>Make Reservation</button>
+                <button onClick={this.handleCloseReservation}>
+                    Close Reservation
+                </button>
             </div>
         );
     }
 
     componentWillMount() {
         let today = new Date();
-        let start_day = weekDays.today.getDay();
-        console.log(start_day);
         if (today.getHours() >= 12) {
             this.setState({ start_AMPM: "PM", end_AMPM: "PM" });
         } else {
@@ -95,7 +99,11 @@ class StartReservation extends Component {
             end_year: 1900 + today.getYear()
         });
     }
-    updateStart_Date() {
+    handleCloseReservation() {
+        this.props.closeReservation();
+    }
+    updateStart_Date(event) {
+        console.log(event);
         //trying to get into the weekdays object to pull out name of weekday instead of JS day number
         // var weekDay = weekDays.this.state.start_day;
         this.setState({

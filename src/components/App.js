@@ -1,5 +1,9 @@
 //Start time to end time calculation, how to access weekdays?
 //DatePicker react component?
+//returning nothing for user sign in -- set sessions not working?
+//make things not show up if not signed in
+//work on editReview
+//fix state.signIn
 
 import React, { Component } from "react";
 import axios from "axios";
@@ -25,6 +29,7 @@ class App extends Component {
             car_id: null,
             reserveCar: false,
             reviewCar: false,
+            editReview: false,
             viewReviews: false,
             viewReservations: false
         };
@@ -35,98 +40,124 @@ class App extends Component {
         this.makeReservation = this.makeReservation.bind(this);
         this.startReview = this.startReview.bind(this);
         this.makeReview = this.makeReview.bind(this);
-        this.viewReviews = this.viewReviews.bind(this);
         this.viewReservations = this.viewReservations.bind(this);
+        this.closeReservation = this.closeReservation.bind(this);
+        this.closeReview = this.closeReview.bind(this);
+        this.editReview = this.editReview.bind(this);
     }
     render() {
-        let reservation;
-        let review;
+        let newReservation;
+        let newReview;
+        let newCar;
         let signInComponent;
         let signUpComponent;
         let signOutBtn;
+        let carsAndReviews;
 
-        if (this.state.reserveCar === true) {
-            reservation = (
-                <StartReservation
-                    makeReservation={this.makeReservation}
-                    car_id={this.state.car_id}
-                />
-            );
-        }
-        if (this.state.reviewCar === true) {
-            review = (
-                <StartReview
-                    makeReview={this.makeReview}
-                    car_id={this.state.car_id}
-                />
-            );
-        }
-        if (this.state.viewReviews === true) {
-        }
         if (this.state.user === "") {
             signUpComponent = <SignUp createUser={this.createUser} />;
             signInComponent = <SignIn signIn={this.signIn} />;
         } else {
             signOutBtn = <button onClick={this.signOut}>Sign Out</button>;
+            newCar = <div>Add a car to your account: <NewCar /></div>;
+            carsAndReviews = this.state.cars.map(
+                function(car, index) {
+                    let reviews = this.state.reviews.map(
+                        function(review, index) {
+                            if (car.id === review.car_id) {
+                                return (
+                                    <div key={index}>
+                                        <div>{review.reviewer.name}</div>
+                                        <div>{review.title}</div>
+                                        <div>{review.description}</div>
+                                        <div>{review.rating}</div>
+                                        <button onClick={this.editReview}>
+                                            Edit
+                                        </button>
+                                    </div>
+                                );
+                            } else {
+                                return <span />;
+                            }
+                        }.bind(this)
+                    );
+                    console.log(reviews);
+                    return (
+                        <div key={index}>
+                            <div className="car-make-model">
+                                {" "}{car.make_model}{" "}
+                            </div>
+                            <div className="car-img" />
+                            <div className="car-mpg" />
+                            <div className="car-address" />
+                            <div>{reviews}</div>
+                            <button
+                                onClick={this.startReservation}
+                                value={car.id}
+                            >
+                                Reserve this car
+                            </button>
+                            <button onClick={this.startReview} value={car.id}>
+                                Review this car
+                            </button>
+                        </div>
+                    );
+                }.bind(this)
+            );
         }
 
+        if (this.state.reserveCar === true) {
+            newReservation = (
+                <StartReservation
+                    makeReservation={this.makeReservation}
+                    car_id={this.state.car_id}
+                    closeReservation={this.closeReservation}
+                />
+            );
+        }
+        if (this.state.reviewCar === true) {
+            newReview = (
+                <StartReview
+                    makeReview={this.makeReview}
+                    closeReview={this.closeReview}
+                />
+            );
+        }
+
+        console.log("state:");
         console.log(this.state);
-        let cars = this.state.cars.map(
-            function(car, index) {
-                let reviews = this.state.reviews.map(function(review, index) {
-                    if (car.id === review.car_id) {
-                        return (
-                            <div key={index}>
-                                <div>{review.reviewer.name}</div>
-                                <div>{review.title}</div>
-                                <div>{review.description}</div>
-                                <div>{review.rating}</div>
-                            </div>
-                        );
-                    } else {
-                        return <span />;
-                    }
-                });
-                console.log(reviews);
-                return (
-                    <div key={index}>
-                        <div className="car-make-model"> {car.make_model} </div>
-                        <div className="car-img" />
-                        <div className="car-mpg" />
-                        <div className="car-address" />
-                        <div>{reviews}</div>
-                        <button onClick={this.startReservation} value={car.id}>
-                            Reserve this car
-                        </button>
-                        <button onClick={this.startReview} value={car.id}>
-                            Review this car
-                        </button>
-                    </div>
-                );
-            }.bind(this)
-        );
 
         return (
             <div className="App">
                 <div>
-                    <div>Add a car to your account: <NewCar /></div>
+                    <div>{newCar}</div>
+                    <div>{}</div>
                     <div>{signInComponent}</div>
                     <div>{signUpComponent}</div>
                     <div>{signOutBtn}</div>
-                    <div>{cars}</div>
-                    <div>{reservation}</div>
-                    <div>{review}</div>
+                    <div>{carsAndReviews}</div>
+                    <div>{newReservation}</div>
+                    <div>{newReview}</div>
                 </div>
             </div>
         );
     }
-    viewReviews() {}
     viewReservations() {}
+
+    closeReservation(props) {
+        this.setState({ reserveCar: false });
+    }
+    closeReview(props) {
+        this.setState({ reviewCar: false });
+    }
+    editReview() {
+        this.setState({ editReview: true });
+    }
 
     startReview(event) {
         this.setState({
             car_id: event.target.value,
-            reviewCar: !this.state.reviewCar
+            reviewCar: true
         });
     }
 
@@ -134,15 +165,19 @@ class App extends Component {
         axios
             .post("/reviews", {
                 data: {
-                    car_id: props.car_id,
+                    car_id: this.state.car_id,
                     title: props.title,
                     description: props.description,
-                    rating: props.rating
+                    rating: props.rating,
+                    reviewer_id: this.state.user.id
                 }
             })
-            .then(function(response) {
-                console.log(response);
-            });
+            .then(
+                function(response) {
+                    console.log(response.data);
+                    this.setState({ reviews: response.data });
+                }.bind(this)
+            );
     }
 
     makeReservation(props) {
@@ -163,7 +198,7 @@ class App extends Component {
     startReservation(event) {
         this.setState({
             car_id: event.target.value,
-            reserveCar: !this.state.reserveCar
+            reserveCar: true
         });
     }
     createUser(props) {
@@ -185,8 +220,9 @@ class App extends Component {
             );
     }
     signIn(props) {
+        console.log(props);
         axios
-            .get("/users", {
+            .post("/sign_in", {
                 data: {
                     username: props.username,
                     password: props.password
@@ -195,7 +231,11 @@ class App extends Component {
             .then(
                 function(response) {
                     console.log(response);
-                    this.setState({ user: response.data });
+                    this.setState({
+                        user: response.data,
+                        viewReviews: true,
+                        viewReservations: true
+                    });
                 }.bind(this)
             );
     }
@@ -204,6 +244,13 @@ class App extends Component {
     }
 
     componentWillMount() {
+        axios.get("/reviews").then(
+            function(response) {
+                this.setState({
+                    reviews: response.data
+                });
+            }.bind(this)
+        );
         axios.get("/cars").then(
             function(response) {
                 this.setState({ cars: response.data });
@@ -212,13 +259,6 @@ class App extends Component {
         axios.get("/reservations").then(
             function(response) {
                 this.setState({ reservations: response.data });
-            }.bind(this)
-        );
-        axios.get("/reviews").then(
-            function(response) {
-                this.setState({
-                    reviews: response.data
-                });
             }.bind(this)
         );
     }
