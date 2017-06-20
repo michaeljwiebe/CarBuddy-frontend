@@ -1,8 +1,14 @@
+//build all select dropdowns
+//finish logic to set correct start and end times
+
 import React, { Component } from "react";
-import axios from "axios";
 
 import times from "../times";
 import weekDays from "../weekDays";
+import monthDate28 from "../monthDate28";
+import monthDate29 from "../monthDate29";
+import monthDate30 from "../monthDate30";
+import monthDate31 from "../monthDate31";
 import ampm from "../ampm";
 
 class StartReservation extends Component {
@@ -23,62 +29,91 @@ class StartReservation extends Component {
             end_AMPM: "",
             car_id: props.car_id
         };
-        this.updateStart_Date = this.updateStart_Date.bind(this);
-        this.updateStart_Time = this.updateStart_Time.bind(this);
-        this.updateEnd_Time = this.updateEnd_Time.bind(this);
-        this.updateStart_AMPM = this.updateStart_AMPM.bind(this);
-        this.updateEnd_AMPM = this.updateEnd_AMPM.bind(this);
+        this.updateCompleteStartDate = this.updateCompleteStartDate.bind(this);
+        this.updateStartTime = this.updateStartTime.bind(this);
+        this.updateStartAMPM = this.updateStartAMPM.bind(this);
+        this.updateStartDate = this.updateStartDate.bind(this);
+        this.updateStartMonth = this.updateStartMonth.bind(this);
+        this.updateStartYear = this.updateStartYear.bind(this);
+        this.updateEndDate = this.updateEndDate.bind(this);
+        this.updateEndTime = this.updateEndTime.bind(this);
+        this.updateEndAMPM = this.updateEndAMPM.bind(this);
+        this.updateEndDate = this.updateEndDate.bind(this);
+        this.updateEndMonth = this.updateEndMonth.bind(this);
+        this.updateEndYear = this.updateEndYear.bind(this);
         this.makeReservation = this.makeReservation.bind(this);
         this.handleCloseReservation = this.handleCloseReservation.bind(this);
     }
 
     render() {
         console.log(this.state);
-        let timesList = times.map(function(time, index) {
+        let timesList;
+        let ampmsList;
+        timesList = times.map(function(time, index) {
             return <option key={index} value={time}>{time}</option>;
         });
-        let ampmsList = ampm.map(function(ampm, index) {
+        ampmsList = ampm.map(function(ampm, index) {
             return <option key={index} value={ampm}>{ampm}</option>;
         });
+        let date31 = monthDate31.map(function(day, index) {
+            return <option key={index} value={day}>{day}</option>;
+        });
+        let date30 = monthDate30.map(function(day, index) {
+            return <option key={index} value={day}>{day}</option>;
+        });
+        let date29 = monthDate29.map(function(day, index) {
+            return <option key={index} value={day}>{day}</option>;
+        });
+        let date28 = monthDate28.map(function(day, index) {
+            return <option key={index} value={day}>{day}</option>;
+        });
+        if (this.state.start_month)
+            return (
+                <div>
+                    From
+                    <select
+                        onChange={this.updateStartTime}
+                        value={this.state.start_time}
+                        placeholder="Start Time"
+                    >
+                        {timesList}
+                    </select>
+                    <select
+                        onChange={this.updateStartAMPM}
+                        value={this.state.start_AMPM}
+                    >
+                        {ampmsList}
+                    </select>
+                    <select
+                        onChange={this.updateStartDate}
+                        value={this.state.start_date}
+                    >
+                        {}
+                    </select>
 
-        return (
-            <div>
-                From
-                <select
-                    onChange={this.updateStart_Time}
-                    value={this.state.start_time}
-                    placeholder="Start Time"
-                >
-                    {timesList}
-                </select>
-                <select
-                    onChange={this.updateStart_AMPM}
-                    value={this.state.start_AMPM}
-                >
-                    {ampmsList}
-                </select>
-
-                <br />
-                Until
-                <select
-                    onChange={this.updateEnd_Time}
-                    value={this.state.end_time}
-                    placeholder="End Time"
-                >
-                    {timesList}
-                </select>
-                <select
-                    onChange={this.updateEnd_AMPM}
-                    value={this.state.End_AMPM}
-                >
-                    {ampmsList}
-                </select>
-                <button onClick={this.makeReservation}>Make Reservation</button>
-                <button onClick={this.handleCloseReservation}>
-                    Close Reservation
-                </button>
-            </div>
-        );
+                    <br />
+                    Until
+                    <select
+                        onChange={this.updateEndTime}
+                        value={this.state.end_time}
+                        placeholder="End Time"
+                    >
+                        {timesList}
+                    </select>
+                    <select
+                        onChange={this.updateEndAMPM}
+                        value={this.state.end_AMPM}
+                    >
+                        {ampmsList}
+                    </select>
+                    <button onClick={this.makeReservation}>
+                        Make Reservation
+                    </button>
+                    <button onClick={this.handleCloseReservation}>
+                        Close Reservation
+                    </button>
+                </div>
+            );
     }
 
     componentWillMount() {
@@ -90,19 +125,29 @@ class StartReservation extends Component {
         }
         this.setState({
             start_time: today.getHours(),
-            start_day: today.getDay(),
+            start_day: today.getDate(),
             start_month: today.getMonth(),
             start_year: 1900 + today.getYear(),
             end_time: today.getHours(),
-            end_day: today.getDay(),
+            end_day: today.getDate(),
             end_month: today.getMonth(),
             end_year: 1900 + today.getYear()
         });
     }
+    updateCompleteStartDate() {}
+    updateStartMonth() {}
+    updateStartYear() {}
+    updateStartDate() {}
+    updateStartTime() {}
+    updateEndTime() {}
+    updateEndDate() {}
+    updateEndMonth() {}
+    updateEndYear() {}
+    updateEndDate() {}
     handleCloseReservation() {
         this.props.closeReservation();
     }
-    updateStart_Date(event) {
+    updateCompleteStartDate(event) {
         console.log(event);
         //trying to get into the weekdays object to pull out name of weekday instead of JS day number
         // var weekDay = weekDays.this.state.start_day;
@@ -118,16 +163,16 @@ class StartReservation extends Component {
     makeReservation() {
         this.props.makeReservation(this.state);
     }
-    updateStart_Time(event) {
+    updateStartTime(event) {
         this.setState({ start_time: event.target.value });
     }
-    updateStart_AMPM(event) {
+    updateStartAMPM(event) {
         this.setState({ start_AMPM: event.target.value });
     }
-    updateEnd_AMPM(event) {
+    updateEndAMPM(event) {
         this.setState({ end_AMPM: event.target.value });
     }
-    updateEnd_Time(event) {
+    updateEndTime(event) {
         this.setState({ end_time: event.target.value });
     }
 }

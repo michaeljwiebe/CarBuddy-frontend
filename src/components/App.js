@@ -1,7 +1,8 @@
 //Start time to end time calculation, how to access weekdays?
-//close update review btn
 //paperclip
 //AWS for group project
+//remove multiple edit review buttons
+//hide other cars on review or reservation
 
 import React, { Component } from "react";
 import axios from "axios";
@@ -27,8 +28,6 @@ class App extends Component {
             reserveCar: false,
             reviewCar: false,
             reviewToEdit: null
-            // viewReviews: false,
-            // viewReservations: false
         };
         this.signIn = this.signIn.bind(this);
         this.signOut = this.signOut.bind(this);
@@ -55,7 +54,6 @@ class App extends Component {
         let signOutBtn;
         let carsAndReviews;
         let openReviewEditor;
-        let closeReviewEditBtn;
         let newReservation;
         let newReview;
 
@@ -77,7 +75,6 @@ class App extends Component {
             );
         }
         if (this.state.reviewToEdit !== null) {
-            console.log("open review editor");
             openReviewEditor = (
                 <EditReview
                     reviewToEdit={this.state.reviewToEdit}
@@ -113,6 +110,7 @@ class App extends Component {
                     }
                     let reviews = this.state.reviews.map(
                         function(review, index) {
+                            editReviewBtn = "";
                             if (review.reviewer.id === this.state.user.id) {
                                 editReviewBtn = (
                                     <button
@@ -176,14 +174,16 @@ class App extends Component {
                     <div>{newCar}</div>
                     <div>{carsAndReviews}</div>
                     <div>{openReviewEditor}</div>
-                    <div>{newReservation}</div>
-                    <div>{newReview}</div>
+                    <div>
+                        <div>{newReservation}</div>
+                        <div>{newReview}</div>
+                    </div>
+
                 </div>
             </div>
         );
     }
     addCar(props) {
-        console.log(this.state.user);
         axios
             .post("/cars", {
                 data: {
@@ -204,8 +204,6 @@ class App extends Component {
     }
 
     deleteCar(event) {
-        console.log("car id from button");
-        console.log(event.target.value);
         axios({
             method: "delete",
             url: "/cars/" + event.target.value
@@ -265,7 +263,6 @@ class App extends Component {
             })
             .then(
                 function(response) {
-                    console.log(response.data);
                     this.setState({ reviews: response.data, reviewCar: false });
                 }.bind(this)
             );
@@ -282,9 +279,11 @@ class App extends Component {
                     end_AMPM: props.end_AMPM
                 }
             })
-            .then(function(response) {
-                console.log(response);
-            });
+            .then(
+                function(response) {
+                    this.setState({ reservations: response.data });
+                }.bind(this)
+            );
     }
     startReservation(event) {
         this.setState({
@@ -319,7 +318,6 @@ class App extends Component {
             })
             .then(
                 function(response) {
-                    console.log(response);
                     this.setState({
                         user: response.data,
                         viewReviews: true,
