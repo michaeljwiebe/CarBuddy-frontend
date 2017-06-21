@@ -49,6 +49,7 @@ class StartReservation extends Component {
     render() {
         console.log(this.state);
         let daysPerMonth;
+        let textMonth;
         let timesList = times.map(function(time, index) {
             return <option key={index} value={time}>{time}</option>;
         });
@@ -85,6 +86,31 @@ class StartReservation extends Component {
         } else {
             daysPerMonth = dayList31;
         }
+        if (this.state.start_month === 0) {
+            textMonth = "January";
+        } else if (this.state.start_month === 1) {
+            textMonth = "February";
+        } else if (this.state.start_month === 2) {
+            textMonth = "March";
+        } else if (this.state.start_month === 3) {
+            textMonth = "April";
+        } else if (this.state.start_month === 4) {
+            textMonth = "May";
+        } else if (this.state.start_month === 5) {
+            textMonth = "June";
+        } else if (this.state.start_month === 6) {
+            textMonth = "July";
+        } else if (this.state.start_month === 7) {
+            textMonth = "August";
+        } else if (this.state.start_month === 8) {
+            textMonth = "September";
+        } else if (this.state.start_month === 9) {
+            textMonth = "October";
+        } else if (this.state.start_month === 10) {
+            textMonth = "November";
+        } else if (this.state.start_month === 11) {
+            textMonth = "December";
+        }
 
         console.log(daysPerMonth);
         return (
@@ -103,10 +129,7 @@ class StartReservation extends Component {
                 >
                     {ampmsList}
                 </select>
-                <select
-                    onChange={this.updateStartMonth}
-                    value={this.state.start_month}
-                >
+                <select onChange={this.updateStartMonth} value={textMonth}>
                     {monthList}
                 </select>
                 <select
@@ -131,10 +154,7 @@ class StartReservation extends Component {
                 >
                     {ampmsList}
                 </select>
-                <select
-                    onChange={this.updateEndMonth}
-                    value={this.state.end_month}
-                >
+                <select onChange={this.updateEndMonth} value={textMonth}>
                     {monthList}
                 </select>
                 <select onChange={this.updateEndDay} value={this.state.end_day}>
@@ -178,29 +198,29 @@ class StartReservation extends Component {
     }
     updateStartMonth(event) {
         let jsMonth;
-        if (event.target.value === "January") {
+        if (this.state.start_month === "January") {
             jsMonth = 0;
-        } else if (event.target.value === "February") {
+        } else if (this.state.start_month === "February") {
             jsMonth = 1;
-        } else if (event.target.value === "March") {
+        } else if (this.state.start_month === "March") {
             jsMonth = 2;
-        } else if (event.target.value === "April") {
+        } else if (this.state.start_month === "April") {
             jsMonth = 3;
-        } else if (event.target.value === "May") {
+        } else if (this.state.start_month === "May") {
             jsMonth = 4;
-        } else if (event.target.value === "June") {
+        } else if (this.state.start_month === "June") {
             jsMonth = 5;
-        } else if (event.target.value === "July") {
+        } else if (this.state.start_month === "July") {
             jsMonth = 6;
-        } else if (event.target.value === "August") {
+        } else if (this.state.start_month === "August") {
             jsMonth = 7;
-        } else if (event.target.value === "September") {
+        } else if (this.state.start_month === "September") {
             jsMonth = 8;
-        } else if (event.target.value === "October") {
+        } else if (this.state.start_month === "October") {
             jsMonth = 9;
-        } else if (event.target.value === "November") {
+        } else if (this.state.start_month === "November") {
             jsMonth = 10;
-        } else if (event.target.value === "December") {
+        } else if (this.state.start_month === "December") {
             jsMonth = 11;
         }
         this.setState({ start_month: jsMonth });
