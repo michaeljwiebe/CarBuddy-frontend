@@ -9,6 +9,7 @@ import monthDate28 from "../monthDate28";
 import monthDate29 from "../monthDate29";
 import monthDate30 from "../monthDate30";
 import monthDate31 from "../monthDate31";
+import months from "../months";
 import ampm from "../ampm";
 
 class StartReservation extends Component {
@@ -20,11 +21,11 @@ class StartReservation extends Component {
             start_day: "",
             start_month: "",
             start_year: "",
-            start_date: "",
+            complete_start_date: "",
             end_day: "",
             end_month: "",
             end_year: "",
-            end_date: "",
+            complete_end_date: "",
             end_time: "",
             end_AMPM: "",
             car_id: props.car_id
@@ -32,13 +33,13 @@ class StartReservation extends Component {
         this.updateCompleteStartDate = this.updateCompleteStartDate.bind(this);
         this.updateStartTime = this.updateStartTime.bind(this);
         this.updateStartAMPM = this.updateStartAMPM.bind(this);
-        this.updateStartDate = this.updateStartDate.bind(this);
+        this.updateStartDay = this.updateStartDay.bind(this);
         this.updateStartMonth = this.updateStartMonth.bind(this);
         this.updateStartYear = this.updateStartYear.bind(this);
-        this.updateEndDate = this.updateEndDate.bind(this);
+        this.updateEndDay = this.updateEndDay.bind(this);
         this.updateEndTime = this.updateEndTime.bind(this);
         this.updateEndAMPM = this.updateEndAMPM.bind(this);
-        this.updateEndDate = this.updateEndDate.bind(this);
+        this.updateEndDay = this.updateEndDay.bind(this);
         this.updateEndMonth = this.updateEndMonth.bind(this);
         this.updateEndYear = this.updateEndYear.bind(this);
         this.makeReservation = this.makeReservation.bind(this);
@@ -47,73 +48,106 @@ class StartReservation extends Component {
 
     render() {
         console.log(this.state);
-        let timesList;
-        let ampmsList;
-        timesList = times.map(function(time, index) {
+        let daysPerMonth;
+        let timesList = times.map(function(time, index) {
             return <option key={index} value={time}>{time}</option>;
         });
-        ampmsList = ampm.map(function(ampm, index) {
+        let ampmsList = ampm.map(function(ampm, index) {
             return <option key={index} value={ampm}>{ampm}</option>;
         });
-        let date31 = monthDate31.map(function(day, index) {
+        let monthList = months.map(function(month, index) {
+            return <option key={index} value={month}>{month}</option>;
+        });
+        let dayList31 = monthDate31.map(function(day, index) {
             return <option key={index} value={day}>{day}</option>;
         });
-        let date30 = monthDate30.map(function(day, index) {
+        let dayList30 = monthDate30.map(function(day, index) {
             return <option key={index} value={day}>{day}</option>;
         });
-        let date29 = monthDate29.map(function(day, index) {
+        let dayList29 = monthDate29.map(function(day, index) {
             return <option key={index} value={day}>{day}</option>;
         });
-        let date28 = monthDate28.map(function(day, index) {
+        let dayList28 = monthDate28.map(function(day, index) {
             return <option key={index} value={day}>{day}</option>;
         });
-        if (this.state.start_month)
-            return (
-                <div>
-                    From
-                    <select
-                        onChange={this.updateStartTime}
-                        value={this.state.start_time}
-                        placeholder="Start Time"
-                    >
-                        {timesList}
-                    </select>
-                    <select
-                        onChange={this.updateStartAMPM}
-                        value={this.state.start_AMPM}
-                    >
-                        {ampmsList}
-                    </select>
-                    <select
-                        onChange={this.updateStartDate}
-                        value={this.state.start_date}
-                    >
-                        {}
-                    </select>
+        if (this.state.start_month % 2 === 1 && this.state.start_month !== 1) {
+            daysPerMonth = dayList30;
+        } else if (
+            this.state.start_month === 1 &&
+            this.state.start_year % 4 !== 0
+        ) {
+            daysPerMonth = dayList28;
+        } else if (
+            this.state.start_month === 1 &&
+            this.state.start_year % 4 === 0
+        ) {
+            daysPerMonth = dayList29;
+        } else {
+            daysPerMonth = dayList31;
+        }
 
-                    <br />
-                    Until
-                    <select
-                        onChange={this.updateEndTime}
-                        value={this.state.end_time}
-                        placeholder="End Time"
-                    >
-                        {timesList}
-                    </select>
-                    <select
-                        onChange={this.updateEndAMPM}
-                        value={this.state.end_AMPM}
-                    >
-                        {ampmsList}
-                    </select>
-                    <button onClick={this.makeReservation}>
-                        Make Reservation
-                    </button>
-                    <button onClick={this.handleCloseReservation}>
-                        Close Reservation
-                    </button>
-                </div>
-            );
+        console.log(daysPerMonth);
+        return (
+            <div>
+                From
+                <select
+                    onChange={this.updateStartTime}
+                    value={this.state.start_time}
+                    placeholder="Start Time"
+                >
+                    {timesList}
+                </select>
+                <select
+                    onChange={this.updateStartAMPM}
+                    value={this.state.start_AMPM}
+                >
+                    {ampmsList}
+                </select>
+                <select
+                    onChange={this.updateStartMonth}
+                    value={this.state.start_month}
+                >
+                    {monthList}
+                </select>
+                <select
+                    onChange={this.updateStartDay}
+                    value={this.state.start_day}
+                >
+                    {daysPerMonth}
+                </select>
+
+                <br />
+                Until
+                <select
+                    onChange={this.updateEndTime}
+                    value={this.state.end_time}
+                    placeholder="End Time"
+                >
+                    {timesList}
+                </select>
+                <select
+                    onChange={this.updateEndAMPM}
+                    value={this.state.end_AMPM}
+                >
+                    {ampmsList}
+                </select>
+                <select
+                    onChange={this.updateEndMonth}
+                    value={this.state.end_month}
+                >
+                    {monthList}
+                </select>
+                <select onChange={this.updateEndDay} value={this.state.end_day}>
+                    {daysPerMonth}
+                </select>
+                <button onClick={this.makeReservation}>
+                    Make Reservation
+                </button>
+                <button onClick={this.handleCloseReservation}>
+                    Close Reservation
+                </button>
+            </div>
+        );
     }
 
     componentWillMount() {
@@ -127,23 +161,83 @@ class StartReservation extends Component {
             start_time: today.getHours(),
             start_day: today.getDate(),
             start_month: today.getMonth(),
-            start_year: 1900 + today.getYear(),
+            start_year: today.getYear(),
             end_time: today.getHours(),
             end_day: today.getDate(),
             end_month: today.getMonth(),
-            end_year: 1900 + today.getYear()
+            end_year: today.getYear()
         });
     }
-    updateCompleteStartDate() {}
-    updateStartMonth() {}
-    updateStartYear() {}
-    updateStartDate() {}
     updateStartTime() {}
     updateEndTime() {}
-    updateEndDate() {}
-    updateEndMonth() {}
+    updateStartDay(event) {
+        this.setState({ start_day: event.target.value });
+    }
+    updateEndDay(event) {
+        this.setState({ end_day: event.target.value });
+    }
+    updateStartMonth(event) {
+        let jsMonth;
+        if (event.target.value === "January") {
+            jsMonth = 0;
+        } else if (event.target.value === "February") {
+            jsMonth = 1;
+        } else if (event.target.value === "March") {
+            jsMonth = 2;
+        } else if (event.target.value === "April") {
+            jsMonth = 3;
+        } else if (event.target.value === "May") {
+            jsMonth = 4;
+        } else if (event.target.value === "June") {
+            jsMonth = 5;
+        } else if (event.target.value === "July") {
+            jsMonth = 6;
+        } else if (event.target.value === "August") {
+            jsMonth = 7;
+        } else if (event.target.value === "September") {
+            jsMonth = 8;
+        } else if (event.target.value === "October") {
+            jsMonth = 9;
+        } else if (event.target.value === "November") {
+            jsMonth = 10;
+        } else if (event.target.value === "December") {
+            jsMonth = 11;
+        }
+        this.setState({ start_month: jsMonth });
+    }
+    updateEndMonth(event) {
+        let jsMonth;
+        if (event.target.value === "January") {
+            jsMonth = 0;
+        } else if (event.target.value === "February") {
+            jsMonth = 1;
+        } else if (event.target.value === "March") {
+            jsMonth = 2;
+        } else if (event.target.value === "April") {
+            jsMonth = 3;
+        } else if (event.target.value === "May") {
+            jsMonth = 4;
+        } else if (event.target.value === "June") {
+            jsMonth = 5;
+        } else if (event.target.value === "July") {
+            jsMonth = 6;
+        } else if (event.target.value === "August") {
+            jsMonth = 7;
+        } else if (event.target.value === "September") {
+            jsMonth = 8;
+        } else if (event.target.value === "October") {
+            jsMonth = 9;
+        } else if (event.target.value === "November") {
+            jsMonth = 10;
+        } else if (event.target.value === "December") {
+            jsMonth = 11;
+        }
+        this.setState({ end_month: jsMonth });
+    }
+    updateStartYear() {}
     updateEndYear() {}
-    updateEndDate() {}
+    updateCompleteStartDate() {}
+    updateCompleteEndDate() {}
     handleCloseReservation() {
         this.props.closeReservation();
     }

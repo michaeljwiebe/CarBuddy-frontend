@@ -1,7 +1,9 @@
 //Start time to end time calculation, how to access weekdays?
 //paperclip
 //AWS for group project
-//remove multiple edit review buttons
+//Use react google map component?
+//geolocation broken
+
 //hide other cars on review or reservation
 
 import React, { Component } from "react";
