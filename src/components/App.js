@@ -1,10 +1,13 @@
-//Start time to end time calculation, how to access weekdays?
-//paperclip
+//paperclip on frontend
 //AWS for group project
-//Use react google map component?
-//geolocation broken
+//is google map bootstrapURLKeys that is there already ok?
+//pass markers into map
+//AddCar to button
+//buttons where i have to, divs where I don't!
 
-//hide other cars on review or reservation
+//make setDates button turn into make Reservation button
+//edit user info, add image
+//write logic to tell if car is available or not during requested time
 
 import React, { Component } from "react";
 import axios from "axios";
@@ -13,10 +16,11 @@ import "../css/App.css";
 
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
-import NewCar from "./NewCar";
+import AddCar from "./AddCar";
 import StartReservation from "./StartReservation";
 import StartReview from "./StartReview";
 import EditReview from "./EditReview";
+import GoogleMap from "./GoogleMap";
 
 class App extends Component {
     constructor(props) {
@@ -25,11 +29,12 @@ class App extends Component {
             cars: [],
             reviews: [],
             reservations: [],
-            user: null,
+            user: { name: "Michael Wiebe", id: 1 },
             car_id: null,
-            reserveCar: false,
-            reviewCar: false,
-            reviewToEdit: null
+            carToReserve: null,
+            carToReview: null,
+            reviewToEdit: null,
+            viewCarsAndReviews: true
         };
         this.signIn = this.signIn.bind(this);
         this.signOut = this.signOut.bind(this);
@@ -58,19 +63,21 @@ class App extends Component {
         let openReviewEditor;
         let newReservation;
         let newReview;
+        let googleMap;
 
-        if (this.state.reserveCar === true) {
+        if (this.state.carToReserve !== null) {
             newReservation = (
                 <StartReservation
                     makeReservation={this.makeReservation}
-                    car_id={this.state.car_id}
+                    carToReserve={this.state.carToReserve}
                     closeReservation={this.closeReservation}
                 />
             );
         }
-        if (this.state.reviewCar === true) {
+        if (this.state.carToReview !== null) {
             newReview = (
                 <StartReview
+                    carToReview={this.state.carToReview}
                     makeReview={this.makeReview}
                     closeReview={this.closeReview}
                 />
@@ -95,72 +102,78 @@ class App extends Component {
             signOutBtn = <button onClick={this.signOut}>Sign Out</button>;
             newCar = (
                 <div>
-                    Add a car to your account: <NewCar addCar={this.addCar} />
+                    Add a car to your account: <AddCar addCar={this.addCar} />
                 </div>
             );
-            carsAndReviews = this.state.cars.map(
-                function(car, index) {
-                    let removeCar;
-                    let editReviewBtn;
+            googleMap = <GoogleMap cars={this.state.cars} />;
+            if (this.state.viewCarsAndReviews === true) {
+                carsAndReviews = this.state.cars.map(
+                    function(car, index) {
+                        let removeCar;
+                        let editReviewBtn;
 
-                    if (car.owner_id === this.state.user.id) {
-                        removeCar = (
-                            <button onClick={this.deleteCar} value={car.id}>
-                                Remove Car
-                            </button>
+                        if (car.owner_id === this.state.user.id) {
+                            removeCar = (
+                                <button onClick={this.deleteCar} value={car.id}>
+                                    Remove Car
+                                </button>
+                            );
+                        }
+                        let reviews = this.state.reviews.map(
+                            function(review, index) {
+                                editReviewBtn = "";
+                                if (review.reviewer.id === this.state.user.id) {
+                                    editReviewBtn = (
+                                        <button
+                                            onClick={this.editReview}
+                                            value={JSON.stringify(review)}
+                                        >
+                                            Edit
+                                        </button>
+                                    );
+                                }
+                                if (car.id === review.car_id) {
+                                    return (
+                                        <div key={index}>
+                                            <div>{review.reviewer.name}</div>
+                                            <div>{review.title}</div>
+                                            <div>{review.description}</div>
+                                            <div>{review.rating}</div>
+                                            <div>{editReviewBtn}</div>
+                                        </div>
+                                    );
+                                } else {
+                                    return <span />;
+                                }
+                            }.bind(this)
                         );
-                    }
-                    let reviews = this.state.reviews.map(
-                        function(review, index) {
-                            editReviewBtn = "";
-                            if (review.reviewer.id === this.state.user.id) {
-                                editReviewBtn = (
-                                    <button
-                                        onClick={this.editReview}
-                                        value={JSON.stringify(review)}
-                                    >
-                                        Edit
-                                    </button>
-                                );
-                            }
-                            if (car.id === review.car_id) {
-                                return (
-                                    <div key={index}>
-                                        <div>{review.reviewer.name}</div>
-                                        <div>{review.title}</div>
-                                        <div>{review.description}</div>
-                                        <div>{review.rating}</div>
-                                        <div>{editReviewBtn}</div>
-                                    </div>
-                                );
-                            } else {
-                                return <span />;
-                            }
-                        }.bind(this)
-                    );
-                    return (
-                        <div key={index}>
-                            <div className="car-make-model">
-                                {car.make_model}
+                        return (
+                            <div key={index}>
+                                <div className="car-make-model">
+                                    {car.make_model}
+                                </div>
+                                <div className="car-img" />
+                                <div className="car-mpg" />
+                                <div className="car-address" />
+                                <div>{reviews}</div>
+                                <button
+                                    onClick={this.startReservation}
+                                    value={JSON.stringify(car)}
+                                >
+                                    Reserve this car
+                                </button>
+                                <button
+                                    onClick={this.startReview}
+                                    value={JSON.stringify(car)}
+                                >
+                                    Review this car
+                                </button>
+                                {removeCar}
                             </div>
-                            <div className="car-img" />
-                            <div className="car-mpg" />
-                            <div className="car-address" />
-                            <div>{reviews}</div>
-                            <button
-                                onClick={this.startReservation}
-                                value={car.id}
-                            >
-                                Reserve this car
-                            </button>
-                            <button onClick={this.startReview} value={car.id}>
-                                Review this car
-                            </button>
-                            {removeCar}
-                        </div>
-                    );
-                }.bind(this)
-            );
+                        );
+                    }.bind(this)
+                );
+            }
         }
 
         console.log("App state:");
@@ -174,6 +187,7 @@ class App extends Component {
                     <div>{signUpComponent}</div>
                     <div>{signOutBtn}</div>
                     <div>{newCar}</div>
+                    <div>{googleMap}</div>
                     <div>{carsAndReviews}</div>
                     <div>{openReviewEditor}</div>
                     <div>
@@ -218,10 +232,10 @@ class App extends Component {
     viewReservations() {}
 
     closeReservation(props) {
-        this.setState({ reserveCar: false });
+        this.setState({ carToReserve: null, viewCarsAndReviews: true });
     }
     closeReview(props) {
-        this.setState({ reviewCar: false });
+        this.setState({ carToReview: null, viewCarsAndReviews: true });
     }
     updateReview(props) {
         axios({
@@ -239,16 +253,19 @@ class App extends Component {
         );
     }
     closeUpdateReview() {
-        this.setState({ reviewToEdit: null });
+        this.setState({ reviewToEdit: null, viewCarsAndReviews: true });
     }
     editReview(event) {
-        this.setState({ reviewToEdit: JSON.parse(event.target.value) });
+        this.setState({
+            reviewToEdit: JSON.parse(event.target.value),
+            viewCarsAndReviews: false
+        });
     }
 
     startReview(event) {
         this.setState({
-            car_id: event.target.value,
-            reviewCar: true
+            carToReview: JSON.parse(event.target.value),
+            viewCarsAndReviews: false
         });
     }
 
@@ -265,7 +282,10 @@ class App extends Component {
             })
             .then(
                 function(response) {
-                    this.setState({ reviews: response.data, reviewCar: false });
+                    this.setState({
+                        reviews: response.data,
+                        carToReview: null
+                    });
                 }.bind(this)
             );
     }
@@ -274,7 +294,7 @@ class App extends Component {
         axios
             .post("/reservations", {
                 data: {
-                    car_id: props.car_id,
+                    car_id: props.carToReserve.id,
                     start_time: props.start_time,
                     start_AMPM: props.start_AMPM,
                     end_time: props.end_AMPM,
@@ -289,8 +309,8 @@ class App extends Component {
     }
     startReservation(event) {
         this.setState({
-            car_id: event.target.value,
-            reserveCar: true
+            carToReserve: JSON.parse(event.target.value),
+            viewCarsAndReviews: false
         });
     }
     createUser(props) {
@@ -321,9 +341,7 @@ class App extends Component {
             .then(
                 function(response) {
                     this.setState({
-                        user: response.data,
-                        viewReviews: true,
-                        viewReservations: true
+                        user: response.data
                     });
                 }.bind(this)
             );
@@ -333,8 +351,8 @@ class App extends Component {
             user: null,
             reviewToEdit: null,
             car_id: null,
-            reserveCar: false,
-            reviewCar: false
+            carToReserve: null,
+            carToReview: null
         });
     }
 

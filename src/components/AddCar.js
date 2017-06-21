@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import axios from "axios";
 
-class NewCar extends Component {
+class AddCar extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -76,4 +75,4 @@ class NewCar extends Component {
     }
 }
 
-export default NewCar;
+export default AddCar;
