@@ -74,7 +74,7 @@ class GoogleMap extends Component {
         //         }
         //     });
         // }
-        // this.setState({ cars: newProps.cars });
+        this.setState({ cars: newProps.cars });
     }
 }
 
