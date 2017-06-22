@@ -23,6 +23,7 @@ class GoogleMap extends Component {
         this.center = { lat: 39.9524, lng: -75.1636 };
         this.zoom = 12;
         this.state = {
+            cars: props.cars,
             styles: {
                 position: "fixed",
                 width: "100vw",
@@ -31,33 +32,12 @@ class GoogleMap extends Component {
             }
         };
     }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.car) {
-            this.setState({
-                styles: {
-                    position: "fixed",
-                    width: "50vw",
-                    height: "43vh",
-                    top: "0",
-                    right: "0",
-                    zIndex: 5
-                }
-            });
-        } else {
-            this.setState({
-                styles: {
-                    position: "fixed",
-                    width: "100vw",
-                    height: "10vh",
-                    bottom: "0px"
-                }
-            });
-        }
-        this.setState({ issues: nextProps.issues });
-    }
-
     render() {
+        let carMarkers = this.state.cars.map(function(car, index) {
+            return (
+                <MarkerComponent index={index} lat={car.lat} lng={car.lng} />
+            );
+        });
         return (
             <GoogleMapReact
                 style={this.state.styles}
@@ -66,8 +46,35 @@ class GoogleMap extends Component {
                 }}
                 defaultCenter={this.center}
                 defaultZoom={this.zoom}
-            />
+            >
+                {carMarkers}
+            </GoogleMapReact>
         );
+    }
+
+    componentWillReceiveProps(newProps) {
+        // if (newProps.car) {
+        //     this.setState({
+        //         styles: {
+        //             position: "fixed",
+        //             width: "50vw",
+        //             height: "43vh",
+        //             top: "0",
+        //             right: "0",
+        //             zIndex: 5
+        //         }
+        //     });
+        // } else {
+        //     this.setState({
+        //         styles: {
+        //             position: "fixed",
+        //             width: "100vw",
+        //             height: "10vh",
+        //             bottom: "0px"
+        //         }
+        //     });
+        // }
+        // this.setState({ cars: newProps.cars });
     }
 }
 

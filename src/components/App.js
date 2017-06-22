@@ -1,10 +1,10 @@
 //paperclip on frontend
 //AWS for group project
+//add Stripe payment system
 //is google map bootstrapURLKeys that is there already ok?
 //pass markers into map
-//AddCar to button
-//buttons where i have to, divs where I don't!
 
+//buttons where i have to, divs where I don't!
 //make setDates button turn into make Reservation button
 //edit user info, add image
 //write logic to tell if car is available or not during requested time
@@ -34,6 +34,7 @@ class App extends Component {
             carToReserve: null,
             carToReview: null,
             reviewToEdit: null,
+            addCar: false,
             viewCarsAndReviews: true
         };
         this.signIn = this.signIn.bind(this);
@@ -51,6 +52,8 @@ class App extends Component {
         this.closeUpdateReview = this.closeUpdateReview.bind(this);
         this.deleteCar = this.deleteCar.bind(this);
         this.addCar = this.addCar.bind(this);
+        this.openAddCar = this.openAddCar.bind(this);
+        this.closeAddCar = this.closeAddCar.bind(this);
     }
 
     render() {
@@ -100,11 +103,16 @@ class App extends Component {
         } else {
             welcomeMsg = <div>Welcome {this.state.user.name}!</div>;
             signOutBtn = <button onClick={this.signOut}>Sign Out</button>;
-            newCar = (
-                <div>
-                    Add a car to your account: <AddCar addCar={this.addCar} />
-                </div>
-            );
+            if (this.state.addCar === true) {
+                newCar = (
+                    <AddCar
+                        addCar={this.addCar}
+                        closeAddCar={this.closeAddCar}
+                    />
+                );
+            } else {
+                newCar = <button onClick={this.openAddCar}>Add a car</button>;
+            }
             googleMap = <GoogleMap cars={this.state.cars} />;
             if (this.state.viewCarsAndReviews === true) {
                 carsAndReviews = this.state.cars.map(
@@ -198,6 +206,12 @@ class App extends Component {
                 </div>
             </div>
         );
+    }
+    openAddCar() {
+        this.setState({ addCar: true });
+    }
+    closeAddCar() {
+        this.setState({ addCar: false });
     }
     addCar(props) {
         axios

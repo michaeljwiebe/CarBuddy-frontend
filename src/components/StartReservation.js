@@ -23,8 +23,8 @@ class StartReservation extends Component {
             end_year: "",
             end_hour: "",
             end_AMPM: "",
-            start_date: "",
-            end_date: "",
+            start_date: null,
+            end_date: null,
             reservation_hours: "",
             car_id: props.car_id
         };
@@ -49,6 +49,7 @@ class StartReservation extends Component {
         let daysPerMonthList;
         let textStartMonth;
         let textEndMonth;
+        let setDatesOrMakeReservation;
         let timesList = times.map(function(time, index) {
             return <option key={index} value={time}>{time}</option>;
         });
@@ -138,6 +139,17 @@ class StartReservation extends Component {
         } else if (this.state.end_month === 11) {
             textEndMonth = "December";
         }
+        if (this.state.start_date === null) {
+            setDatesOrMakeReservation = (
+                <button onClick={this.setDates}>Set Dates</button>
+            );
+        } else {
+            setDatesOrMakeReservation = (
+                <button onClick={this.makeReservation}>
+                    Make Reservation
+                </button>
+            );
+        }
         return (
             <div>
                 From
@@ -197,10 +209,7 @@ class StartReservation extends Component {
                     {yearsList}
                 </select>
                 <br />
-                <button onClick={this.setDates}>Set Dates</button>
-                <button onClick={this.makeReservation}>
-                    Make Reservation
-                </button>
+                {setDatesOrMakeReservation}
                 <button onClick={this.handleCloseReservation}>
                     Close Reservation
                 </button>

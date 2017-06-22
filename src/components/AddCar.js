@@ -17,9 +17,11 @@ class AddCar extends Component {
         this.updatePrice = this.updatePrice.bind(this);
         this.updateLocation = this.updateLocation.bind(this);
         this.handleAddCar = this.handleAddCar.bind(this);
+        this.handleCloseAddCar = this.handleCloseAddCar.bind(this);
     }
 
     render() {
+        console.log(this.state.lng, this.state.lat);
         return (
             <div>
                 <input
@@ -44,23 +46,30 @@ class AddCar extends Component {
                 />
                 <button onClick={this.updateLocation}>Get location</button>
                 <button onClick={this.handleAddCar}>Add Car</button>
+                <button onClick={this.handleCloseAddCar}>Cancel</button>
             </div>
         );
     }
     handleAddCar() {
-        this.props.addCar(this.state);
-    }
-
-    updateLocation() {
         navigator.geolocation.getCurrentPosition(
             function(position) {
-                this.setState({
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                });
+                this.setState(
+                    {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    },
+                    function() {
+                        this.props.addCar(this.state);
+                    }
+                );
             }.bind(this)
         );
     }
+    handleCloseAddCar() {
+        this.props.closeAddCar();
+    }
+
+    updateLocation() {}
     updateMake_Model(event) {
         this.setState({ make_model: event.target.value });
     }
