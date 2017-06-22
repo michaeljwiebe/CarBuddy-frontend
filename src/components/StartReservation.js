@@ -1,3 +1,7 @@
+// carToReserve: JSON.parse(event.target.value),
+// <button value={JSON.stringify(car)>
+// show available cars on button
+
 import React, { Component } from "react";
 
 import times from "../times";
@@ -26,22 +30,27 @@ class StartReservation extends Component {
             start_date: null,
             end_date: null,
             reservation_hours: "",
-            car_id: props.car_id
+            carToReserve: null,
+            reservations: props.reservations,
+            cars: props.cars,
+            carsToRender: []
         };
-        this.setDates = this.setDates.bind(this);
-        this.updateStartHours = this.updateStartHours.bind(this);
+        this.updateStartHour = this.updateStartHour.bind(this);
+        this.ampmHour = this.ampmHour.bind(this);
+        this.jsHour = this.jsHour.bind(this);
         this.updateStartAMPM = this.updateStartAMPM.bind(this);
         this.updateStartDay = this.updateStartDay.bind(this);
         this.updateStartMonth = this.updateStartMonth.bind(this);
         this.updateStartYear = this.updateStartYear.bind(this);
         this.updateEndDay = this.updateEndDay.bind(this);
-        this.updateEndHours = this.updateEndHours.bind(this);
+        this.updateEndHour = this.updateEndHour.bind(this);
         this.updateEndAMPM = this.updateEndAMPM.bind(this);
         this.updateEndDay = this.updateEndDay.bind(this);
         this.updateEndMonth = this.updateEndMonth.bind(this);
         this.updateEndYear = this.updateEndYear.bind(this);
-        this.makeReservation = this.makeReservation.bind(this);
+        this.handleMakeReservation = this.handleMakeReservation.bind(this);
         this.handleCloseReservation = this.handleCloseReservation.bind(this);
+        this.viewAvailableCars = this.viewAvailableCars.bind(this);
     }
 
     render() {
@@ -49,7 +58,6 @@ class StartReservation extends Component {
         let daysPerMonthList;
         let textStartMonth;
         let textEndMonth;
-        let setDatesOrMakeReservation;
         let timesList = times.map(function(time, index) {
             return <option key={index} value={time}>{time}</option>;
         });
@@ -74,6 +82,16 @@ class StartReservation extends Component {
         let yearsList = years.map(function(year, index) {
             return <option key={index} value={year}>{year}</option>;
         });
+        let viewAvailableCars = (
+            <button onClick={this.viewAvailableCars}>
+                View Available Cars
+            </button>
+        );
+        let handleMakeReservation = (
+            <button onClick={this.handleMakeReservation}>
+                Make Reservation
+            </button>
+        );
         if (this.state.start_month % 2 === 1 && this.state.start_month !== 1) {
             daysPerMonthList = daysList30;
         } else if (
@@ -139,23 +157,13 @@ class StartReservation extends Component {
         } else if (this.state.end_month === 11) {
             textEndMonth = "December";
         }
-        if (this.state.start_date === null) {
-            setDatesOrMakeReservation = (
-                <button onClick={this.setDates}>Set Dates</button>
-            );
-        } else {
-            setDatesOrMakeReservation = (
-                <button onClick={this.makeReservation}>
-                    Make Reservation
-                </button>
-            );
-        }
+
         return (
             <div>
                 From
                 <select
-                    onChange={this.updateStartHours}
-                    value={this.state.start_hour}
+                    onChange={this.updateStartHour}
+                    value={this.ampmHour(this.state.start_hour)}
                     placeholder="Start Time"
                 >
                     {timesList}
@@ -184,8 +192,8 @@ class StartReservation extends Component {
                 <br />
                 Until
                 <select
-                    onChange={this.updateEndHours}
-                    value={this.state.end_hour}
+                    onChange={this.updateEndHour}
+                    value={this.ampmHour(this.state.end_hour)}
                     placeholder="End Time"
                 >
                     {timesList}
@@ -209,10 +217,14 @@ class StartReservation extends Component {
                     {yearsList}
                 </select>
                 <br />
-                {setDatesOrMakeReservation}
-                <button onClick={this.handleCloseReservation}>
-                    Close Reservation
-                </button>
+                <div>
+                    {viewAvailableCars}
+                    {handleMakeReservation}
+                    <button onClick={this.handleCloseReservation}>
+                        Close Reservation
+                    </button>
+                </div>
+                <div>{this.state.carsToRender}</div>
             </div>
         );
     }
@@ -235,17 +247,109 @@ class StartReservation extends Component {
             end_year: today.getYear() + 1900
         });
     }
-    updateStartHours(event) {
+    viewAvailableCars() {
+        let unAvailableCars;
+        let conflictingReservations;
+        let carsToRender;
+        let carDivsToRender;
+        let startDate = new Date(
+            this.state.start_year,
+            this.state.start_month,
+            this.state.start_day,
+            this.state.start_hour
+        );
+        let endDate = new Date(
+            this.state.end_year,
+            this.state.end_month,
+            this.state.end_day,
+            this.state.end_hour
+        );
+        let startMsec = Date.parse(startDate);
+        let endMsec = Date.parse(endDate);
+        let elapsedHours = (endMsec - startMsec) / 3600000;
+        this.setState(
+            {
+                reservation_hours: elapsedHours,
+                start_date: startDate,
+                end_date: endDate
+            },
+            function() {
+                conflictingReservations = this.state.reservations.filter(
+                    function(reservation, index) {
+                        let dbStart = new Date(reservation.start_date);
+                        let dbEnd = new Date(reservation.end_date);
+                        let newResStart = new Date(this.state.start_date);
+                        let newResEnd = new Date(this.state.end_date);
+                        return (
+                            (newResStart > dbStart && newResStart < dbEnd) ||
+                            (newResEnd > dbStart && newResStart < dbEnd)
+                        );
+                    }.bind(this)
+                );
+                unAvailableCars = conflictingReservations.map(function(
+                    conflictingReservation
+                ) {
+                    return conflictingReservation.car_id;
+                });
+                carsToRender = this.state.cars.filter(function(car) {
+                    return unAvailableCars.indexOf(car.id) === -1;
+                });
+                carDivsToRender = carsToRender.map(
+                    function(car) {
+                        return (
+                            <div>
+                                {car.make_model}
+                                <button
+                                    onClick={this.handleMakeReservation}
+                                    value={car.id}
+                                >
+                                    Reserve
+                                </button>
+                            </div>
+                        );
+                    }.bind(this)
+                );
+                this.setState({ carsToRender: carDivsToRender });
+            }
+        );
+    }
+    ampmHour(jsHour) {
+        let AMPMHour;
+        if (jsHour > 12) {
+            AMPMHour = jsHour - 12;
+        } else if (jsHour === 0) {
+            AMPMHour = 12;
+        }
+        return AMPMHour;
+    }
+    jsHour(ampmHour, ampm) {
+        let JSHour;
+        if (ampm === "PM" && ampmHour !== 12) {
+            JSHour = parseInt(ampmHour, 10) + 12;
+        } else if (ampm === "AM" && ampmHour === 12) {
+            JSHour = 0;
+        } else {
+            JSHour = parseInt(ampmHour, 10);
+        }
+        return JSHour;
+    }
+
+    updateStartHour(event) {
         this.setState({
-            start_hour: event.target.value,
-            end_hour: event.target.value
+            start_hour: this.jsHour(event.target.value, this.state.start_AMPM),
+            end_hour: this.jsHour(event.target.value, this.state.start_AMPM)
         });
     }
-    updateEndHours(event) {
-        this.setState({ end_hour: event.target.value });
+    updateEndHour(event) {
+        this.setState({
+            end_hour: this.jsHour(event.target.value, this.state.end_AMPM)
+        });
     }
     updateStartDay(event) {
-        this.setState({ start_day: event.target.value });
+        this.setState({
+            start_day: event.target.value,
+            end_day: event.target.value
+        });
     }
     updateEndDay(event) {
         this.setState({ end_day: event.target.value });
@@ -317,34 +421,17 @@ class StartReservation extends Component {
     updateEndYear(event) {
         this.setState({ end_year: event.target.value });
     }
-    setDates() {
-        let startDate = new Date(
-            this.state.start_year,
-            this.state.start_month,
-            this.state.start_day,
-            this.state.start_hour
-        );
-        let endDate = new Date(
-            this.state.end_year,
-            this.state.end_month,
-            this.state.end_day,
-            this.state.end_hour
-        );
-        let startMsec = Date.parse(startDate);
-        let endMsec = Date.parse(endDate);
-        let elapsedHours = (endMsec - startMsec) / 3600000;
-        this.setState({
-            reservation_hours: elapsedHours,
-            start_date: startDate,
-            end_date: endDate
-        });
-    }
     handleCloseReservation() {
         this.props.closeReservation();
     }
 
-    makeReservation() {
-        this.props.makeReservation(this.state);
+    handleMakeReservation() {
+        this.props.makeReservation({
+            start_date: this.state.start_date,
+            end_date: this.state.end_date,
+            reservation_hours: this.state.reservation_hours,
+            car_id: 33
+        });
     }
     updateStartAMPM(event) {
         this.setState({ start_AMPM: event.target.value });

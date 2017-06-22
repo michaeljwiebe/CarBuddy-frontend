@@ -2,8 +2,9 @@
 //AWS for group project
 //add Stripe payment system
 //is google map bootstrapURLKeys that is there already ok?
-//pass markers into map
+//remove reserve car button on click of button
 
+//my and my car's reservations page
 //buttons where i have to, divs where I don't!
 //make setDates button turn into make Reservation button
 //edit user info, add image
@@ -31,9 +32,9 @@ class App extends Component {
             reservations: [],
             user: { name: "Michael Wiebe", id: 1 },
             car_id: null,
-            carToReserve: null,
             carToReview: null,
             reviewToEdit: null,
+            reserveCar: false,
             addCar: false,
             viewCarsAndReviews: true
         };
@@ -64,15 +65,17 @@ class App extends Component {
         let signOutBtn;
         let carsAndReviews;
         let openReviewEditor;
+        let startCarReservation;
         let newReservation;
         let newReview;
         let googleMap;
 
-        if (this.state.carToReserve !== null) {
+        if (this.state.reserveCar === true) {
             newReservation = (
                 <StartReservation
                     makeReservation={this.makeReservation}
-                    carToReserve={this.state.carToReserve}
+                    reservations={this.state.reservations}
+                    cars={this.state.cars}
                     closeReservation={this.closeReservation}
                 />
             );
@@ -113,6 +116,11 @@ class App extends Component {
             } else {
                 newCar = <button onClick={this.openAddCar}>Add a car</button>;
             }
+            startCarReservation = (
+                <button onClick={this.startReservation}>
+                    Reserve a car
+                </button>
+            );
             googleMap = <GoogleMap cars={this.state.cars} />;
             if (this.state.viewCarsAndReviews === true) {
                 carsAndReviews = this.state.cars.map(
@@ -165,12 +173,6 @@ class App extends Component {
                                 <div className="car-address" />
                                 <div>{reviews}</div>
                                 <button
-                                    onClick={this.startReservation}
-                                    value={JSON.stringify(car)}
-                                >
-                                    Reserve this car
-                                </button>
-                                <button
                                     onClick={this.startReview}
                                     value={JSON.stringify(car)}
                                 >
@@ -184,7 +186,6 @@ class App extends Component {
             }
         }
 
-        console.log("App state:");
         console.log(this.state);
 
         return (
@@ -195,6 +196,7 @@ class App extends Component {
                     <div>{signUpComponent}</div>
                     <div>{signOutBtn}</div>
                     <div>{newCar}</div>
+                    <div>{startCarReservation}</div>
                     <div>{googleMap}</div>
                     <div>{carsAndReviews}</div>
                     <div>{openReviewEditor}</div>
@@ -246,7 +248,7 @@ class App extends Component {
     viewReservations() {}
 
     closeReservation(props) {
-        this.setState({ carToReserve: null, viewCarsAndReviews: true });
+        this.setState({ reserveCar: false, viewCarsAndReviews: true });
     }
     closeReview(props) {
         this.setState({ carToReview: null, viewCarsAndReviews: true });
@@ -308,11 +310,11 @@ class App extends Component {
         axios
             .post("/reservations", {
                 data: {
-                    car_id: props.carToReserve.id,
-                    start_time: props.start_time,
-                    start_AMPM: props.start_AMPM,
-                    end_time: props.end_AMPM,
-                    end_AMPM: props.end_AMPM
+                    car_id: props.car_id,
+                    start_date: props.start_date,
+                    end_date: props.end_date,
+                    reservation_hours: props.reservation_hours,
+                    renter_id: this.state.user.id
                 }
             })
             .then(
@@ -323,7 +325,7 @@ class App extends Component {
     }
     startReservation(event) {
         this.setState({
-            carToReserve: JSON.parse(event.target.value),
+            reserveCar: true,
             viewCarsAndReviews: false
         });
     }
@@ -365,7 +367,7 @@ class App extends Component {
             user: null,
             reviewToEdit: null,
             car_id: null,
-            carToReserve: null,
+            reserveCar: false,
             carToReview: null
         });
     }

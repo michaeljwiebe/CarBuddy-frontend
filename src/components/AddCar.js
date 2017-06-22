@@ -15,7 +15,6 @@ class AddCar extends Component {
         this.updateMake_Model = this.updateMake_Model.bind(this);
         this.updateMPG = this.updateMPG.bind(this);
         this.updatePrice = this.updatePrice.bind(this);
-        this.updateLocation = this.updateLocation.bind(this);
         this.handleAddCar = this.handleAddCar.bind(this);
         this.handleCloseAddCar = this.handleCloseAddCar.bind(this);
     }
@@ -44,7 +43,7 @@ class AddCar extends Component {
                     value={this.state.price}
                     placeholder="Price"
                 />
-                <button onClick={this.updateLocation}>Get location</button>
+                <br />
                 <button onClick={this.handleAddCar}>Add Car</button>
                 <button onClick={this.handleCloseAddCar}>Cancel</button>
             </div>
@@ -68,8 +67,6 @@ class AddCar extends Component {
     handleCloseAddCar() {
         this.props.closeAddCar();
     }
-
-    updateLocation() {}
     updateMake_Model(event) {
         this.setState({ make_model: event.target.value });
     }
