@@ -17,6 +17,7 @@ class userReservations extends Component {
 		this.editUserReservations = this.editUserReservations.bind(this);
 		this.cancelCarReservation = this.cancelCarReservation.bind(this);
 		this.cancelUserReservation = this.cancelUserReservation.bind(this);
+		this.setUserReservations = this.setUserReservations.bind(this);
 		// this.handleCancelUserReservation = this.handleCancelUserReservation.bind(this);
 		// this.handleCancelCarReservation = this.handleCancelCarReservation.bind(this);
 	}
@@ -123,21 +124,40 @@ class userReservations extends Component {
 			url: "/reservations/" + event.target.value
 		}).then(
 			function(response) {
-				this.setState({ allReservations: response.data });
+				let userReservations = this.setUserReservations(response.data);
+
+				this.setState({
+					allReservations: response.data,
+					userReservations: userReservations
+				});
 			}.bind(this)
 		);
 	}
 	cancelUserReservation(event) {
 		console.log("cancel user's res");
+		console.log(event.target.value);
 
 		axios({
 			method: "delete",
 			url: "/reservations/" + event.target.value
 		}).then(
 			function(response) {
-				this.setState({ allReservations: response.data });
+				let userReservations = this.setUserReservations(response.data);
+				this.setState({
+					allReservations: response.data,
+					userReservations: userReservations
+				});
 			}.bind(this)
 		);
+	}
+	setUserReservations(allReservations) {
+		let reservations = allReservations.filter(
+			function(reservation) {
+				return reservation.renter_id === this.props.user_id;
+			}.bind(this)
+		);
+		return reservations;
+		// this.setState({ userReservations: reservations });
 	}
 	viewCarReservations() {
 		this.setState({
@@ -156,12 +176,8 @@ class userReservations extends Component {
 	editUserReservations() {}
 	editCarReservations() {}
 	componentWillMount() {
-		let reservations = this.state.allReservations.filter(
-			function(reservation) {
-				return reservation.renter_id === this.props.user_id;
-			}.bind(this)
-		);
-		this.setState({ userReservations: reservations });
+		let userReservations = this.setUserReservations(this.props.allReservations);
+		this.setState({ userReservations: userReservations });
 	}
 	// componentWillReceiveProps(newProps) {
 	// 	console.log(newProps);
