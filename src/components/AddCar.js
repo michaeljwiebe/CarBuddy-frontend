@@ -16,7 +16,6 @@ class AddCar extends Component {
         this.updateMPG = this.updateMPG.bind(this);
         this.updatePrice = this.updatePrice.bind(this);
         this.handleAddCar = this.handleAddCar.bind(this);
-        this.handleCloseAddCar = this.handleCloseAddCar.bind(this);
     }
 
     render() {
@@ -45,7 +44,6 @@ class AddCar extends Component {
                 />
                 <br />
                 <button onClick={this.handleAddCar}>Add Car</button>
-                <button onClick={this.handleCloseAddCar}>Cancel</button>
             </div>
         );
     }
@@ -63,9 +61,6 @@ class AddCar extends Component {
                 );
             }.bind(this)
         );
-    }
-    handleCloseAddCar() {
-        this.props.closeAddCar();
     }
     updateMake_Model(event) {
         this.setState({ make_model: event.target.value });

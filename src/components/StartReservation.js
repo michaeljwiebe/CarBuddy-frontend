@@ -1,7 +1,3 @@
-// carToReserve: JSON.parse(event.target.value),
-// <button value={JSON.stringify(car)>
-// show available cars on button
-
 import React, { Component } from "react";
 
 import times from "../times";
@@ -49,7 +45,6 @@ class StartReservation extends Component {
         this.updateEndMonth = this.updateEndMonth.bind(this);
         this.updateEndYear = this.updateEndYear.bind(this);
         this.handleMakeReservation = this.handleMakeReservation.bind(this);
-        this.handleCloseReservation = this.handleCloseReservation.bind(this);
         this.viewAvailableCars = this.viewAvailableCars.bind(this);
     }
 
@@ -85,11 +80,6 @@ class StartReservation extends Component {
         let viewAvailableCars = (
             <button onClick={this.viewAvailableCars}>
                 View Available Cars
-            </button>
-        );
-        let handleMakeReservation = (
-            <button onClick={this.handleMakeReservation}>
-                Make Reservation
             </button>
         );
         if (this.state.start_month % 2 === 1 && this.state.start_month !== 1) {
@@ -219,10 +209,6 @@ class StartReservation extends Component {
                 <br />
                 <div>
                     {viewAvailableCars}
-                    {handleMakeReservation}
-                    <button onClick={this.handleCloseReservation}>
-                        Close Reservation
-                    </button>
                 </div>
                 <div>{this.state.carsToRender}</div>
             </div>
@@ -297,8 +283,14 @@ class StartReservation extends Component {
                 carDivsToRender = carsToRender.map(
                     function(car) {
                         return (
-                            <div>
-                                {car.make_model}
+                            <div className="available-cars flex">
+                                <div className="car-img" />
+                                <div>
+                                    <div>{car.year}-{car.make_model}</div>
+                                    <div>MPG:{car.MPG}</div>
+                                    <div>Rating:{car.ratings}</div>
+                                </div>
+
                                 <button
                                     onClick={this.handleMakeReservation}
                                     value={car.id}
@@ -328,16 +320,26 @@ class StartReservation extends Component {
             JSHour = parseInt(ampmHour, 10) + 12;
         } else if (ampm === "AM" && ampmHour === 12) {
             JSHour = 0;
-        } else {
+        } else if (ampm === "AM" || ampmHour === 12) {
             JSHour = parseInt(ampmHour, 10);
         }
+        console.log(JSHour);
         return JSHour;
     }
 
     updateStartHour(event) {
+        let defaultEndTime =
+            parseInt(
+                this.jsHour(event.target.value, this.state.start_AMPM),
+                10
+            ) + 4;
+        if (defaultEndTime >= 24) {
+            defaultEndTime -= 24;
+        }
+
         this.setState({
             start_hour: this.jsHour(event.target.value, this.state.start_AMPM),
-            end_hour: this.jsHour(event.target.value, this.state.start_AMPM)
+            end_hour: defaultEndTime
         });
     }
     updateEndHour(event) {
@@ -421,16 +423,13 @@ class StartReservation extends Component {
     updateEndYear(event) {
         this.setState({ end_year: event.target.value });
     }
-    handleCloseReservation() {
-        this.props.closeReservation();
-    }
 
-    handleMakeReservation() {
+    handleMakeReservation(event) {
         this.props.makeReservation({
             start_date: this.state.start_date,
             end_date: this.state.end_date,
             reservation_hours: this.state.reservation_hours,
-            car_id: 33
+            car_id: event.target.value
         });
     }
     updateStartAMPM(event) {
