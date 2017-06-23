@@ -151,13 +151,13 @@ class userReservations extends Component {
 		);
 	}
 	setUserReservations(allReservations) {
+		// sorts reservations and returns only user's
 		let reservations = allReservations.filter(
 			function(reservation) {
 				return reservation.renter_id === this.props.user_id;
 			}.bind(this)
 		);
 		return reservations;
-		// this.setState({ userReservations: reservations });
 	}
 	viewCarReservations() {
 		this.setState({
@@ -179,11 +179,6 @@ class userReservations extends Component {
 		let userReservations = this.setUserReservations(this.props.allReservations);
 		this.setState({ userReservations: userReservations });
 	}
-	// componentWillReceiveProps(newProps) {
-	// 	console.log(newProps);
-	// 	//reservations disappear immediately only when they're done from car reservations view
-	// 	this.setState({ allReservations: newProps });
-	// }
 }
 
 export default userReservations;

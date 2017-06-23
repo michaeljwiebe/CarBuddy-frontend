@@ -1,11 +1,12 @@
-//paperclip on frontend
-//edit and delete reservations
-//AWS for group project
+//paperclip on frontend -- upload image
+//fix users controller for image, send user id
+//AWS for group project -- maybe not!
 //add Stripe payment system
 //is google map bootstrapURLKeys that is there already ok?
+//build nav for buttons, make it stay on page, make display change only
 
 //buttons where i have to, divs where I don't!
-//edit user info, add image
+//add image for user
 
 import React, { Component } from "react";
 import axios from "axios";
@@ -15,6 +16,7 @@ import "../css/App.css";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import AddCar from "./AddCar";
+import EditUser from "./EditUser";
 import UserReservations from "./UserReservations";
 import StartReservation from "./StartReservation";
 import StartReview from "./StartReview";
@@ -28,22 +30,25 @@ class App extends Component {
 			cars: [],
 			reviews: [],
 			reservations: [],
-			user: { name: "Michael Wiebe", id: 1 },
+			user: null,
 			car_id: null,
 			carToReview: null,
 			reviewToEdit: null,
 			reserveCar: false,
 			addCar: false,
 			viewCarsAndReviews: true,
-			viewReservations: false
+			viewReservations: false,
+			editUser: false
 		};
 		this.signIn = this.signIn.bind(this);
 		this.signOut = this.signOut.bind(this);
 		this.createUser = this.createUser.bind(this);
+		this.editUser = this.editUser.bind(this);
+		this.updateUserInfo = this.updateUserInfo.bind(this);
+		this.uploadImage = this.uploadImage.bind(this);
+		this.deleteUser = this.deleteUser.bind(this);
 		this.startReservation = this.startReservation.bind(this);
 		this.makeReservation = this.makeReservation.bind(this);
-		// this.cancelCarReservation = this.cancelCarReservation.bind(this);
-		// this.cancelUserReservation = this.cancelUserReservation.bind(this);
 		this.startReview = this.startReview.bind(this);
 		this.makeReview = this.makeReview.bind(this);
 		this.viewReservations = this.viewReservations.bind(this);
@@ -69,6 +74,8 @@ class App extends Component {
 		let userReservations;
 		let newReview;
 		let googleMap;
+		let editUserBtn;
+		let editUser;
 
 		if (this.state.reserveCar === true) {
 			newReservation = (
@@ -98,11 +105,21 @@ class App extends Component {
 			signInComponent = <SignIn signIn={this.signIn} />;
 			openReviewEditor = "";
 		} else {
+			editUserBtn = <button onClick={this.editUser}>Edit User</button>;
 			showUserReservations = (
 				<button onClick={this.viewReservations}>My Reservations</button>
 			);
 			welcomeMsg = <div>Welcome {this.state.user.name}!</div>;
 			signOutBtn = <button onClick={this.signOut}>Sign Out</button>;
+			if (this.state.editUser === true) {
+				editUser = (
+					<EditUser
+						user={this.state.user}
+						deleteUser={this.deleteUser}
+						updateUserInfo={this.updateUserInfo}
+					/>
+				);
+			}
 			if (this.state.addCar === true) {
 				newCar = <AddCar addCar={this.addCar} />;
 			} else {
@@ -203,6 +220,8 @@ class App extends Component {
 					<div>{signInComponent}</div>
 					<div>{signUpComponent}</div>
 					<div>{signOutBtn}</div>
+					<div>{editUserBtn}</div>
+					<div>{editUser}</div>
 					<div>{newCar}</div>
 					<div>{startCarReservation}</div>
 					<div>{googleMap}</div>
@@ -226,7 +245,8 @@ class App extends Component {
 			reviewToEdit: null,
 			reserveCar: false,
 			viewCarsAndReviews: false,
-			viewReservations: false
+			viewReservations: false,
+			editUser: false
 		});
 	}
 	addCar(props) {
@@ -270,7 +290,8 @@ class App extends Component {
 			addCar: false,
 			reviewToEdit: null,
 			reserveCar: false,
-			viewReservations: false
+			viewReservations: false,
+			editUser: false
 		});
 	}
 	viewReservations() {
@@ -280,7 +301,8 @@ class App extends Component {
 			addCar: false,
 			reviewToEdit: null,
 			reserveCar: false,
-			viewReservations: true
+			viewReservations: true,
+			editUser: false
 		});
 	}
 
@@ -313,7 +335,8 @@ class App extends Component {
 			addCar: false,
 			reviewToEdit: null,
 			reserveCar: false,
-			viewReservations: false
+			viewReservations: false,
+			editUser: false
 		});
 	}
 
@@ -362,7 +385,8 @@ class App extends Component {
 			carToReview: null,
 			addCar: false,
 			reviewToEdit: null,
-			viewReservations: false
+			viewReservations: false,
+			editUser: false
 		});
 	}
 	createUser(props) {
@@ -382,6 +406,67 @@ class App extends Component {
 				}.bind(this)
 			);
 	}
+	deleteUser() {
+		console.log(this.state.user.id);
+		axios({
+			method: "delete",
+			url: "/users/" + this.state.user.id
+		}).then(
+			function(response) {
+				this.signOut();
+			}.bind(this)
+		);
+	}
+	editUser() {
+		this.setState({
+			reserveCar: false,
+			viewCarsAndReviews: false,
+			carToReview: null,
+			addCar: false,
+			reviewToEdit: null,
+			viewReservations: false,
+			editUser: true
+		});
+	}
+	updateUserInfo(props) {
+		axios({
+			method: "patch",
+			url: "/users/" + this.state.user.id,
+			params: {
+				username: props.username,
+				password: props.password,
+				name: props.name,
+				address: props.address,
+				zip: props.zip
+			}
+		}).then(
+			function(response) {
+				this.setState({ user: response.data });
+				this.uploadImage();
+			}.bind(this)
+		);
+	}
+
+	uploadImage() {
+		var data = new FormData();
+		var imagedata = document.querySelector('input[type="file"]').files[0];
+
+		if (imagedata === undefined) {
+			return;
+		}
+
+		data.append("data", imagedata);
+
+		fetch("/users/image", {
+			method: "POST",
+			body: data
+		}).then(
+			function(response) {
+				console.log(response.data);
+			}.bind(this)
+		);
+	}
+
 	signIn(props) {
 		axios
 			.post("/sign_in", {
@@ -405,7 +490,8 @@ class App extends Component {
 			car_id: null,
 			reserveCar: false,
 			carToReview: null,
-			viewReservations: false
+			viewReservations: false,
+			editUser: false
 		});
 	}
 
