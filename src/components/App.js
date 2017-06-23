@@ -1,16 +1,11 @@
 //paperclip on frontend
+//edit and delete reservations
 //AWS for group project
 //add Stripe payment system
 //is google map bootstrapURLKeys that is there already ok?
-//edit and delete reservations
-//clear add car fields on add
-
-//Why can't I get the date to display right on reservations
 
 //buttons where i have to, divs where I don't!
-//make setDates button turn into make Reservation button
 //edit user info, add image
-//write logic to tell if car is available or not during requested time
 
 import React, { Component } from "react";
 import axios from "axios";
@@ -47,6 +42,8 @@ class App extends Component {
 		this.createUser = this.createUser.bind(this);
 		this.startReservation = this.startReservation.bind(this);
 		this.makeReservation = this.makeReservation.bind(this);
+		// this.cancelCarReservation = this.cancelCarReservation.bind(this);
+		// this.cancelUserReservation = this.cancelUserReservation.bind(this);
 		this.startReview = this.startReview.bind(this);
 		this.makeReview = this.makeReview.bind(this);
 		this.viewReservations = this.viewReservations.bind(this);
@@ -77,7 +74,7 @@ class App extends Component {
 			newReservation = (
 				<StartReservation
 					makeReservation={this.makeReservation}
-					allReservations={this.state.reservations}
+					reservations={this.state.reservations}
 					cars={this.state.cars}
 				/>
 			);
@@ -95,21 +92,15 @@ class App extends Component {
 				/>
 			);
 		}
-		showUserReservations = <button onClick={this.viewReservations}>My Reservations</button>;
-		if (this.state.viewReservations === true) {
-			userReservations = (
-				<UserReservations
-					allReservations={this.state.reservations}
-					user_id={this.state.user.id}
-					cars={this.state.cars}
-				/>
-			);
-		}
+
 		if (this.state.user === null) {
 			signUpComponent = <SignUp createUser={this.createUser} />;
 			signInComponent = <SignIn signIn={this.signIn} />;
 			openReviewEditor = "";
 		} else {
+			showUserReservations = (
+				<button onClick={this.viewReservations}>My Reservations</button>
+			);
 			welcomeMsg = <div>Welcome {this.state.user.name}!</div>;
 			signOutBtn = <button onClick={this.signOut}>Sign Out</button>;
 			if (this.state.addCar === true) {
@@ -125,6 +116,15 @@ class App extends Component {
 				);
 			} else {
 				startCarReservation = null;
+			}
+			if (this.state.viewReservations === true) {
+				userReservations = (
+					<UserReservations
+						allReservations={this.state.reservations}
+						user_id={this.state.user.id}
+						cars={this.state.cars}
+					/>
+				);
 			}
 			googleMap = <GoogleMap cars={this.state.cars} />;
 			if (this.state.viewCarsAndReviews === true) {
@@ -244,7 +244,11 @@ class App extends Component {
 			})
 			.then(
 				function(response) {
-					this.setState({ cars: response.data });
+					this.setState({
+						cars: response.data,
+						addCar: false,
+						viewCarsAndReviews: true
+					});
 				}.bind(this)
 			);
 	}
@@ -400,7 +404,8 @@ class App extends Component {
 			reviewToEdit: null,
 			car_id: null,
 			reserveCar: false,
-			carToReview: null
+			carToReview: null,
+			viewReservations: false
 		});
 	}
 

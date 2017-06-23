@@ -1,7 +1,5 @@
-//date displaying in GMT
-//get info to show up on my car reservations?
-
 import React, { Component } from "react";
+import axios from "axios";
 
 class userReservations extends Component {
 	constructor(props) {
@@ -17,8 +15,10 @@ class userReservations extends Component {
 		this.viewCarReservations = this.viewCarReservations.bind(this);
 		this.viewUserReservations = this.viewUserReservations.bind(this);
 		this.editUserReservations = this.editUserReservations.bind(this);
-		this.deleteUserReservations = this.deleteUserReservations.bind(this);
-		this.deleteCarReservations = this.deleteCarReservations.bind(this);
+		this.cancelCarReservation = this.cancelCarReservation.bind(this);
+		this.cancelUserReservation = this.cancelUserReservation.bind(this);
+		// this.handleCancelUserReservation = this.handleCancelUserReservation.bind(this);
+		// this.handleCancelCarReservation = this.handleCancelCarReservation.bind(this);
 	}
 	render() {
 		let userReservationsDivs;
@@ -34,11 +34,9 @@ class userReservations extends Component {
 		if (this.state.viewUserReservations === true) {
 			userReservationsDivs = this.state.userReservations.map(
 				function(reservation, index) {
-					reservationCar = this.state.cars.filter(
-						function(car) {
-							return car.id === reservation.car_id;
-						}.bind(this)
-					);
+					reservationCar = this.state.cars.filter(function(car) {
+						return car.id === reservation.car_id;
+					});
 					startEST = new Date(reservation.start_date).toLocaleString();
 					endEST = new Date(reservation.end_date).toLocaleString();
 
@@ -46,11 +44,17 @@ class userReservations extends Component {
 						<div key={index}>
 							{reservationCar[0].make_model}
 							<div>
-								From:
-								{" " + startEST + " "}
-								until:
-								{" " + endEST + " "}
+								<div>
+									{" "}From
+									{" " + startEST + " "}
+								</div><div>
+									{" "}Until
+									{" " + endEST + " "}
+								</div>
 							</div>
+							<button onClick={this.cancelUserReservation} value={reservation.id}>
+								Cancel Reservation
+							</button>
 						</div>
 					);
 				}.bind(this)
@@ -72,27 +76,35 @@ class userReservations extends Component {
 				return userCarIds.indexOf(reservation.car_id) > -1;
 			});
 			console.log(carReservations); // returns reservations array
-			userCarReservationDivs = carReservations.map(function(reservation, index) {
-				userCarReserved = userCars.filter(function(car) {
-					return reservation.car_id === car.id;
-				});
-				console.log(userCarReserved); // returns car associated with reservation
+			userCarReservationDivs = carReservations.map(
+				function(reservation, index) {
+					userCarReserved = userCars.filter(function(car) {
+						return reservation.car_id === car.id;
+					});
+					console.log(userCarReserved); // returns car associated with reservation
 
-				startEST = new Date(reservation.start_date).toLocaleString();
-				endEST = new Date(reservation.end_date).toLocaleString();
-				return (
-					<div key={index}>
-						<div>{userCarReserved[0].make_model}</div>
-						<div>
-							From
-							{" " + startEST + " "}
-							until
-							{" " + endEST}
+					startEST = new Date(reservation.start_date).toLocaleString();
+					endEST = new Date(reservation.end_date).toLocaleString();
+					return (
+						<div key={index}>
+							<div>{userCarReserved[0].make_model}</div>
+							<div>
+								<div>
+									From
+									{" " + startEST + " "}
+								</div><div>
+									Until
+									{" " + endEST}
+								</div>
+							</div>
+							<button onClick={this.cancelCarReservation} value={reservation.id}>
+								Cancel Reservation
+							</button>
+
 						</div>
-
-					</div>
-				);
-			});
+					);
+				}.bind(this)
+			);
 		}
 
 		return (
@@ -102,6 +114,29 @@ class userReservations extends Component {
 				<button onClick={this.viewCarReservations}>My Car's Reservations</button>
 				<button onClick={this.viewUserReservations}>My Reservations</button>
 			</div>
+		);
+	}
+	cancelCarReservation(event) {
+		console.log("cancel car res");
+		axios({
+			method: "delete",
+			url: "/reservations/" + event.target.value
+		}).then(
+			function(response) {
+				this.setState({ allReservations: response.data });
+			}.bind(this)
+		);
+	}
+	cancelUserReservation(event) {
+		console.log("cancel user's res");
+
+		axios({
+			method: "delete",
+			url: "/reservations/" + event.target.value
+		}).then(
+			function(response) {
+				this.setState({ allReservations: response.data });
+			}.bind(this)
 		);
 	}
 	viewCarReservations() {
@@ -120,8 +155,6 @@ class userReservations extends Component {
 	}
 	editUserReservations() {}
 	editCarReservations() {}
-	deleteUserReservations() {}
-	deleteCarReservations() {}
 	componentWillMount() {
 		let reservations = this.state.allReservations.filter(
 			function(reservation) {
@@ -130,6 +163,11 @@ class userReservations extends Component {
 		);
 		this.setState({ userReservations: reservations });
 	}
+	// componentWillReceiveProps(newProps) {
+	// 	console.log(newProps);
+	// 	//reservations disappear immediately only when they're done from car reservations view
+	// 	this.setState({ allReservations: newProps });
+	// }
 }
 
 export default userReservations;
