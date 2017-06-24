@@ -18,8 +18,6 @@ class userReservations extends Component {
 		this.cancelCarReservation = this.cancelCarReservation.bind(this);
 		this.cancelUserReservation = this.cancelUserReservation.bind(this);
 		this.setUserReservations = this.setUserReservations.bind(this);
-		// this.handleCancelUserReservation = this.handleCancelUserReservation.bind(this);
-		// this.handleCancelCarReservation = this.handleCancelCarReservation.bind(this);
 	}
 	render() {
 		let userReservationsDivs;
@@ -31,8 +29,10 @@ class userReservations extends Component {
 		let userCars;
 		let userCarIds;
 		let userCarReserved;
+		let myReservationsHeader;
 
 		if (this.state.viewUserReservations === true) {
+			myReservationsHeader = "My Reservations";
 			userReservationsDivs = this.state.userReservations.map(
 				function(reservation, index) {
 					reservationCar = this.state.cars.filter(function(car) {
@@ -77,6 +77,7 @@ class userReservations extends Component {
 				return userCarIds.indexOf(reservation.car_id) > -1;
 			});
 			console.log(carReservations); // returns reservations array
+			myReservationsHeader = "My Car's Reservations";
 			userCarReservationDivs = carReservations.map(
 				function(reservation, index) {
 					userCarReserved = userCars.filter(function(car) {
@@ -110,6 +111,7 @@ class userReservations extends Component {
 
 		return (
 			<div>
+				<div>{myReservationsHeader}</div>
 				<div>{userCarReservationDivs}</div>;
 				<div>{userReservationsDivs}</div>;
 				<button onClick={this.viewCarReservations}>My Car's Reservations</button>

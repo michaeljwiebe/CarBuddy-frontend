@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import "../css/StartReservation.css";
+
 import times from "../times";
 import ampm from "../ampm";
 import monthDate28 from "../monthDate28";
@@ -189,7 +191,7 @@ class StartReservation extends Component {
 				<div>
 					{viewAvailableCars}
 				</div>
-				<div>{this.state.carsToRender}</div>
+				<div className="available-cars">{this.state.carsToRender}</div>
 			</div>
 		);
 	}
@@ -261,11 +263,12 @@ class StartReservation extends Component {
 				carDivsToRender = carsToRender.map(
 					function(car) {
 						return (
-							<div className="available-cars flex">
-								<div className="car-img" />
+							<div className="available-car flex">
+								<div className="car-img">Car Image here</div>
 								<div>
 									<div>{car.year}-{car.make_model}</div>
-									<div>MPG:{car.MPG}</div>
+									<div>MPG:{car.mpg}</div>
+									<div>Price: ${car.price} per day</div>
 									<div>Rating:{car.ratings}</div>
 								</div>
 

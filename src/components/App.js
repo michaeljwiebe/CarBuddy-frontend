@@ -1,12 +1,14 @@
-//paperclip on frontend -- upload image
+//send url back to frontend
 //fix users controller for image, send user id
+// problem with StartReservation.css?!? - some classes not getting applied
 //AWS for group project -- maybe not!
-//add Stripe payment system
 //is google map bootstrapURLKeys that is there already ok?
 //build nav for buttons, make it stay on page, make display change only
 
-//buttons where i have to, divs where I don't!
 //add image for user
+//add image for car
+//small map for each car location on ReserveCar
+//add Stripe payment system
 
 import React, { Component } from "react";
 import axios from "axios";
@@ -30,8 +32,8 @@ class App extends Component {
 			cars: [],
 			reviews: [],
 			reservations: [],
-			user: null,
-			car_id: null,
+			signUp: false,
+			user: { name: "Michael Wiebe", id: 1 },
 			carToReview: null,
 			reviewToEdit: null,
 			reserveCar: false,
@@ -41,6 +43,7 @@ class App extends Component {
 			editUser: false
 		};
 		this.signIn = this.signIn.bind(this);
+		this.signUp = this.signUp.bind(this);
 		this.signOut = this.signOut.bind(this);
 		this.createUser = this.createUser.bind(this);
 		this.editUser = this.editUser.bind(this);
@@ -61,16 +64,18 @@ class App extends Component {
 	}
 
 	render() {
+		let hamburgerIcon;
 		let welcomeMsg;
 		let newCar;
 		let signInComponent;
+		let signUpBtn;
 		let signUpComponent;
 		let signOutBtn;
-		let showCarsAndReviews;
+		let carsAndReviews;
 		let openReviewEditor;
-		let startCarReservation;
+		let startCarReservationBtn;
 		let newReservation;
-		let showUserReservations;
+		let userReservationsBtn;
 		let userReservations;
 		let newReview;
 		let googleMap;
@@ -101,13 +106,22 @@ class App extends Component {
 		}
 
 		if (this.state.user === null) {
-			signUpComponent = <SignUp createUser={this.createUser} />;
 			signInComponent = <SignIn signIn={this.signIn} />;
-			openReviewEditor = "";
+			signUpBtn = <div onClick={this.signUp}>Sign Up</div>;
+			if (this.state.signUp === true) {
+				signUpComponent = <SignUp createUser={this.createUser} />;
+			}
+			openReviewEditor = null;
 		} else {
+			hamburgerIcon = (
+				<div onClick={this.hamburgerToggle} className="hamburger-show-btn">&#9776</div>
+			);
 			editUserBtn = <button onClick={this.editUser}>Edit User</button>;
-			showUserReservations = (
-				<button onClick={this.viewReservations}>My Reservations</button>
+			userReservationsBtn = <button onClick={this.viewReservations}>Reservations</button>;
+			startCarReservationBtn = (
+				<button onClick={this.startReservation}>
+					Reserve a car
+				</button>
 			);
 			welcomeMsg = <div>Welcome {this.state.user.name}!</div>;
 			signOutBtn = <button onClick={this.signOut}>Sign Out</button>;
@@ -125,15 +139,6 @@ class App extends Component {
 			} else {
 				newCar = <button onClick={this.openAddCar}>Add a car</button>;
 			}
-			if (this.state.reserveCar === false) {
-				startCarReservation = (
-					<button onClick={this.startReservation}>
-						Reserve a car
-					</button>
-				);
-			} else {
-				startCarReservation = null;
-			}
 			if (this.state.viewReservations === true) {
 				userReservations = (
 					<UserReservations
@@ -143,9 +148,9 @@ class App extends Component {
 					/>
 				);
 			}
-			googleMap = <GoogleMap cars={this.state.cars} />;
 			if (this.state.viewCarsAndReviews === true) {
-				showCarsAndReviews = this.state.cars.map(
+				googleMap = <GoogleMap cars={this.state.cars} />;
+				carsAndReviews = this.state.cars.map(
 					function(car, index) {
 						let removeCar;
 						let editReviewBtn;
@@ -166,7 +171,7 @@ class App extends Component {
 											onClick={this.editReview}
 											value={JSON.stringify(review)}
 										>
-											Edit
+											Edit Review
 										</button>
 									);
 								}
@@ -203,7 +208,7 @@ class App extends Component {
 					}.bind(this)
 				);
 			} else {
-				showCarsAndReviews = (
+				carsAndReviews = (
 					<button onClick={this.showCarsAndReviews}>
 						Cars and Reviews
 					</button>
@@ -212,31 +217,46 @@ class App extends Component {
 		}
 
 		console.log(this.state);
+		//adjust layout
+		//pick color scheme
+		//make hamburger menu slide on
 
 		return (
 			<div className="App">
 				<div>
 					<div>{welcomeMsg}</div>
 					<div>{signInComponent}</div>
+					<div>{signUpBtn}</div>
 					<div>{signUpComponent}</div>
-					<div>{signOutBtn}</div>
-					<div>{editUserBtn}</div>
-					<div>{editUser}</div>
-					<div>{newCar}</div>
-					<div>{startCarReservation}</div>
+				</div>
+				<div>
+					{hamburgerIcon}
+					<div className="hamburger">
+						<div className="user-avatar" />
+						<div onClick={this.hamburgerToggle} className="hamburger-close-btn">X</div>
+						<div>{signOutBtn}</div>
+						<div>{editUserBtn}</div>
+						<div>{newCar}</div>
+					</div>
 					<div>{googleMap}</div>
-					<div>{showCarsAndReviews}</div>
-					<div>{showUserReservations}</div>
+					<div>{newReview}</div>
+					<div>{newReservation}</div>
+					<div>{carsAndReviews}</div>
+					<div>{editUser}</div>
 					<div>{userReservations}</div>
 					<div>{openReviewEditor}</div>
-					<div>
-						<div>{newReservation}</div>
-						<div>{newReview}</div>
+					<div className="menu flex">
+						<div className="menu-item">{userReservationsBtn}</div>
+						<div className="menu-item">{startCarReservationBtn}</div>
 					</div>
 
 				</div>
 			</div>
 		);
+	}
+	hamburgerToggle() {
+		let hamburgerMenu = document.getElementsByClassName("hamburger")[0];
+		hamburgerMenu.classList.toggle("hamburger-show");
 	}
 	openAddCar() {
 		this.setState({
@@ -255,8 +275,8 @@ class App extends Component {
 				data: {
 					make_model: props.make_model,
 					year: props.year,
-					MPG: props.year,
-					price: props.year,
+					mpg: props.mpg,
+					price: props.price,
 					lat: props.lat,
 					lng: props.lng,
 					owner_id: this.state.user.id
@@ -344,7 +364,7 @@ class App extends Component {
 		axios
 			.post("/reviews", {
 				data: {
-					car_id: this.state.car_id,
+					car_id: props.car_id,
 					title: props.title,
 					description: props.description,
 					rating: props.rating,
@@ -355,7 +375,8 @@ class App extends Component {
 				function(response) {
 					this.setState({
 						reviews: response.data,
-						carToReview: null
+						carToReview: null,
+						viewCarsAndReviews: true
 					});
 				}.bind(this)
 			);
@@ -389,6 +410,9 @@ class App extends Component {
 			editUser: false
 		});
 	}
+	signUp() {
+		this.setState({ signUp: true });
+	}
 	createUser(props) {
 		axios
 			.post("/users", {
@@ -402,7 +426,8 @@ class App extends Component {
 			})
 			.then(
 				function(response) {
-					this.setState({ user: response.data });
+					this.uploadImage();
+					this.setState({ user: response.data, signUp: false });
 				}.bind(this)
 			);
 	}
@@ -441,8 +466,8 @@ class App extends Component {
 			}
 		}).then(
 			function(response) {
-				this.setState({ user: response.data });
 				this.uploadImage();
+				this.setState({ user: response.data, editUser: false, viewCarsAndReviews: true });
 			}.bind(this)
 		);
 	}
@@ -487,7 +512,6 @@ class App extends Component {
 		this.setState({
 			user: null,
 			reviewToEdit: null,
-			car_id: null,
 			reserveCar: false,
 			carToReview: null,
 			viewReservations: false,
