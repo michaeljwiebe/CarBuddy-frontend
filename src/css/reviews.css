@@ -15,4 +15,15 @@
   width: 100%;
   font-size: 14px; }
 
+.review-inputs {
+  width: 80%;
+  max-width: 500px;
+  margin: 80px auto 0px auto; }
+
+.review-input {
+  width: 100%; }
+
+.review-input-description {
+  height: 20px; }
+
 /*# sourceMappingURL=reviews.css.map */

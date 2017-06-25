@@ -79,10 +79,10 @@ class StartReservation extends Component {
 		let yearsList = years.map(function(year, index) {
 			return <option key={index} value={year}>{year}</option>;
 		});
-		let viewAvailableCars = (
-			<button onClick={this.viewAvailableCars}>
-				View Available Cars
-			</button>
+		let viewAvailableCarsBtn = (
+			<div className="btn" onClick={this.viewAvailableCars} className="btn">
+				View Available Carzz
+			</div>
 		);
 		if (this.state.start_month % 2 === 1 && this.state.start_month !== 1) {
 			daysPerMonthList = daysList30;
@@ -229,9 +229,7 @@ class StartReservation extends Component {
 				</div>
 				<br />
 				<div>
-					<div>
-						{viewAvailableCars}
-					</div>
+					{viewAvailableCarsBtn}
 					<div className="available-cars">{this.state.carsToRender}</div>
 				</div>
 			</div>
@@ -257,6 +255,7 @@ class StartReservation extends Component {
 		});
 	}
 	viewAvailableCars() {
+		console.log("viewcars");
 		let unAvailableCars;
 		let conflictingReservations;
 		let carsToRender;

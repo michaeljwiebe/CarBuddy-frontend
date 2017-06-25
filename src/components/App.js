@@ -3,8 +3,11 @@
 // problem with StartReservation.css?!? - some classes not getting applied
 //AWS for group project -- maybe not!
 //is google map bootstrapURLKeys that is there already ok?
-//iphone 5 map position off
+//screen is insisting on being taller than i want
+///////iphone 5 map position off
+///////hamburger menu changes size of screen when it slides in from off the screen,margins on toggle when using position fixed, doesn't with position absolute
 //unicode issues with hamburger, stars
+//view available cars button not working
 
 //car address?
 //add image for user
@@ -77,6 +80,8 @@ class App extends Component {
 		let signUpComponent;
 		let signOutBtn;
 		let carsAndReviews;
+		let carsAndReviewsBtn;
+		let carsAndReviewsStyles;
 		let openReviewEditor;
 		let startCarReservationBtn;
 		let newReservation;
@@ -86,6 +91,7 @@ class App extends Component {
 		let googleMap;
 		let editUserBtn;
 		let editUser;
+		let logo;
 
 		if (this.state.reserveCar === true) {
 			newReservation = (
@@ -111,6 +117,7 @@ class App extends Component {
 		}
 
 		if (this.state.user === null) {
+			logo = "logo logo-sign-in";
 			signInComponent = <SignIn signIn={this.signIn} />;
 			signUpBtn = <div onClick={this.signUp}>Sign Up</div>;
 			if (this.state.signUp === true) {
@@ -118,6 +125,7 @@ class App extends Component {
 			}
 			openReviewEditor = null;
 		} else {
+			logo = "logo logo-main";
 			hamburgerIcon = (
 				<div className="btn" onClick={this.hamburgerToggle} className="hamburger-show-btn">
 					&#9776
@@ -127,14 +135,21 @@ class App extends Component {
 				<div className="btn hamburger-btn" onClick={this.editUser}>Edit User</div>
 			);
 			userReservationsBtn = (
-				<div className="btn menu-item" onClick={this.viewReservations}>Reservations</div>
-			);
-			startCarReservationBtn = (
-				<div className="btn menu-item" onClick={this.startReservation}>
-					Reserve a car
+				<div className="btn menu-item btn-reservations" onClick={this.viewReservations}>
+					Reservations
 				</div>
 			);
-			welcomeMsg = <div>Welcome {this.state.user.name}!</div>;
+			startCarReservationBtn = (
+				<div className="btn menu-item btn-reserve-car" onClick={this.startReservation}>
+					Find a car
+				</div>
+			);
+			carsAndReviewsBtn = (
+				<div onClick={this.showCarsAndReviews} className="btn menu-item btn-cars">
+					Cars
+				</div>
+			);
+			welcomeMsg = <div className="welcome-msg">Welcome {this.state.user.name}!</div>;
 			addCarBtn = (
 				<div className="btn hamburger-btn" onClick={this.openAddCar}>Add a car</div>
 			);
@@ -162,6 +177,7 @@ class App extends Component {
 			}
 			if (this.state.viewCarsAndReviews === true) {
 				googleMap = <GoogleMap cars={this.state.cars} />;
+				carsAndReviewsStyles = "cars-and-reviews";
 				carsAndReviews = this.state.cars.map(
 					function(car, index) {
 						let removeCar;
@@ -234,23 +250,18 @@ class App extends Component {
 						);
 					}.bind(this)
 				);
-			} else {
-				carsAndReviews = (
-					<button onClick={this.showCarsAndReviews}>
-						Cars and Reviews
-					</button>
-				);
 			}
 		}
 
 		console.log(this.state);
 		//adjust layout
 		//pick color scheme
-		//make hamburger menu slide on
+		//logo not showing up
 
 		return (
 			<div className="App">
 				<div>
+					<img src="../images/carBuddy.gif" className={logo} />
 					<div>{welcomeMsg}</div>
 					<div>{signInComponent}</div>
 					<div>{signUpBtn}</div>
@@ -272,7 +283,7 @@ class App extends Component {
 						{addCar}
 						{newReview}
 						{newReservation}
-						<div className="cars-and-reviews">{carsAndReviews}</div>
+						<div className={carsAndReviewsStyles}>{carsAndReviews}</div>
 						{editUser}
 						{userReservations}
 						{openReviewEditor}
@@ -280,6 +291,7 @@ class App extends Component {
 					<div className="menu flex">
 						{userReservationsBtn}
 						{startCarReservationBtn}
+						{carsAndReviewsBtn}
 					</div>
 
 				</div>

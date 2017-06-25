@@ -18,26 +18,40 @@ class StartReview extends Component {
 		console.log(this.props);
 		console.log(this.state);
 		return (
-			<div>
+			<div className="inputs-container">
 				<input
+					className="input"
 					type="text"
 					onChange={this.updateTitle}
 					placeholder="Title"
 					value={this.state.title}
 				/>
 				<input
+					className="input"
 					type="textarea"
 					onChange={this.updateDescription}
 					placeholder="Description"
 					value={this.state.description}
 				/>
-				<input
+				<select
+					className="input"
 					type="integer"
 					onChange={this.updateRating}
 					placeholder="Rating"
 					value={this.state.rating}
-				/>
-				<button onClick={this.handleMakeReview}>Post Review</button>
+				>
+					<option value="">Click here to select a rating</option>
+					<option value="5">5</option>
+					<option value="4">4</option>
+					<option value="3">3</option>
+					<option value="2">2</option>
+					<option value="1">1</option>
+					<option value="0">0</option>
+				</select>
+				<br />
+				<div className="btn btn-make-review" onClick={this.handleMakeReview}>
+					Post Review
+				</div>
 			</div>
 		);
 	}

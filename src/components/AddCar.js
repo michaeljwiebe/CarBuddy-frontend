@@ -21,17 +21,33 @@ class AddCar extends Component {
 	render() {
 		console.log(this.state.lng, this.state.lat);
 		return (
-			<div>
+			<div className="inputs-container">
 				<input
+					className="input"
 					onChange={this.updateMake_Model}
 					value={this.state.make_model}
 					placeholder="Make and Model"
 				/>
-				<input onChange={this.updateYear} value={this.state.year} placeholder="Year" />
-				<input onChange={this.updateMPG} value={this.state.MPG} placeholder="MPG" />
-				<input onChange={this.updatePrice} value={this.state.price} placeholder="Price" />
+				<input
+					className="input"
+					onChange={this.updateYear}
+					value={this.state.year}
+					placeholder="Year"
+				/>
+				<input
+					className="input"
+					onChange={this.updateMPG}
+					value={this.state.MPG}
+					placeholder="MPG"
+				/>
+				<input
+					className="input"
+					onChange={this.updatePrice}
+					value={this.state.price}
+					placeholder="Price"
+				/>
 				<br />
-				<button onClick={this.handleAddCar}>Add Car</button>
+				<div className="btn" onClick={this.handleAddCar}>Add Car</div>
 			</div>
 		);
 	}

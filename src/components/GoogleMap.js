@@ -25,7 +25,7 @@ class GoogleMap extends Component {
 		this.state = {
 			cars: props.cars,
 			styles: {
-				position: "fixed",
+				position: "absolute",
 				width: "100vw",
 				height: "20vh",
 				bottom: "30px",
@@ -52,27 +52,6 @@ class GoogleMap extends Component {
 	}
 
 	componentWillReceiveProps(newProps) {
-		// if (newProps.car) {
-		//     this.setState({
-		//         styles: {
-		//             position: "fixed",
-		//             width: "50vw",
-		//             height: "43vh",
-		//             top: "0",
-		//             right: "0",
-		//             zIndex: 5
-		//         }
-		//     });
-		// } else {
-		//     this.setState({
-		//         styles: {
-		//             position: "fixed",
-		//             width: "100vw",
-		//             height: "10vh",
-		//             bottom: "0px"
-		//         }
-		//     });
-		// }
 		this.setState({ cars: newProps.cars });
 	}
 }

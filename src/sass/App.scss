@@ -10,11 +10,31 @@
     flex-wrap: wrap;
     justify-content: center;
 }
-
+.logo{
+    position: absolute;
+}
+.logo-sign-in{
+    top: 10px;
+    width: 100vw;
+    height: 30vh;
+    margin-bottom: 5vh;
+}
+.logo-main{
+    width: 40vw;
+    height: 10vh;
+    left: 20px;
+    top: 3px;
+}
+.welcome-msg{
+    position: absolute;
+    right: 0px;
+    top:5px;
+    font-size: 14px;
+}
 .cars-and-reviews{
-    height: 70vh;
+    height: 65vh;
     position: relative;
-    top: 5vh;
+    top: 10vh;
     overflow-y: scroll;
 }
 .car-make-model{
@@ -40,4 +60,21 @@
 .btn-edit-review{
     width: 100%;
     min-width: 95px;
+}
+.reservations-viewer{
+    margin-top: 80px;
+}
+.reservations-header{
+    font-size: 18px;
+    text-decoration: underline;
+}
+.inputs-container{
+    position: absolute;
+    top: 80px;
+    left: 10%;
+    width: 80%;
+    max-width: 500px;
+}
+.input{
+    width: 92%;
 }

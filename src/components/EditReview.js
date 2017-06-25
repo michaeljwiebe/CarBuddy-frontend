@@ -16,11 +16,40 @@ class EditReview extends Component {
 	}
 	render() {
 		return (
-			<div>
-				<input onChange={this.updateTitle} value={this.state.title} />
-				<input onChange={this.updateDescription} value={this.state.description} />
-				<input onChange={this.updateRating} value={this.state.rating} />
-				<div onClick={this.handleUpdateReview}>Update Review</div>
+			<div className="review-inputs">
+				<input
+					className="review-input"
+					type="text"
+					onChange={this.updateTitle}
+					placeholder="Title"
+					value={this.state.title}
+				/>
+				<input
+					className="review-input review-input-description"
+					type="textarea"
+					onChange={this.updateDescription}
+					placeholder="Description"
+					value={this.state.description}
+				/>
+				<select
+					className="review-input"
+					type="integer"
+					onChange={this.updateRating}
+					placeholder="Rating"
+					value={this.state.rating}
+				>
+					<option value="">Click here to select a rating</option>
+					<option value="5">5</option>
+					<option value="4">4</option>
+					<option value="3">3</option>
+					<option value="2">2</option>
+					<option value="1">1</option>
+					<option value="0">0</option>
+				</select>
+				<br />
+				<div className="btn btn-make-review" onClick={this.handleUpdateReview}>
+					Update Review
+				</div>
 			</div>
 		);
 	}
