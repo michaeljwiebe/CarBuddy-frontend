@@ -1,0 +1,18 @@
+.review {
+  position: relative;
+  width: 47vw;
+  border: 1px solid black; }
+
+.review-title {
+  width: 100%;
+  font-size: 20px; }
+
+.review-description {
+  width: 100%;
+  font-size: 16px; }
+
+.review-reviewer-rating {
+  width: 100%;
+  font-size: 14px; }
+
+/*# sourceMappingURL=reviews.css.map */

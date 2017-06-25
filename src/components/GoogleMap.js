@@ -28,7 +28,8 @@ class GoogleMap extends Component {
 				position: "fixed",
 				width: "100vw",
 				height: "20vh",
-				bottom: "30px"
+				bottom: "30px",
+				zIndex: "3"
 			}
 		};
 	}

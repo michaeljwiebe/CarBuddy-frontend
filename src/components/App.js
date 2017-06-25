@@ -3,8 +3,10 @@
 // problem with StartReservation.css?!? - some classes not getting applied
 //AWS for group project -- maybe not!
 //is google map bootstrapURLKeys that is there already ok?
-//build nav for buttons, make it stay on page, make display change only
+//iphone 5 map position off
+//unicode issues with hamburger, stars
 
+//car address?
 //add image for user
 //add image for car
 //small map for each car location on ReserveCar
@@ -14,6 +16,8 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import "../css/App.css";
+import "../css/menus.css";
+import "../css/reviews.css";
 
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
@@ -66,7 +70,8 @@ class App extends Component {
 	render() {
 		let hamburgerIcon;
 		let welcomeMsg;
-		let newCar;
+		let addCarBtn;
+		let addCar;
 		let signInComponent;
 		let signUpBtn;
 		let signUpComponent;
@@ -114,17 +119,26 @@ class App extends Component {
 			openReviewEditor = null;
 		} else {
 			hamburgerIcon = (
-				<div onClick={this.hamburgerToggle} className="hamburger-show-btn">&#9776</div>
+				<div className="btn" onClick={this.hamburgerToggle} className="hamburger-show-btn">
+					&#9776
+				</div>
 			);
-			editUserBtn = <button onClick={this.editUser}>Edit User</button>;
-			userReservationsBtn = <button onClick={this.viewReservations}>Reservations</button>;
+			editUserBtn = (
+				<div className="btn hamburger-btn" onClick={this.editUser}>Edit User</div>
+			);
+			userReservationsBtn = (
+				<div className="btn menu-item" onClick={this.viewReservations}>Reservations</div>
+			);
 			startCarReservationBtn = (
-				<button onClick={this.startReservation}>
+				<div className="btn menu-item" onClick={this.startReservation}>
 					Reserve a car
-				</button>
+				</div>
 			);
 			welcomeMsg = <div>Welcome {this.state.user.name}!</div>;
-			signOutBtn = <button onClick={this.signOut}>Sign Out</button>;
+			addCarBtn = (
+				<div className="btn hamburger-btn" onClick={this.openAddCar}>Add a car</div>
+			);
+			signOutBtn = <div className="btn hamburger-btn" onClick={this.signOut}>Sign Out</div>;
 			if (this.state.editUser === true) {
 				editUser = (
 					<EditUser
@@ -135,9 +149,7 @@ class App extends Component {
 				);
 			}
 			if (this.state.addCar === true) {
-				newCar = <AddCar addCar={this.addCar} />;
-			} else {
-				newCar = <button onClick={this.openAddCar}>Add a car</button>;
+				addCar = <AddCar addCar={this.addCar} />;
 			}
 			if (this.state.viewReservations === true) {
 				userReservations = (
@@ -168,6 +180,7 @@ class App extends Component {
 								if (review.reviewer.id === this.state.user.id) {
 									editReviewBtn = (
 										<button
+											className="btn-edit-review"
 											onClick={this.editReview}
 											value={JSON.stringify(review)}
 										>
@@ -177,32 +190,46 @@ class App extends Component {
 								}
 								if (car.id === review.car_id) {
 									return (
-										<div key={index}>
-											<div>{review.reviewer.name}</div>
-											<div>{review.title}</div>
-											<div>{review.description}</div>
-											<div>{review.rating}</div>
+										<div key={index} className="flex review">
+											<div className="review-title">{review.title}</div>
+											<div className="review-description">
+												{review.description}
+											</div>
+											<div>
+												<div className="review-reviewer-rating">
+													{review.rating + " "}
+													<i class="fa fa-star" aria-hidden="true" /> -
+													{" " + review.reviewer.name}
+												</div>
+											</div>
 											<div>{editReviewBtn}</div>
 										</div>
 									);
-								} else {
-									return <span />;
 								}
 							}.bind(this)
 						);
 						return (
-							<div key={index}>
+							<div key={index} className="flex car-description-reviews">
 								<div className="car-make-model">
-									{car.make_model}
+									{car.year + " " + car.make_model}
 								</div>
-								<div className="car-img" />
-								<div className="car-mpg" />
-								<div className="car-address" />
-								<div>{reviews}</div>
-								<button onClick={this.startReview} value={JSON.stringify(car)}>
-									Review this car
-								</button>
-								{removeCar}
+								<div className="car-description">
+									<div className="car-img" />
+									<div className="car-mpg" />
+									<div className="car-address" />
+								</div>
+								<div className="car-reviews">
+									{reviews}
+								</div>
+								<div>
+									<button
+										onClick={this.startReview}
+										value={JSON.stringify(car.id)}
+									>
+										Review this car
+									</button>
+									{removeCar}
+								</div>
 							</div>
 						);
 					}.bind(this)
@@ -232,22 +259,27 @@ class App extends Component {
 				<div>
 					{hamburgerIcon}
 					<div className="hamburger">
-						<div className="user-avatar" />
 						<div onClick={this.hamburgerToggle} className="hamburger-close-btn">X</div>
-						<div>{signOutBtn}</div>
-						<div>{editUserBtn}</div>
-						<div>{newCar}</div>
+						<div className="hamburger-content-container">
+							<div className="user-avatar" />
+							{addCarBtn}
+							{editUserBtn}
+							{signOutBtn}
+						</div>
 					</div>
-					<div>{googleMap}</div>
-					<div>{newReview}</div>
-					<div>{newReservation}</div>
-					<div>{carsAndReviews}</div>
-					<div>{editUser}</div>
-					<div>{userReservations}</div>
-					<div>{openReviewEditor}</div>
+					<div className="content-container">
+						{googleMap}
+						{addCar}
+						{newReview}
+						{newReservation}
+						<div className="cars-and-reviews">{carsAndReviews}</div>
+						{editUser}
+						{userReservations}
+						{openReviewEditor}
+					</div>
 					<div className="menu flex">
-						<div className="menu-item">{userReservationsBtn}</div>
-						<div className="menu-item">{startCarReservationBtn}</div>
+						{userReservationsBtn}
+						{startCarReservationBtn}
 					</div>
 
 				</div>
@@ -268,6 +300,7 @@ class App extends Component {
 			viewReservations: false,
 			editUser: false
 		});
+		this.hamburgerToggle();
 	}
 	addCar(props) {
 		axios
@@ -337,7 +370,11 @@ class App extends Component {
 			}
 		}).then(
 			function(response) {
-				this.setState({ reviews: response.data, reviewToEdit: null });
+				this.setState({
+					reviews: response.data,
+					reviewToEdit: null,
+					carsAndReviews: true
+				});
 			}.bind(this)
 		);
 	}
@@ -452,6 +489,7 @@ class App extends Component {
 			viewReservations: false,
 			editUser: true
 		});
+		this.hamburgerToggle();
 	}
 	updateUserInfo(props) {
 		axios({
@@ -502,9 +540,13 @@ class App extends Component {
 			})
 			.then(
 				function(response) {
-					this.setState({
-						user: response.data
-					});
+					if (response.data === "") {
+						return;
+					} else {
+						this.setState({
+							user: response.data
+						});
+					}
 				}.bind(this)
 			);
 	}
@@ -517,6 +559,7 @@ class App extends Component {
 			viewReservations: false,
 			editUser: false
 		});
+		this.hamburgerToggle();
 	}
 
 	componentWillMount() {

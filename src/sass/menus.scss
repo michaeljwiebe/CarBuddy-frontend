@@ -1,0 +1,73 @@
+@import "variables";
+
+.hamburger{
+    position: absolute;
+    right: -120px;
+    top: 15px;
+    z-index: 5;
+    height: 310px;
+    width: 120px;
+    border-radius: 4px;
+    background-color: $bg-color2;
+
+    transition: all 1s;
+}
+.hamburger-show{
+    position: absolute;
+    right: 0px;
+    top: 15px;
+}
+.view-hamburger{
+    right: 0;
+}
+.hamburger-content-container{}
+.btn{
+    font-size: 16px;
+    background-color: $btn-bg;
+    border-radius: 4px;
+    height: 35px;
+}
+.hamburger-btn{
+    width: 90%;
+    margin: 10px 5px;
+    line-height: 34px;
+    border: 1px solid black;
+}
+.hamburger-close-btn, .hamburger-show-btn{
+    top: 20px;
+    width: 30px;
+}
+.hamburger-show-btn{
+    position: fixed;
+    top: 15px;
+    left: 293px;
+}
+.hamburger-close-btn{
+    position: relative;
+    top: 8px;
+    height: 30px;
+    width: 30px;
+    left: 85px;
+    line-height: 30px;
+}
+.user-avatar{
+    width:120px;
+    height: 120px;
+    margin-top: 10px;
+    background-image: url("");
+    border-radius: 4px;
+}
+
+
+.menu{
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    max-width: 400px;
+}
+.menu-item{
+    width: 40%;
+    margin: 5px 10px;
+    height: 25px;
+    line-height: 25px;
+}

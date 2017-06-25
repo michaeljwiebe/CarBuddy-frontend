@@ -1,0 +1,43 @@
+@import 'variables';
+
+.App {
+  text-align: center;
+  background-color: $bg-color;
+  height: 100vh,;
+}
+.flex{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.cars-and-reviews{
+    height: 70vh;
+    position: relative;
+    top: 5vh;
+    overflow-y: scroll;
+}
+.car-make-model{
+    width: 100%;
+}
+.car-description-reviews{
+    margin: 5px 0;
+}
+.car-description{
+    width: 45vw;
+}
+.car-img{
+    border: 1px solid black;
+    width: 47vw;
+}
+.car-mpg{}
+.car-address{}
+.car-reviews{
+    width: 47vw;
+    margin-left: 10px;
+
+}
+.btn-edit-review{
+    width: 100%;
+    min-width: 95px;
+}

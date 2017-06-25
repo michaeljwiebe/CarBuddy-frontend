@@ -7,7 +7,7 @@ class StartReview extends Component {
 			title: "",
 			description: "",
 			rating: "",
-			car_id: props.carToReview.id
+			car_id: props.carToReview
 		};
 		this.updateTitle = this.updateTitle.bind(this);
 		this.updateDescription = this.updateDescription.bind(this);

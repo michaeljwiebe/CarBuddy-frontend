@@ -145,53 +145,95 @@ class StartReservation extends Component {
 		}
 
 		return (
-			<div>
-				From
-				<select
-					onChange={this.updateStartHour}
-					value={this.ampmHour(this.state.start_hour)}
-					placeholder="Start Time"
-				>
-					{timesList}
-				</select>
-				<select onChange={this.updateStartAMPM} value={this.state.start_AMPM}>
-					{ampmsList}
-				</select>
-				<select onChange={this.updateStartMonth} value={textStartMonth}>
-					{monthList}
-				</select>
-				<select onChange={this.updateStartDay} value={this.state.start_day}>
-					{daysPerMonthList}
-				</select>
-				<select onChange={this.updateStartYear} value={this.state.start_year}>
-					{yearsList}
-				</select>
-				<br />
-				Until
-				<select
-					onChange={this.updateEndHour}
-					value={this.ampmHour(this.state.end_hour)}
-					placeholder="End Time"
-				>
-					{timesList}
-				</select>
-				<select onChange={this.updateEndAMPM} value={this.state.end_AMPM}>
-					{ampmsList}
-				</select>
-				<select onChange={this.updateEndMonth} value={textEndMonth}>
-					{monthList}
-				</select>
-				<select onChange={this.updateEndDay} value={this.state.end_day}>
-					{daysPerMonthList}
-				</select>
-				<select onChange={this.updateEndYear} value={this.state.end_year}>
-					{yearsList}
-				</select>
+			<div className="flex reservation-inputs-container">
+				<div className="reservation-start-inputs">
+					<span className="reservation-labels">From</span>
+					<br />
+					<select
+						className="reservation-inputs reservation-inputs-hour"
+						onChange={this.updateStartHour}
+						value={this.ampmHour(this.state.start_hour)}
+						placeholder="Start Time"
+					>
+						{timesList}
+					</select>
+					<select
+						className="reservation-inputs reservation-inputs-ampm"
+						onChange={this.updateStartAMPM}
+						value={this.state.start_AMPM}
+					>
+						{ampmsList}
+					</select>
+					<select
+						className="reservation-inputs"
+						onChange={this.updateStartDay}
+						value={this.state.start_day}
+					>
+						{daysPerMonthList}
+					</select>
+					<select
+						className="reservation-inputs"
+						onChange={this.updateStartMonth}
+						value={textStartMonth}
+					>
+						{monthList}
+					</select>
+					<select
+						className="reservation-inputs"
+						onChange={this.updateStartYear}
+						value={this.state.start_year}
+					>
+						{yearsList}
+					</select>
+				</div>
+				<div className="reservation-end-inputs">
+					<span className="reservation-labels">Until</span>
+
+					<br />
+					<select
+						className="reservation-inputs reservation-inputs-hour"
+						onChange={this.updateEndHour}
+						value={this.ampmHour(this.state.end_hour)}
+						placeholder="End Time"
+					>
+						{timesList}
+					</select>
+					<select
+						className="reservation-inputs reservation-inputs-ampm"
+						onChange={this.updateEndAMPM}
+						value={this.state.end_AMPM}
+					>
+						{ampmsList}
+					</select>
+					<select
+						className="reservation-inputs"
+						onChange={this.updateEndDay}
+						value={this.state.end_day}
+					>
+						{daysPerMonthList}
+					</select>
+					<select
+						className="reservation-inputs"
+						onChange={this.updateEndMonth}
+						value={textEndMonth}
+					>
+						{monthList}
+					</select>
+					<select
+						className="reservation-inputs"
+						onChange={this.updateEndYear}
+						value={this.state.end_year}
+					>
+						{yearsList}
+					</select>
+				</div>
 				<br />
 				<div>
-					{viewAvailableCars}
+					<div>
+						{viewAvailableCars}
+					</div>
+					<div className="available-cars">{this.state.carsToRender}</div>
 				</div>
-				<div className="available-cars">{this.state.carsToRender}</div>
 			</div>
 		);
 	}

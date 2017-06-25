@@ -1,19 +1,36 @@
-.available-cars{
-    position: absolute;
-    top: 10vh;
-    width: 100%;
-    z-index: -2;
-}
+.reservation-labels {
+  font-size: 20px; }
 
-.available-car{
+.reservation-inputs {
+  font-size: 20px;
+  margin: 10px 0; }
 
-}
-.car-img{
-    width: 150px;
-    height: 100px;
-    background-image: url("");
+.reservation-start-inputs, .reservation-end-inputs {
+  width: 14vw;
+  margin: 20px 33px; }
 
-}
-.car-make-model{
-    color: white;
-}
+.reservation-start-inputs {
+  margin-left: 0;
+  margin-right: 50px; }
+
+.reservation-inputs-hour {
+  margin-right: 10%; }
+
+.reservation-inputs-ampm {
+  margin-right: 20%; }
+
+.available-cars {
+  position: absolute;
+  top: 10vh;
+  width: 100%;
+  z-index: -2; }
+
+.car-img {
+  width: 150px;
+  height: 100px;
+  background-image: url(""); }
+
+.car-make-model {
+  color: white; }
+
+/*# sourceMappingURL=StartReservation.css.map */
