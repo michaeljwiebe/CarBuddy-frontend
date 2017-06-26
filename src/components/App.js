@@ -60,7 +60,8 @@ class App extends Component {
 		this.createUser = this.createUser.bind(this);
 		this.editUser = this.editUser.bind(this);
 		this.updateUserInfo = this.updateUserInfo.bind(this);
-		this.uploadImage = this.uploadImage.bind(this);
+		this.uploadUserImage = this.uploadUserImage.bind(this);
+		this.uploadCarImage = this.uploadCarImage.bind(this);
 		this.deleteUser = this.deleteUser.bind(this);
 		this.startReservation = this.startReservation.bind(this);
 		this.makeReservation = this.makeReservation.bind(this);
@@ -73,6 +74,9 @@ class App extends Component {
 		this.deleteCar = this.deleteCar.bind(this);
 		this.addCar = this.addCar.bind(this);
 		this.openAddCar = this.openAddCar.bind(this);
+		this.loadCars = this.loadCars.bind(this);
+		this.loadReviews = this.loadReviews.bind(this);
+		this.loadReservations = this.loadReservations.bind(this);
 	}
 
 	render() {
@@ -97,7 +101,8 @@ class App extends Component {
 		let editUserBtn;
 		let editUser;
 		let logo;
-		let avatar;
+		let userAvatar;
+		let carAvatar;
 
 		if (this.state.reserveCar === true) {
 			newReservation = (
@@ -133,7 +138,7 @@ class App extends Component {
 			}
 			openReviewEditor = null;
 		} else {
-			avatar = this.state.user.avatar;
+			userAvatar = this.state.user.avatar;
 			logo = "logo logo-main";
 			hamburgerIcon = (
 				<div onClick={this.hamburgerToggle} className=" btn hamburger-show-btn">
@@ -187,6 +192,7 @@ class App extends Component {
 					function(car, index) {
 						let removeCar;
 						let editReviewBtn;
+						carAvatar = car.avatar;
 
 						if (car.owner_id === this.state.user.id) {
 							removeCar = (
@@ -241,7 +247,7 @@ class App extends Component {
 									{car.year + " " + car.make_model}
 								</div>
 								<div className="car-description">
-									<div className="car-img" />
+									<img src={carAvatar} className="car-img" />
 									<div className="car-mpg" />
 									<div className="car-address" />
 								</div>
@@ -283,7 +289,7 @@ class App extends Component {
 							<i className="fa fa-window-close-o" aria-hidden="true" />
 						</div>
 						<div className="hamburger-content-container">
-							<img src={avatar} className="user-avatar" />
+							<img src={userAvatar} className="user-avatar" />
 							{addCarBtn}
 							{editUserBtn}
 							{signOutBtn}
@@ -340,11 +346,41 @@ class App extends Component {
 			})
 			.then(
 				function(response) {
+					this.uploadCarImage();
 					this.setState({
 						cars: response.data,
 						addCar: false,
 						viewCarsAndReviews: true
 					});
+				}.bind(this)
+			);
+	}
+
+	uploadCarImage() {
+		var data = new FormData();
+		var imagedata = document.querySelector('input[type="file"]').files[0];
+
+		if (imagedata === undefined) {
+			return;
+		}
+
+		data.append("data", imagedata);
+
+		fetch("/cars/image", {
+			method: "POST",
+			body: data
+		})
+			.then(
+				function(response) {
+					console.log(response);
+					return response.json();
+				}.bind(this)
+			)
+			.then(
+				function(data) {
+					console.log(data);
+					this.loadCars();
+					// this.setState({ user: data, editUser: false, viewCarsAndReviews: true });
 				}.bind(this)
 			);
 	}
@@ -486,7 +522,7 @@ class App extends Component {
 			})
 			.then(
 				function(response) {
-					this.uploadImage();
+					this.uploadUserImage();
 					this.setState({
 						user: response.data,
 						signUp: false,
@@ -496,6 +532,7 @@ class App extends Component {
 				}.bind(this)
 			);
 	}
+
 	deleteUser() {
 		console.log(this.state.user.id);
 		axios({
@@ -532,12 +569,12 @@ class App extends Component {
 			}
 		}).then(
 			function(response) {
-				this.uploadImage();
+				this.uploadUserImage();
 			}.bind(this)
 		);
 	}
 
-	uploadImage() {
+	uploadUserImage() {
 		var data = new FormData();
 		var imagedata = document.querySelector('input[type="file"]').files[0];
 
@@ -598,8 +635,14 @@ class App extends Component {
 		});
 		this.hamburgerToggle();
 	}
-
-	componentWillMount() {
+	loadCars() {
+		axios.get("/cars").then(
+			function(response) {
+				this.setState({ cars: response.data });
+			}.bind(this)
+		);
+	}
+	loadReviews() {
 		axios.get("/reviews").then(
 			function(response) {
 				this.setState({
@@ -607,16 +650,18 @@ class App extends Component {
 				});
 			}.bind(this)
 		);
-		axios.get("/cars").then(
-			function(response) {
-				this.setState({ cars: response.data });
-			}.bind(this)
-		);
+	}
+	loadReservations() {
 		axios.get("/reservations").then(
 			function(response) {
 				this.setState({ reservations: response.data });
 			}.bind(this)
 		);
+	}
+	componentWillMount() {
+		this.loadCars();
+		this.loadReviews();
+		this.loadReservations();
 	}
 }
 
