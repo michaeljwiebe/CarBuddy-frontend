@@ -1,0 +1,81 @@
+@import 'variables';
+
+
+.value-btn{
+    color: $btn-text;
+    border: 1px solid black;
+    background-color: $btn-bg;
+    border-radius: 3px;
+    margin: 2px;
+}
+
+.btn-edit-review{
+    width: 100%;
+    min-width: 95px;
+}
+
+.inputs-container{
+    position: absolute;
+    top: 80px;
+    left: 10%;
+    width: 80%;
+    max-width: 500px;
+}
+
+.input{
+    width: 92%;
+}
+
+.input-tall{
+    line-height: 25px;
+    margin: 5px 0;
+}
+.inputs-sign-up{
+    top: 40vh;
+}
+.review-inputs{
+    width: 80%;
+    max-width: 500px;
+    margin: 80px auto 0px auto;
+}
+.review-input{
+    width: 100%;
+}
+
+.btn{
+    font-size: 14px;
+    background-color: $btn-bg;
+    border-radius: 4px;
+    height: 25px;
+    line-height: 25px;
+    margin: 10px;
+    color: $btn-text;
+}
+
+.btn-sign-up{
+    position: absolute;
+    top: -8vh;
+    left: 10%;
+    width: 75%;
+}
+
+.btn-edit-review{
+    width: 100%;
+    min-width: 95px;
+}
+
+.btn-reservations{
+    width: 35vw;
+}
+
+.btn-reserve-car{
+    width:29vw;
+}
+
+.btn-cars{
+    width: 15vw;
+}
+
+.btn-make-review{
+    margin: 30px;
+}

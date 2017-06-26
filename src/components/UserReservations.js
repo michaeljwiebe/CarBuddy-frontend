@@ -114,17 +114,16 @@ class userReservations extends Component {
 				<div className="reservations-header">{myReservationsHeader}</div>
 				<div>{userCarReservationDivs}</div>
 				<div>{userReservationsDivs}</div>
-				<button onClick={this.viewCarReservations} className="btn">
+				<div onClick={this.viewCarReservations} className="btn">
 					My Car's Reservations
-				</button>
-				<button onClick={this.viewUserReservations} className="btn">
+				</div>
+				<div onClick={this.viewUserReservations} className="btn">
 					My Reservations
-				</button>
+				</div>
 			</div>
 		);
 	}
 	cancelCarReservation(event) {
-		console.log("cancel car res");
 		axios({
 			method: "delete",
 			url: "/reservations/" + event.target.value
@@ -140,9 +139,6 @@ class userReservations extends Component {
 		);
 	}
 	cancelUserReservation(event) {
-		console.log("cancel user's res");
-		console.log(event.target.value);
-
 		axios({
 			method: "delete",
 			url: "/reservations/" + event.target.value
@@ -157,7 +153,7 @@ class userReservations extends Component {
 		);
 	}
 	setUserReservations(allReservations) {
-		// sorts reservations and returns only user's
+		// sorts reservations and returns only user's reservations
 		let reservations = allReservations.filter(
 			function(reservation) {
 				return reservation.renter_id === this.props.user_id;

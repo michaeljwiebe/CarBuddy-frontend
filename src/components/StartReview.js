@@ -20,21 +20,21 @@ class StartReview extends Component {
 		return (
 			<div className="inputs-container">
 				<input
-					className="input"
+					className="input input-tall"
 					type="text"
 					onChange={this.updateTitle}
 					placeholder="Title"
 					value={this.state.title}
 				/>
 				<input
-					className="input"
+					className="input input-tall"
 					type="textarea"
 					onChange={this.updateDescription}
 					placeholder="Description"
 					value={this.state.description}
 				/>
 				<select
-					className="input"
+					className="input input-tall"
 					type="integer"
 					onChange={this.updateRating}
 					placeholder="Rating"

@@ -14,10 +14,19 @@ class SignIn extends Component {
 	}
 	render() {
 		return (
-			<div>
-				<input onChange={this.updateUsername} placeholder="username" />
-				<input type="password" onChange={this.updatePassword} placeholder="password" />
-				<button onClick={this.handleSignIn}>Sign In</button>
+			<div className="input-container sign-in">
+				<input
+					className="input input-tall"
+					onChange={this.updateUsername}
+					placeholder="username"
+				/>
+				<input
+					className="input input-tall"
+					type="password"
+					onChange={this.updatePassword}
+					placeholder="password"
+				/>
+				<div className="btn" onClick={this.handleSignIn}>Sign In</div>
 			</div>
 		);
 	}

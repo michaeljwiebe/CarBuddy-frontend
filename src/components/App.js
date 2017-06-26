@@ -1,13 +1,14 @@
 //send url back to frontend
 //fix users controller for image, send user id
-// problem with StartReservation.css?!? - some classes not getting applied
 //AWS for group project -- maybe not!
 //is google map bootstrapURLKeys that is there already ok?
 //screen is insisting on being taller than i want
-///////iphone 5 map position off
-///////hamburger menu changes size of screen when it slides in from off the screen,margins on toggle when using position fixed, doesn't with position absolute
-//unicode issues with hamburger, stars
+// buttons can be styled, why not use those?
 //view available cars button not working
+//shadow effects on buttons/cars/reservation divs
+//max-width on body/app
+//pick color scheme
+//logo not showing up
 
 //car address?
 //add image for user
@@ -19,8 +20,9 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import "../css/App.css";
-import "../css/menus.css";
-import "../css/reviews.css";
+import "../css/hamburger-and-footer-menus.css";
+import "../css/inputs-and-buttons.css";
+import "../css/cars-and-reviews.css";
 
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
@@ -40,12 +42,15 @@ class App extends Component {
 			reviews: [],
 			reservations: [],
 			signUp: false,
+			signIn: true,
 			user: { name: "Michael Wiebe", id: 1 },
+			viewCarsAndReviews: true,
+			// user: null,
+			// viewCarsAndReviews: false,
 			carToReview: null,
 			reviewToEdit: null,
 			reserveCar: false,
 			addCar: false,
-			viewCarsAndReviews: true,
 			viewReservations: false,
 			editUser: false
 		};
@@ -118,8 +123,10 @@ class App extends Component {
 
 		if (this.state.user === null) {
 			logo = "logo logo-sign-in";
-			signInComponent = <SignIn signIn={this.signIn} />;
-			signUpBtn = <div onClick={this.signUp}>Sign Up</div>;
+			if (this.state.signIn === true) {
+				signInComponent = <SignIn signIn={this.signIn} />;
+				signUpBtn = <div className="btn btn-sign-up" onClick={this.signUp}>Sign Up</div>;
+			}
 			if (this.state.signUp === true) {
 				signUpComponent = <SignUp createUser={this.createUser} />;
 			}
@@ -127,33 +134,29 @@ class App extends Component {
 		} else {
 			logo = "logo logo-main";
 			hamburgerIcon = (
-				<div className="btn" onClick={this.hamburgerToggle} className="hamburger-show-btn">
-					&#9776
+				<div onClick={this.hamburgerToggle} className=" btn hamburger-show-btn">
+					<i className="fa fa-bars" aria-hidden="true" />
 				</div>
 			);
-			editUserBtn = (
-				<div className="btn hamburger-btn" onClick={this.editUser}>Edit User</div>
-			);
+			editUserBtn = <div className="hamburger-btn" onClick={this.editUser}>Edit User</div>;
 			userReservationsBtn = (
-				<div className="btn menu-item btn-reservations" onClick={this.viewReservations}>
+				<div className="footer-menu-btn btn-reservations" onClick={this.viewReservations}>
 					Reservations
 				</div>
 			);
 			startCarReservationBtn = (
-				<div className="btn menu-item btn-reserve-car" onClick={this.startReservation}>
+				<div className="footer-menu-btn btn-reserve-car" onClick={this.startReservation}>
 					Find a car
 				</div>
 			);
 			carsAndReviewsBtn = (
-				<div onClick={this.showCarsAndReviews} className="btn menu-item btn-cars">
+				<div onClick={this.showCarsAndReviews} className="footer-menu-btn btn-cars">
 					Cars
 				</div>
 			);
 			welcomeMsg = <div className="welcome-msg">Welcome {this.state.user.name}!</div>;
-			addCarBtn = (
-				<div className="btn hamburger-btn" onClick={this.openAddCar}>Add a car</div>
-			);
-			signOutBtn = <div className="btn hamburger-btn" onClick={this.signOut}>Sign Out</div>;
+			addCarBtn = <div className="hamburger-btn" onClick={this.openAddCar}>Add a car</div>;
+			signOutBtn = <div className="hamburger-btn" onClick={this.signOut}>Sign Out</div>;
 			if (this.state.editUser === true) {
 				editUser = (
 					<EditUser
@@ -185,7 +188,11 @@ class App extends Component {
 
 						if (car.owner_id === this.state.user.id) {
 							removeCar = (
-								<button onClick={this.deleteCar} value={car.id}>
+								<button
+									className="value-btn"
+									onClick={this.deleteCar}
+									value={car.id}
+								>
 									Remove Car
 								</button>
 							);
@@ -196,7 +203,7 @@ class App extends Component {
 								if (review.reviewer.id === this.state.user.id) {
 									editReviewBtn = (
 										<button
-											className="btn-edit-review"
+											className="value-btn btn-edit-review"
 											onClick={this.editReview}
 											value={JSON.stringify(review)}
 										>
@@ -213,8 +220,10 @@ class App extends Component {
 											</div>
 											<div>
 												<div className="review-reviewer-rating">
-													{review.rating + " "}
-													<i class="fa fa-star" aria-hidden="true" /> -
+													{review.rating}
+													<i className="fa fa-star" aria-hidden="true" />
+													{" "}
+													-
 													{" " + review.reviewer.name}
 												</div>
 											</div>
@@ -239,6 +248,7 @@ class App extends Component {
 								</div>
 								<div>
 									<button
+										className="value-btn"
 										onClick={this.startReview}
 										value={JSON.stringify(car.id)}
 									>
@@ -254,14 +264,11 @@ class App extends Component {
 		}
 
 		console.log(this.state);
-		//adjust layout
-		//pick color scheme
-		//logo not showing up
 
 		return (
 			<div className="App">
 				<div>
-					<img src="../images/carBuddy.gif" className={logo} />
+					<img src="../images/carBuddy.gif" className={logo} alt="carBuddy logo" />
 					<div>{welcomeMsg}</div>
 					<div>{signInComponent}</div>
 					<div>{signUpBtn}</div>
@@ -270,7 +277,9 @@ class App extends Component {
 				<div>
 					{hamburgerIcon}
 					<div className="hamburger">
-						<div onClick={this.hamburgerToggle} className="hamburger-close-btn">X</div>
+						<div onClick={this.hamburgerToggle} className="hamburger-close-btn">
+							<i className="fa fa-window-close-o" aria-hidden="true" />
+						</div>
 						<div className="hamburger-content-container">
 							<div className="user-avatar" />
 							{addCarBtn}
@@ -288,7 +297,7 @@ class App extends Component {
 						{userReservations}
 						{openReviewEditor}
 					</div>
-					<div className="menu flex">
+					<div className="footer-menu flex">
 						{userReservationsBtn}
 						{startCarReservationBtn}
 						{carsAndReviewsBtn}
@@ -460,7 +469,7 @@ class App extends Component {
 		});
 	}
 	signUp() {
-		this.setState({ signUp: true });
+		this.setState({ signUp: true, signIn: false });
 	}
 	createUser(props) {
 		axios
@@ -476,7 +485,12 @@ class App extends Component {
 			.then(
 				function(response) {
 					this.uploadImage();
-					this.setState({ user: response.data, signUp: false });
+					this.setState({
+						user: response.data,
+						signUp: false,
+						signIn: true,
+						viewCarsAndReviews: true
+					});
 				}.bind(this)
 			);
 	}
@@ -556,7 +570,8 @@ class App extends Component {
 						return;
 					} else {
 						this.setState({
-							user: response.data
+							user: response.data,
+							viewCarsAndReviews: true
 						});
 					}
 				}.bind(this)
@@ -565,6 +580,7 @@ class App extends Component {
 	signOut() {
 		this.setState({
 			user: null,
+			signIn: true,
 			reviewToEdit: null,
 			reserveCar: false,
 			carToReview: null,

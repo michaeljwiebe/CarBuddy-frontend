@@ -1,7 +1,11 @@
+* {
+  box-sizing: border-box; }
+
 .App {
   text-align: center;
   background-color: lightgrey;
-  height: 100vh; }
+  height: 100vh;
+  color: black; }
 
 .flex {
   display: flex;
@@ -10,12 +14,6 @@
 
 .logo {
   position: absolute; }
-
-.logo-sign-in {
-  top: 10px;
-  width: 100vw;
-  height: 30vh;
-  margin-bottom: 5vh; }
 
 .logo-main {
   width: 40vw;
@@ -29,33 +27,6 @@
   top: 5px;
   font-size: 14px; }
 
-.cars-and-reviews {
-  height: 65vh;
-  position: relative;
-  top: 10vh;
-  overflow-y: scroll; }
-
-.car-make-model {
-  width: 100%; }
-
-.car-description-reviews {
-  margin: 5px 0; }
-
-.car-description {
-  width: 45vw; }
-
-.car-img {
-  border: 1px solid black;
-  width: 47vw; }
-
-.car-reviews {
-  width: 47vw;
-  margin-left: 10px; }
-
-.btn-edit-review {
-  width: 100%;
-  min-width: 95px; }
-
 .reservations-viewer {
   margin-top: 80px; }
 
@@ -63,14 +34,16 @@
   font-size: 18px;
   text-decoration: underline; }
 
-.inputs-container {
+.logo-sign-in {
   position: absolute;
-  top: 80px;
-  left: 10%;
-  width: 80%;
-  max-width: 500px; }
+  top: 10px;
+  width: 100vw;
+  left: 0;
+  height: 30vh; }
 
-.input {
-  width: 92%; }
+.sign-in {
+  position: absolute;
+  top: 40vh;
+  left: 10%; }
 
 /*# sourceMappingURL=App.css.map */

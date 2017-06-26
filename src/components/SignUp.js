@@ -19,17 +19,42 @@ class SignUp extends Component {
 	}
 	render() {
 		return (
-			<div>
-				<input type="text" onChange={this.updateName} placeholder="name" />
-				<input type="text" onChange={this.updateAddress} placeholder="address" />
-				<input type="integer" onChange={this.updateZip} placeholder="zip" />
-				<input type="text" onChange={this.updateUsername} placeholder="username" />
-				<input type="text" onChange={this.updatePassword} placeholder="password" />
+			<div className="inputs-container inputs-sign-up">
+				<input
+					className="input input-tall"
+					type="text"
+					onChange={this.updateName}
+					placeholder="name"
+				/>
+				<input
+					className="input input-tall"
+					type="text"
+					onChange={this.updateAddress}
+					placeholder="address"
+				/>
+				<input
+					className="input input-tall"
+					type="integer"
+					onChange={this.updateZip}
+					placeholder="zip"
+				/>
+				<input
+					className="input input-tall"
+					type="text"
+					onChange={this.updateUsername}
+					placeholder="username"
+				/>
+				<input
+					className="input input-tall"
+					type="text"
+					onChange={this.updatePassword}
+					placeholder="password"
+				/>
 				<form action="" encType="multipart/form-data">
 					<div>Upload a photo:</div>
 					<input type="file" name="picture" defaultValue="fileName" />
 				</form>
-				<button onClick={this.handleCreateUser}>Sign Up!</button>
+				<div className="btn btn-sign-up" onClick={this.handleCreateUser}>Sign Up!</div>
 			</div>
 		);
 	}

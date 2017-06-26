@@ -1,0 +1,61 @@
+@import 'variables';
+
+.cars-and-reviews{
+    height: 63.3vh;
+    position: relative;
+    top: 31vh;
+    overflow-y: scroll;
+}
+
+.car-make-model{
+    width: 100%;
+}
+
+.car-description-reviews{
+    margin: 5px 0;
+    border: 1px solid black;
+}
+
+.car-description{
+    width: 45vw;
+}
+
+.car-img{
+    border: 1px solid black;
+    width: 47vw;
+}
+
+.car-mpg{}
+
+.car-address{}
+
+.car-reviews{
+    width: 47vw;
+    margin-left: 10px;
+
+}
+
+.review{
+    position: relative;
+    width: 47vw;
+    border: 1px solid black;
+}
+
+.review-title{
+    width: 100%;
+    font-size: 20px;
+}
+
+.review-description{
+    width: 100%;
+    font-size: 16px;
+}
+
+.review-reviewer-rating{
+    width: 100%;
+    font-size: 14px;
+}
+
+.review-input-description{
+    height: 20px;
+}

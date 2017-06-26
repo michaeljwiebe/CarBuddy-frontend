@@ -80,7 +80,7 @@ class StartReservation extends Component {
 			return <option key={index} value={year}>{year}</option>;
 		});
 		let viewAvailableCarsBtn = (
-			<div className="btn" onClick={this.viewAvailableCars} className="btn">
+			<div onClick={this.viewAvailableCars} className="btn">
 				View Available Carzz
 			</div>
 		);
