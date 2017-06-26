@@ -150,7 +150,7 @@ class StartReservation extends Component {
 					<span className="reservation-labels">From</span>
 					<br />
 					<select
-						className="reservation-inputs reservation-inputs-hour"
+						className="input input-select input-reservation-3em"
 						onChange={this.updateStartHour}
 						value={this.ampmHour(this.state.start_hour)}
 						placeholder="Start Time"
@@ -158,28 +158,28 @@ class StartReservation extends Component {
 						{timesList}
 					</select>
 					<select
-						className="reservation-inputs reservation-inputs-ampm"
+						className="input input-select input-reservation-3em"
 						onChange={this.updateStartAMPM}
 						value={this.state.start_AMPM}
 					>
 						{ampmsList}
 					</select>
 					<select
-						className="reservation-inputs"
+						className="input input-select input-reservation-3em"
 						onChange={this.updateStartDay}
 						value={this.state.start_day}
 					>
 						{daysPerMonthList}
 					</select>
 					<select
-						className="reservation-inputs"
+						className="input input-select input-reservation-month"
 						onChange={this.updateStartMonth}
 						value={textStartMonth}
 					>
 						{monthList}
 					</select>
 					<select
-						className="reservation-inputs"
+						className="input input-select input-reservation-year"
 						onChange={this.updateStartYear}
 						value={this.state.start_year}
 					>
@@ -191,7 +191,7 @@ class StartReservation extends Component {
 
 					<br />
 					<select
-						className="reservation-inputs reservation-inputs-hour"
+						className="input input-select input-reservation-3em"
 						onChange={this.updateEndHour}
 						value={this.ampmHour(this.state.end_hour)}
 						placeholder="End Time"
@@ -199,28 +199,28 @@ class StartReservation extends Component {
 						{timesList}
 					</select>
 					<select
-						className="reservation-inputs reservation-inputs-ampm"
+						className="input input-select input-reservation-3em"
 						onChange={this.updateEndAMPM}
 						value={this.state.end_AMPM}
 					>
 						{ampmsList}
 					</select>
 					<select
-						className="reservation-inputs"
+						className="input input-select input-reservation-3em"
 						onChange={this.updateEndDay}
 						value={this.state.end_day}
 					>
 						{daysPerMonthList}
 					</select>
 					<select
-						className="reservation-inputs"
+						className="input input-select input-reservation-6.4em"
 						onChange={this.updateEndMonth}
 						value={textEndMonth}
 					>
 						{monthList}
 					</select>
 					<select
-						className="reservation-inputs"
+						className="input input-select input-reservation-year"
 						onChange={this.updateEndYear}
 						value={this.state.end_year}
 					>

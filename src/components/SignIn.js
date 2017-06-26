@@ -16,12 +16,12 @@ class SignIn extends Component {
 		return (
 			<div className="input-container sign-in">
 				<input
-					className="input input-tall"
+					className="input"
 					onChange={this.updateUsername}
 					placeholder="username"
 				/>
 				<input
-					className="input input-tall"
+					className="input"
 					type="password"
 					onChange={this.updatePassword}
 					placeholder="password"

@@ -21,31 +21,31 @@ class SignUp extends Component {
 		return (
 			<div className="inputs-container inputs-sign-up">
 				<input
-					className="input input-tall"
+					className="input"
 					type="text"
 					onChange={this.updateName}
 					placeholder="name"
 				/>
 				<input
-					className="input input-tall"
+					className="input"
 					type="text"
 					onChange={this.updateAddress}
 					placeholder="address"
 				/>
 				<input
-					className="input input-tall"
+					className="input"
 					type="integer"
 					onChange={this.updateZip}
 					placeholder="zip"
 				/>
 				<input
-					className="input input-tall"
+					className="input"
 					type="text"
 					onChange={this.updateUsername}
 					placeholder="username"
 				/>
 				<input
-					className="input input-tall"
+					className="input"
 					type="text"
 					onChange={this.updatePassword}
 					placeholder="password"

@@ -30,29 +30,33 @@ class AddCar extends Component {
 		return (
 			<div className="inputs-container">
 				<input
-					className="input input-tall"
+					className="input"
 					onChange={this.updateMake_Model}
 					value={this.state.make_model}
 					placeholder="Make and Model"
 				/>
 				<input
-					className="input input-tall"
+					className="input"
 					onChange={this.updateYear}
 					value={this.state.year}
 					placeholder="Year"
 				/>
 				<input
-					className="input input-tall"
+					className="input"
 					onChange={this.updateMPG}
 					value={this.state.MPG}
 					placeholder="MPG"
 				/>
 				<input
-					className="input input-tall"
+					className="input"
 					onChange={this.updatePrice}
 					value={this.state.price}
 					placeholder="Price"
 				/>
+				<form action="" encType="multipart/form-data">
+					<div>Upload a photo:</div>
+					<input className="input" type="file" name="picture" defaultValue="fileName" />
+				</form>
 				<br />
 				<div className="btn" onClick={this.handleAddCar}>Add Car</div>
 				<div>{loadIcon}</div>
@@ -84,7 +88,6 @@ class AddCar extends Component {
 		);
 	}
 	showLoadIcon() {
-		console.log("start spinning");
 		this.setState({ loading: true });
 	}
 	updateMake_Model(event) {

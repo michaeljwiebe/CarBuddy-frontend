@@ -24,20 +24,37 @@
 
 .input{
     width: 92%;
-}
-
-.input-tall{
     line-height: 25px;
     margin: 5px 0;
 }
+
 .inputs-sign-up{
     top: 40vh;
 }
+
+.input-select{
+    border: 1px solid black;
+    font-size: 18px;
+}
+
+.input-reservation-3em{
+    width: 3em;
+}
+
+.input-reservation-year{
+    width: 4em;
+}
+
+.input-reservation-month{
+    width: 6.4em;
+}
+
 .review-inputs{
     width: 80%;
     max-width: 500px;
     margin: 80px auto 0px auto;
 }
+
 .review-input{
     width: 100%;
 }
@@ -54,7 +71,7 @@
 
 .btn-sign-up{
     position: absolute;
-    top: -8vh;
+    top: 65vh;
     left: 10%;
     width: 75%;
 }

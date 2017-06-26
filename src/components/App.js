@@ -43,10 +43,10 @@ class App extends Component {
 			reservations: [],
 			signUp: false,
 			signIn: true,
-			user: { name: "Michael Wiebe", id: 1 },
-			viewCarsAndReviews: true,
-			// user: null,
-			// viewCarsAndReviews: false,
+			// user: { name: "Michael Wiebe", id: 1 },
+			// viewCarsAndReviews: true,
+			user: null,
+			viewCarsAndReviews: false,
 			carToReview: null,
 			reviewToEdit: null,
 			reserveCar: false,
@@ -97,6 +97,7 @@ class App extends Component {
 		let editUserBtn;
 		let editUser;
 		let logo;
+		let avatar;
 
 		if (this.state.reserveCar === true) {
 			newReservation = (
@@ -132,6 +133,7 @@ class App extends Component {
 			}
 			openReviewEditor = null;
 		} else {
+			avatar = this.state.user.avatar;
 			logo = "logo logo-main";
 			hamburgerIcon = (
 				<div onClick={this.hamburgerToggle} className=" btn hamburger-show-btn">
@@ -281,7 +283,7 @@ class App extends Component {
 							<i className="fa fa-window-close-o" aria-hidden="true" />
 						</div>
 						<div className="hamburger-content-container">
-							<div className="user-avatar" />
+							<img src={avatar} className="user-avatar" />
 							{addCarBtn}
 							{editUserBtn}
 							{signOutBtn}
@@ -531,7 +533,6 @@ class App extends Component {
 		}).then(
 			function(response) {
 				this.uploadImage();
-				this.setState({ user: response.data, editUser: false, viewCarsAndReviews: true });
 			}.bind(this)
 		);
 	}
@@ -549,11 +550,19 @@ class App extends Component {
 		fetch("/users/image", {
 			method: "POST",
 			body: data
-		}).then(
-			function(response) {
-				console.log(response.data);
-			}.bind(this)
-		);
+		})
+			.then(
+				function(response) {
+					console.log(response);
+					return response.json();
+				}.bind(this)
+			)
+			.then(
+				function(data) {
+					console.log(data);
+					this.setState({ user: data, editUser: false, viewCarsAndReviews: true });
+				}.bind(this)
+			);
 	}
 
 	signIn(props) {
