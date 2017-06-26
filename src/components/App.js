@@ -1,9 +1,8 @@
 //send url back to frontend
 //fix users controller for image, send user id
 //AWS for group project -- maybe not!
-//is google map bootstrapURLKeys that is there already ok?
 //screen is insisting on being taller than i want
-// buttons can be styled, why not use those?
+//buttons can be styled, why not use those?
 //view available cars button not working
 //shadow effects on buttons/cars/reservation divs
 //max-width on body/app
@@ -11,8 +10,6 @@
 //logo not showing up
 
 //car address?
-//add image for user
-//add image for car
 //small map for each car location on ReserveCar
 //add Stripe payment system
 
@@ -522,7 +519,7 @@ class App extends Component {
 			})
 			.then(
 				function(response) {
-					this.uploadUserImage();
+					this.uploadUserImage({ method: "upload" });
 					this.setState({
 						user: response.data,
 						signUp: false,
@@ -569,12 +566,18 @@ class App extends Component {
 			}
 		}).then(
 			function(response) {
-				this.uploadUserImage();
+				this.uploadUserImage({ method: "update", id: this.state.user.id });
 			}.bind(this)
 		);
 	}
 
-	uploadUserImage() {
+	uploadUserImage(userInfo) {
+		let url;
+		if (userInfo.method === "update") {
+			url = "/users/update_image/" + userInfo.id;
+		} else {
+			url = "/users/upload_image";
+		}
 		var data = new FormData();
 		var imagedata = document.querySelector('input[type="file"]').files[0];
 
@@ -584,7 +587,7 @@ class App extends Component {
 
 		data.append("data", imagedata);
 
-		fetch("/users/image", {
+		fetch(url, {
 			method: "POST",
 			body: data
 		})
