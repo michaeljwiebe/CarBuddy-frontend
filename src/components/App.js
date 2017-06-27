@@ -98,7 +98,8 @@ class App extends Component {
 		let googleMap;
 		let editUserBtn;
 		let editUser;
-		let logo;
+		let logoText;
+		let logoImage;
 		let userAvatar;
 		let carAvatar;
 
@@ -127,7 +128,8 @@ class App extends Component {
 		}
 
 		if (this.state.user === null) {
-			logo = "logo logo-sign-in";
+			logoText = "logo logo-sign-in-text";
+			logoImage = "logo logo-sign-in-image";
 			if (this.state.signIn === true) {
 				signInComponent = <SignIn signIn={this.signIn} />;
 				signUpBtn = <div className="btn btn-sign-up" onClick={this.signUp}>Sign Up</div>;
@@ -138,7 +140,8 @@ class App extends Component {
 			openReviewEditor = null;
 		} else {
 			userAvatar = this.state.user.avatar;
-			logo = "logo logo-main";
+			logoText = "logo logo-main-text";
+			logoImage = "logo logo-main-image";
 			hamburgerIcon = (
 				<div onClick={this.hamburgerToggle} className=" btn hamburger-show-btn">
 					<i className="fa fa-bars" aria-hidden="true" />
@@ -275,10 +278,17 @@ class App extends Component {
 		return (
 			<div className="App">
 				<div>
-					<img src="../images/carBuddy.gif" className={logo} alt="carBuddy logo" />
+					<div>
+						<div className={logoImage}>
+							<i className="fa fa-car" aria-hidden="true" />
+						</div>
+						<div className={logoText}>carBuddy</div>
+					</div>
 					<div>{welcomeMsg}</div>
-					<div>{signInComponent}</div>
-					<div>{signUpBtn}</div>
+					<div>
+						{signInComponent}
+						{signUpBtn}
+					</div>
 					<div>{signUpComponent}</div>
 				</div>
 				<div>

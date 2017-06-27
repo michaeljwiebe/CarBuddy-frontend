@@ -12,19 +12,18 @@
   border: 1px solid black; }
 
 .car-description {
-  width: 45vw; }
+  width: 45%; }
 
 .car-img {
   border: 1px solid black;
-  width: 47vw; }
+  width: 47%; }
 
 .car-reviews {
-  width: 47vw;
   margin-left: 10px; }
 
 .review {
   position: relative;
-  width: 47vw;
+  max-width: 245px;
   border: 1px solid black; }
 
 .review-title {

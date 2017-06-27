@@ -58,11 +58,21 @@
   width: 70vw;
   margin-left: 7vw; }
 
+.sign-in {
+  position: relative;
+  left: 4%;
+  width: 92%; }
+
+.btn-sign-in {
+  position: relative;
+  width: 92%;
+  margin-left: 4%; }
+
 .btn-sign-up {
-  position: fixed;
-  top: 35vh;
-  left: 7%;
-  width: 76vw; }
+  position: relative;
+  top: 20px;
+  left: 6%;
+  width: 84%; }
 
 .btn-edit-review {
   width: 100%;

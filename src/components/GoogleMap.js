@@ -27,7 +27,9 @@ class GoogleMap extends Component {
 			styles: {
 				position: "absolute",
 				width: "100vw",
+				maxWidth: "500px",
 				height: "20vh",
+				margin: "0 auto",
 				top: "11vh",
 				zIndex: "3",
 				borderBottom: "1px solid black",
