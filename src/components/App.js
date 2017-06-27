@@ -5,6 +5,7 @@
 //max-width on body/app -- how do phone browsers work with varying pixel densities?
 //move signup button below inputs
 //map won't shrink with page
+//sign in error message
 
 //after reserve car, jump to my reservations page
 //add cost to my reservations
