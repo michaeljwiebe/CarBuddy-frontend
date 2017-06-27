@@ -3,9 +3,9 @@
 
 .App {
   text-align: center;
-  background-color: lightgrey;
+  background-color: #73605B;
   height: 100vh;
-  color: black; }
+  color: #e4e4e4; }
 
 .flex {
   display: flex;

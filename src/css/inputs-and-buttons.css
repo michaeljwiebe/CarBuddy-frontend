@@ -1,7 +1,7 @@
 .value-btn {
   color: #e4e4e4;
   border: 1px solid black;
-  background-color: #555;
+  background-color: #363237;
   border-radius: 3px;
   margin: 2px; }
 
@@ -47,18 +47,22 @@
 
 .btn {
   font-size: 14px;
-  background-color: #555;
+  background-color: #363237;
   border-radius: 4px;
   height: 25px;
   line-height: 25px;
   margin: 10px;
   color: #e4e4e4; }
 
+.btn-view-cars {
+  width: 70vw;
+  margin-left: 7vw; }
+
 .btn-sign-up {
-  position: absolute;
-  top: 65vh;
-  left: 10%;
-  width: 75%; }
+  position: fixed;
+  top: 35vh;
+  left: 7%;
+  width: 76vw; }
 
 .btn-edit-review {
   width: 100%;
@@ -68,6 +72,10 @@
   width: 35vw; }
 
 .btn-reserve-car {
+  line-height: 18px;
+  margin: 3px 0 0 0; }
+
+.btn-find-car {
   width: 29vw; }
 
 .btn-cars {

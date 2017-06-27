@@ -28,6 +28,7 @@ class StartReservation extends Component {
 			start_date: null,
 			end_date: null,
 			reservation_hours: "",
+			inputs: props.inputs,
 			carToReserve: null,
 			reservations: props.reservations,
 			cars: props.cars,
@@ -55,6 +56,8 @@ class StartReservation extends Component {
 		let daysPerMonthList;
 		let textStartMonth;
 		let textEndMonth;
+		let datesInput;
+		let availableCars;
 		let timesList = times.map(function(time, index) {
 			return <option key={index} value={time}>{time}</option>;
 		});
@@ -80,8 +83,8 @@ class StartReservation extends Component {
 			return <option key={index} value={year}>{year}</option>;
 		});
 		let viewAvailableCarsBtn = (
-			<div onClick={this.viewAvailableCars} className="btn">
-				View Available Carzz
+			<div onClick={this.viewAvailableCars} className="btn btn-view-cars">
+				View Cars
 			</div>
 		);
 		if (this.state.start_month % 2 === 1 && this.state.start_month !== 1) {
@@ -144,94 +147,102 @@ class StartReservation extends Component {
 			textEndMonth = "December";
 		}
 
-		return (
-			<div className="flex reservation-inputs-container">
-				<div className="reservation-start-inputs">
-					<span className="reservation-labels">From</span>
-					<br />
-					<select
-						className="input input-select input-reservation-3em"
-						onChange={this.updateStartHour}
-						value={this.ampmHour(this.state.start_hour)}
-						placeholder="Start Time"
-					>
-						{timesList}
-					</select>
-					<select
-						className="input input-select input-reservation-3em"
-						onChange={this.updateStartAMPM}
-						value={this.state.start_AMPM}
-					>
-						{ampmsList}
-					</select>
-					<select
-						className="input input-select input-reservation-3em"
-						onChange={this.updateStartDay}
-						value={this.state.start_day}
-					>
-						{daysPerMonthList}
-					</select>
-					<select
-						className="input input-select input-reservation-month"
-						onChange={this.updateStartMonth}
-						value={textStartMonth}
-					>
-						{monthList}
-					</select>
-					<select
-						className="input input-select input-reservation-year"
-						onChange={this.updateStartYear}
-						value={this.state.start_year}
-					>
-						{yearsList}
-					</select>
-				</div>
-				<div className="reservation-end-inputs">
-					<span className="reservation-labels">Until</span>
+		if (this.state.inputs === true) {
+			datesInput = (
+				<div className="flex reservation-inputs-container">
+					<div className="reservation-start-inputs">
+						<span className="reservation-labels">From</span>
+						<br />
+						<select
+							className="input input-select input-reservation-3em"
+							onChange={this.updateStartHour}
+							value={this.ampmHour(this.state.start_hour)}
+							placeholder="Start Time"
+						>
+							{timesList}
+						</select>
+						<select
+							className="input input-select input-reservation-3em"
+							onChange={this.updateStartAMPM}
+							value={this.state.start_AMPM}
+						>
+							{ampmsList}
+						</select>
+						<select
+							className="input input-select input-reservation-3em"
+							onChange={this.updateStartDay}
+							value={this.state.start_day}
+						>
+							{daysPerMonthList}
+						</select>
+						<select
+							className="input input-select input-reservation-month"
+							onChange={this.updateStartMonth}
+							value={textStartMonth}
+						>
+							{monthList}
+						</select>
+						<select
+							className="input input-select input-reservation-year"
+							onChange={this.updateStartYear}
+							value={this.state.start_year}
+						>
+							{yearsList}
+						</select>
+					</div>
+					<div className="reservation-end-inputs">
+						<span className="reservation-labels">Until</span>
 
+						<br />
+						<select
+							className="input input-select input-reservation-3em"
+							onChange={this.updateEndHour}
+							value={this.ampmHour(this.state.end_hour)}
+							placeholder="End Time"
+						>
+							{timesList}
+						</select>
+						<select
+							className="input input-select input-reservation-3em"
+							onChange={this.updateEndAMPM}
+							value={this.state.end_AMPM}
+						>
+							{ampmsList}
+						</select>
+						<select
+							className="input input-select input-reservation-3em"
+							onChange={this.updateEndDay}
+							value={this.state.end_day}
+						>
+							{daysPerMonthList}
+						</select>
+						<select
+							className="input input-select input-reservation-month"
+							onChange={this.updateEndMonth}
+							value={textEndMonth}
+						>
+							{monthList}
+						</select>
+						<select
+							className="input input-select input-reservation-year"
+							onChange={this.updateEndYear}
+							value={this.state.end_year}
+						>
+							{yearsList}
+						</select>
+					</div>
 					<br />
-					<select
-						className="input input-select input-reservation-3em"
-						onChange={this.updateEndHour}
-						value={this.ampmHour(this.state.end_hour)}
-						placeholder="End Time"
-					>
-						{timesList}
-					</select>
-					<select
-						className="input input-select input-reservation-3em"
-						onChange={this.updateEndAMPM}
-						value={this.state.end_AMPM}
-					>
-						{ampmsList}
-					</select>
-					<select
-						className="input input-select input-reservation-3em"
-						onChange={this.updateEndDay}
-						value={this.state.end_day}
-					>
-						{daysPerMonthList}
-					</select>
-					<select
-						className="input input-select input-reservation-6.4em"
-						onChange={this.updateEndMonth}
-						value={textEndMonth}
-					>
-						{monthList}
-					</select>
-					<select
-						className="input input-select input-reservation-year"
-						onChange={this.updateEndYear}
-						value={this.state.end_year}
-					>
-						{yearsList}
-					</select>
-				</div>
-				<br />
-				<div>
 					{viewAvailableCarsBtn}
-					<div className="available-cars">{this.state.carsToRender}</div>
 				</div>
+			);
+		} else {
+			datesInput = "";
+			availableCars = <div className="available-cars">{this.state.carsToRender}</div>;
+		}
+		return (
+			<div>
+				{datesInput}
+				{availableCars}
 			</div>
 		);
 	}
@@ -279,7 +290,8 @@ class StartReservation extends Component {
 			{
 				reservation_hours: elapsedHours,
 				start_date: startDate,
-				end_date: endDate
+				end_date: endDate,
+				inputs: false
 			},
 			function() {
 				console.log(this.state.reservations);
@@ -305,16 +317,20 @@ class StartReservation extends Component {
 					function(car) {
 						return (
 							<div className="available-car flex">
-								<div className="car-img">Car Image here</div>
-								<div>
+								<img src={car.avatar} className="car-img-large" alt="car" />
+								<div className="reserve-car-info">
 									<div>{car.year}-{car.make_model}</div>
 									<div>MPG:{car.mpg}</div>
 									<div>Price: ${car.price} per day</div>
 									<div>Rating:{car.ratings}</div>
 								</div>
 
-								<button onClick={this.handleMakeReservation} value={car.id}>
-									Reserve
+								<button
+									className="btn btn-reserve-car"
+									onClick={this.handleMakeReservation}
+									value={car.id}
+								>
+									Reserve This Car
 								</button>
 							</div>
 						);

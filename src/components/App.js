@@ -5,10 +5,13 @@
 //buttons can be styled, why not use those?
 //view available cars button not working
 //shadow effects on buttons/cars/reservation divs
-//max-width on body/app
+//max-width on body/app -- how do phone browsers work with varying pixel densities?
 //pick color scheme
 //logo not showing up
+//move signup button below inputs
 
+//after reserve car, jump to my reservations page
+//add cost to my reservations
 //car address?
 //small map for each car location on ReserveCar
 //add Stripe payment system
@@ -40,8 +43,6 @@ class App extends Component {
 			reservations: [],
 			signUp: false,
 			signIn: true,
-			// user: { name: "Michael Wiebe", id: 1 },
-			// viewCarsAndReviews: true,
 			user: null,
 			viewCarsAndReviews: false,
 			carToReview: null,
@@ -107,6 +108,7 @@ class App extends Component {
 					makeReservation={this.makeReservation}
 					reservations={this.state.reservations}
 					cars={this.state.cars}
+					inputs={true}
 				/>
 			);
 		}
@@ -149,7 +151,7 @@ class App extends Component {
 				</div>
 			);
 			startCarReservationBtn = (
-				<div className="footer-menu-btn btn-reserve-car" onClick={this.startReservation}>
+				<div className="footer-menu-btn btn-find-car" onClick={this.startReservation}>
 					Find a car
 				</div>
 			);
@@ -244,7 +246,7 @@ class App extends Component {
 									{car.year + " " + car.make_model}
 								</div>
 								<div className="car-description">
-									<img src={carAvatar} className="car-img" />
+									<img src={carAvatar} className="car-img-small" alt="car" />
 									<div className="car-mpg" />
 									<div className="car-address" />
 								</div>
@@ -286,7 +288,7 @@ class App extends Component {
 							<i className="fa fa-window-close-o" aria-hidden="true" />
 						</div>
 						<div className="hamburger-content-container">
-							<img src={userAvatar} className="user-avatar" />
+							<img src={userAvatar} className="user-avatar" alt="user" />
 							{addCarBtn}
 							{editUserBtn}
 							{signOutBtn}
@@ -367,12 +369,10 @@ class App extends Component {
 			method: "POST",
 			body: data
 		})
-			.then(
-				function(response) {
-					console.log(response);
-					return response.json();
-				}.bind(this)
-			)
+			.then(function(response) {
+				console.log(response);
+				return response.json();
+			})
 			.then(
 				function(data) {
 					console.log(data);
@@ -488,7 +488,16 @@ class App extends Component {
 			})
 			.then(
 				function(response) {
-					this.setState({ reservations: response.data });
+					this.setState({
+						reservations: response.data,
+						viewCarsAndReviews: false,
+						carToReview: null,
+						reviewToEdit: null,
+						reserveCar: false,
+						addCar: false,
+						viewReservations: true,
+						editUser: false
+					});
 				}.bind(this)
 			);
 	}
@@ -591,12 +600,10 @@ class App extends Component {
 			method: "POST",
 			body: data
 		})
-			.then(
-				function(response) {
-					console.log(response);
-					return response.json();
-				}.bind(this)
-			)
+			.then(function(response) {
+				console.log(response);
+				return response.json();
+			})
 			.then(
 				function(data) {
 					console.log(data);

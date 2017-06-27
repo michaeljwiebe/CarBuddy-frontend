@@ -69,11 +69,16 @@
     color: $btn-text;
 }
 
+.btn-view-cars{
+    width: 70vw;
+    margin-left: 7vw;
+}
+
 .btn-sign-up{
-    position: absolute;
-    top: 65vh;
-    left: 10%;
-    width: 75%;
+    position: fixed;
+    top: 35vh;
+    left: 7%;
+    width: 76vw;
 }
 
 .btn-edit-review{
@@ -86,6 +91,11 @@
 }
 
 .btn-reserve-car{
+    line-height: 18px;
+    margin: 3px 0 0 0;
+}
+
+.btn-find-car{
     width:29vw;
 }
 

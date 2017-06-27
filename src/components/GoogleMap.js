@@ -29,7 +29,9 @@ class GoogleMap extends Component {
 				width: "100vw",
 				height: "20vh",
 				top: "11vh",
-				zIndex: "3"
+				zIndex: "3",
+				borderBottom: "1px solid black",
+				borderTop: "1px solid black"
 			}
 		};
 	}

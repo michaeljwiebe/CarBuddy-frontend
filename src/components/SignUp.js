@@ -52,7 +52,7 @@ class SignUp extends Component {
 				/>
 				<form action="" encType="multipart/form-data">
 					<div>Upload a photo:</div>
-					<input type="file" name="picture" defaultValue="fileName" />
+					<input className="btn" type="file" name="picture" defaultValue="fileName" />
 				</form>
 				<div className="btn btn-sign-up" onClick={this.handleCreateUser}>Sign Up!</div>
 			</div>
