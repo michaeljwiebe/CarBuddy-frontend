@@ -20,13 +20,14 @@ body {
 .logo {
   position: relative; }
 
-.logo-main-image {
+.logo-main-container {
   width: 20%;
-  left: 20px;
+  left: 20px; }
+
+.logo-main-image {
   font-size: 45px; }
 
 .logo-main-text {
-  height: 10%;
   font-size: 18px;
   margin-top: -5px; }
 

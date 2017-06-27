@@ -1,7 +1,7 @@
 .cars-and-reviews {
   height: 63.5vh;
   position: relative;
-  top: 31vh;
+  top: 11vh;
   overflow-y: scroll; }
 
 .car-make-model {
@@ -19,6 +19,7 @@
   width: 47%; }
 
 .car-reviews {
+  width: 40%;
   margin-left: 10px; }
 
 .review {

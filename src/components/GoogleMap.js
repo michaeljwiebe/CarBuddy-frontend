@@ -25,12 +25,12 @@ class GoogleMap extends Component {
 		this.state = {
 			cars: props.cars,
 			styles: {
-				position: "absolute",
-				width: "100vw",
+				position: "relative",
+				width: "100%",
 				maxWidth: "500px",
 				height: "20vh",
 				margin: "0 auto",
-				top: "11vh",
+				top: "-58px",
 				zIndex: "3",
 				borderBottom: "1px solid black",
 				borderTop: "1px solid black"

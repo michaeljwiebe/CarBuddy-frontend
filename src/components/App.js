@@ -1,14 +1,10 @@
-//send url back to frontend
-//fix users controller for image, send user id
 //AWS for group project -- maybe not!
 //screen is insisting on being taller than i want
 //buttons can be styled, why not use those?
-//view available cars button not working
 //shadow effects on buttons/cars/reservation divs
 //max-width on body/app -- how do phone browsers work with varying pixel densities?
-//pick color scheme
-//logo not showing up
 //move signup button below inputs
+//map won't shrink with page
 
 //after reserve car, jump to my reservations page
 //add cost to my reservations
@@ -20,9 +16,10 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import "../css/App.css";
-import "../css/hamburger-and-footer-menus.css";
+import "../css/hamburger-menu.css";
 import "../css/inputs-and-buttons.css";
 import "../css/cars-and-reviews.css";
+import "../css/footer.css";
 
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
@@ -100,8 +97,10 @@ class App extends Component {
 		let editUser;
 		let logoText;
 		let logoImage;
+		let logoContainer;
 		let userAvatar;
 		let carAvatar;
+		let footer;
 
 		if (this.state.reserveCar === true) {
 			newReservation = (
@@ -142,6 +141,7 @@ class App extends Component {
 			userAvatar = this.state.user.avatar;
 			logoText = "logo logo-main-text";
 			logoImage = "logo logo-main-image";
+			logoContainer = "logo logo-main-container";
 			hamburgerIcon = (
 				<div onClick={this.hamburgerToggle} className=" btn hamburger-show-btn">
 					<i className="fa fa-bars" aria-hidden="true" />
@@ -166,6 +166,13 @@ class App extends Component {
 			welcomeMsg = <div className="welcome-msg">Welcome {this.state.user.name}!</div>;
 			addCarBtn = <div className="hamburger-btn" onClick={this.openAddCar}>Add a car</div>;
 			signOutBtn = <div className="hamburger-btn" onClick={this.signOut}>Sign Out</div>;
+			footer = (
+				<div className="footer-menu flex">
+					{userReservationsBtn}
+					{startCarReservationBtn}
+					{carsAndReviewsBtn}
+				</div>
+			);
 			if (this.state.editUser === true) {
 				editUser = (
 					<EditUser
@@ -228,16 +235,14 @@ class App extends Component {
 											<div className="review-description">
 												{review.description}
 											</div>
-											<div>
-												<div className="review-reviewer-rating">
-													{review.rating}
-													<i className="fa fa-star" aria-hidden="true" />
-													{" "}
-													-
-													{" " + review.reviewer.name}
-												</div>
+											<div className="review-reviewer-rating">
+												{review.rating}
+												<i className="fa fa-star" aria-hidden="true" />
+												{" "}
+												-
+												{" " + review.reviewer.name}
+												{editReviewBtn}
 											</div>
-											<div>{editReviewBtn}</div>
 										</div>
 									);
 								}
@@ -278,7 +283,7 @@ class App extends Component {
 		return (
 			<div className="App">
 				<div>
-					<div>
+					<div className={logoContainer}>
 						<div className={logoImage}>
 							<i className="fa fa-car" aria-hidden="true" />
 						</div>
@@ -314,12 +319,7 @@ class App extends Component {
 						{userReservations}
 						{openReviewEditor}
 					</div>
-					<div className="footer-menu flex">
-						{userReservationsBtn}
-						{startCarReservationBtn}
-						{carsAndReviewsBtn}
-					</div>
-
+					{footer}
 				</div>
 			</div>
 		);
