@@ -1,11 +1,14 @@
 @import 'variables';
 
 .footer-menu{
-    position: relative;
-    bottom: -493px;
+    // position: relative;
+    // bottom: -493px;
+    position: fixed;
+    bottom: 0;
     width: 100%;
     max-width: 500px;
     border-top: 2px solid;
+    background-color: $bg-color;
 }
 .footer-menu-btn{
     font-size: 14px;

@@ -112,13 +112,13 @@ class userReservations extends Component {
 		return (
 			<div className="reservations-viewer">
 				<div className="reservations-header">{myReservationsHeader}</div>
-				<div>{userCarReservationDivs}</div>
-				<div>{userReservationsDivs}</div>
 				<div onClick={this.viewCarReservations} className="btn">
 					My Car's Reservations
 				</div>
 				<div onClick={this.viewUserReservations} className="btn">
 					My Reservations
+					<div>{userCarReservationDivs}</div>
+					<div>{userReservationsDivs}</div>
 				</div>
 			</div>
 		);

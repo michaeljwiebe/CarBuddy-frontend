@@ -10,8 +10,8 @@
   min-width: 95px; }
 
 .inputs-container {
-  position: absolute;
-  top: 80px;
+  position: relative;
+  top: -280px;
   left: 10%;
   width: 80%;
   max-width: 500px; }
@@ -22,7 +22,7 @@
   margin: 5px 0; }
 
 .inputs-sign-up {
-  top: 40vh; }
+  top: 25vh; }
 
 .input-select {
   border: 1px solid black;

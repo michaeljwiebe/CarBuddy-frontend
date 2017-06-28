@@ -1,7 +1,7 @@
 .hamburger {
-  position: absolute;
+  position: relative;
   right: -120vw;
-  top: 20px;
+  top: -110px;
   z-index: 5;
   height: 310px;
   width: 120px;
@@ -13,9 +13,9 @@
   transition: all 1s; }
 
 .hamburger-show {
-  position: absolute;
-  right: 0;
-  top: 30px; }
+  position: relative;
+  right: -380px;
+  top: -110px; }
 
 .view-hamburger {
   right: 0; }
@@ -37,8 +37,8 @@
 
 .hamburger-show-btn {
   position: relative;
-  top: -60px;
-  left: 460px;
+  top: -50px;
+  left: 85%;
   z-index: 1; }
 
 .hamburger-close-btn {

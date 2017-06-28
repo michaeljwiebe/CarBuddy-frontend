@@ -1,14 +1,29 @@
+//get project online
+//set this up with all position: relative, almost working. other strategy would be to set several media queries?
+// Why does it look so bad on tablet?
+
 //AWS for group project -- maybe not!
-//screen is insisting on being taller than i want
-//buttons can be styled, why not use those?
-//shadow effects on buttons/cars/reservation divs
 //max-width on body/app -- how do phone browsers work with varying pixel densities?
-//move signup button below inputs
 //map won't shrink with page
+
+//NEW FEATURES
+//add minimap with location of each potential car to reserve, shrink car img, display car stats
+
+//USABILITY
+//add cost to my reservations
+//add mpg, year, avg reviews to car description
+//screen is insisting on being taller than i want
+//logic broken for excluding cars from available list, can reserve car twice for same hour
+//post review button not working
+
+//STYLE POINTS
+//shadow effects on buttons/cars/reservation divs
+//buttons can be styled, why not use those?
+
+//MINOR ISSUES
+// car logo slides left below 420px
 //sign in error message
 
-//after reserve car, jump to my reservations page
-//add cost to my reservations
 //car address?
 //small map for each car location on ReserveCar
 //add Stripe payment system
@@ -41,7 +56,8 @@ class App extends Component {
 			reservations: [],
 			signUp: false,
 			signIn: true,
-			user: null,
+			user: { id: 1, name: "Michael Wiebe" },
+			// user: null,
 			viewCarsAndReviews: false,
 			carToReview: null,
 			reviewToEdit: null,
@@ -84,6 +100,7 @@ class App extends Component {
 		let signUpBtn;
 		let signUpComponent;
 		let signOutBtn;
+		let contentContainerClasses;
 		let carsAndReviews;
 		let carsAndReviewsBtn;
 		let carsAndReviewsStyles;
@@ -131,8 +148,8 @@ class App extends Component {
 			logoText = "logo logo-sign-in-text";
 			logoImage = "logo logo-sign-in-image";
 			if (this.state.signIn === true) {
-				signInComponent = <SignIn signIn={this.signIn} />;
 				signUpBtn = <div className="btn btn-sign-up" onClick={this.signUp}>Sign Up</div>;
+				signInComponent = <div><SignIn signIn={this.signIn} /> {signUpBtn} </div>;
 			}
 			if (this.state.signUp === true) {
 				signUpComponent = <SignUp createUser={this.createUser} />;
@@ -174,6 +191,16 @@ class App extends Component {
 					{carsAndReviewsBtn}
 				</div>
 			);
+
+			if (this.state.editUser || this.state.addCar || this.state.carToReview) {
+				contentContainerClasses = "content-container";
+			}
+			if (this.state.viewReservations || this.state.reserveCar) {
+				contentContainerClasses = "content-container reservations-and-reserve-container";
+			}
+			if (this.state.viewCarsAndReviews) {
+				contentContainerClasses = "content-container cars-and-reviews-container";
+			}
 			if (this.state.editUser === true) {
 				editUser = (
 					<EditUser
@@ -284,21 +311,22 @@ class App extends Component {
 		return (
 			<div className="App">
 				<div>
-					<div className={logoContainer}>
-						<div className={logoImage}>
-							<i className="fa fa-car" aria-hidden="true" />
+					<div className="header">
+						<div className={logoContainer}>
+							<div className={logoImage}>
+								<i className="fa fa-car" aria-hidden="true" />
+							</div>
+							<div className={logoText}>carBuddy</div>
 						</div>
-						<div className={logoText}>carBuddy</div>
+						{hamburgerIcon}
 					</div>
 					<div>{welcomeMsg}</div>
-					<div>
+					<div className="signinup-container">
 						{signInComponent}
-						{signUpBtn}
 					</div>
 					<div>{signUpComponent}</div>
 				</div>
 				<div>
-					{hamburgerIcon}
 					<div className="hamburger">
 						<div onClick={this.hamburgerToggle} className="hamburger-close-btn">
 							<i className="fa fa-window-close-o" aria-hidden="true" />
@@ -310,7 +338,7 @@ class App extends Component {
 							{signOutBtn}
 						</div>
 					</div>
-					<div className="content-container">
+					<div className={contentContainerClasses}>
 						{googleMap}
 						{addCar}
 						{newReview}

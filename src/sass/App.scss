@@ -23,6 +23,11 @@ body{
     flex-wrap: wrap;
     justify-content: center;
 }
+
+.header{
+    height: 70px;
+}
+
 .car-logo{
 
 
@@ -61,6 +66,12 @@ body{
     text-shadow: 3px 4px black;
 }
 
+.signinup-container{
+    position: relative;
+    top: 200px;
+
+}
+
 .welcome-msg{
     position: relative;
     right: -100px;
@@ -76,4 +87,20 @@ body{
 .reservations-header{
     font-size: 18px;
     text-decoration: underline;
+}
+
+.content-container{
+    position: relative;
+    // top: -400px; or no top property // good for reservations, find a car pages
+    //no top property best for edit user and add car
+    // top: 265px; // good for cars and reviews page
+    height:0; //this works for main pages but when I go to add car/edit user I get
+
+}
+.reservations-and-reserve-container{
+    top: -400px;
+}
+
+.cars-and-reviews-container{
+    top: -265px;
 }
