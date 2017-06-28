@@ -1,0 +1,109 @@
+@import 'variables';
+
+
+.value-btn{
+    color: $btn-text;
+    border: 1px solid black;
+    background-color: $btn-bg;
+    border-radius: 3px;
+    margin: 2px;
+}
+
+.btn-edit-review{
+    width: 100%;
+    min-width: 95px;
+}
+
+.inputs-container{
+    position: relative;
+    top: -280px;
+    left: 10%;
+    width: 80%;
+    max-width: 500px;
+}
+
+.input{
+    width: 92%;
+    line-height: 25px;
+    margin: 5px 0;
+}
+
+.inputs-sign-up{
+    top: 25vh;
+}
+
+.input-select{
+    border: 1px solid black;
+    font-size: 18px;
+}
+
+.input-reservation-3em{
+    width: 3em;
+}
+
+.input-reservation-year{
+    width: 4em;
+}
+
+.input-reservation-month{
+    width: 6.4em;
+}
+
+.review-inputs{
+    width: 80%;
+    max-width: 500px;
+    margin: 80px auto 0px auto;
+}
+
+.review-input{
+    width: 100%;
+}
+
+.btn{
+    font-size: 14px;
+    background-color: $btn-bg;
+    border-radius: 4px;
+    height: 25px;
+    line-height: 25px;
+    margin: 10px;
+    color: $btn-text;
+}
+
+.btn-view-cars{
+    width: 70vw;
+    margin-left: 7vw;
+}
+
+.sign-in{
+    position: relative;
+    left: 4%;
+    width: 92%;
+}
+
+.btn-sign-in{
+    position: relative;
+    width: 92%;
+    margin-left: 4%;
+}
+
+.btn-sign-up{
+    position: relative;
+    top: 20px;
+    left: 6%;
+    width: 84%;
+}
+
+.btn-edit-review{
+    width: 95px;
+    margin: 0 27%
+}
+
+
+.btn-reserve-car{
+    line-height: 18px;
+    margin: 3px 0 0 0;
+}
+
+.btn-make-review{
+    margin: 30px;
+}

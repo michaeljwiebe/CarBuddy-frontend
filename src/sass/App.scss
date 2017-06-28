@@ -1,0 +1,106 @@
+@import 'variables';
+
+*{
+    box-sizing: border-box;
+}
+body{
+
+    background-color: $bg-color;
+}
+
+.App {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+    background-color: $bg-color;
+    height: 100vh,;
+    color: $body-text;
+
+}
+
+.flex{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.header{
+    height: 70px;
+}
+
+.car-logo{
+
+
+}
+.logo{
+    position: relative;
+}
+.logo-main-container{
+    width: 20%;
+    left: 20px;
+}
+.logo-main-image{
+    font-size: 45px;
+}
+
+.logo-main-text{
+    font-size: 18px;
+    margin-top: -5px;
+}
+
+.logo-sign-in-text{
+    top: 10px;
+    width: 100%;
+    left: 0;
+    font-size: 60px;
+    text-shadow: 3px 4px black;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+.logo-sign-in-image{
+    top: 10px;
+    width: 100%;
+    left: 0;
+    height: 160px;
+    font-size: 150px;
+    text-shadow: 3px 4px black;
+}
+
+.signinup-container{
+    position: relative;
+    top: 200px;
+
+}
+
+.welcome-msg{
+    position: relative;
+    right: -100px;
+    top: -60px;
+    font-size: 14px;
+    width: 60%;
+}
+
+.reservations-viewer{
+    margin-top: 80px;
+}
+
+.reservations-header{
+    font-size: 18px;
+    text-decoration: underline;
+}
+
+.content-container{
+    position: relative;
+    // top: -400px; or no top property // good for reservations, find a car pages
+    //no top property best for edit user and add car
+    // top: 265px; // good for cars and reviews page
+    height:0; //this works for main pages but when I go to add car/edit user I get
+
+}
+.reservations-and-reserve-container{
+    top: -400px;
+}
+
+.cars-and-reviews-container{
+    top: -265px;
+}

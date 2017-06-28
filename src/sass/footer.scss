@@ -1,0 +1,33 @@
+@import 'variables';
+
+.footer-menu{
+    // position: relative;
+    // bottom: -493px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    max-width: 500px;
+    border-top: 2px solid;
+    background-color: $bg-color;
+}
+.footer-menu-btn{
+    font-size: 14px;
+    background-color: $btn-bg;
+    border-radius: 4px;
+    height: 25px;
+    line-height: 25px;
+    margin: 2px 10px;
+    color: $btn-text;
+}
+
+.btn-reservations{
+    width: 35%;
+}
+
+.btn-find-car{
+    width:29%;
+}
+
+.btn-cars{
+    width: 15%;
+}

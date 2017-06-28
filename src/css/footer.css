@@ -1,0 +1,27 @@
+.footer-menu {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 500px;
+  border-top: 2px solid;
+  background-color: #73605B; }
+
+.footer-menu-btn {
+  font-size: 14px;
+  background-color: #363237;
+  border-radius: 4px;
+  height: 25px;
+  line-height: 25px;
+  margin: 2px 10px;
+  color: #e4e4e4; }
+
+.btn-reservations {
+  width: 35%; }
+
+.btn-find-car {
+  width: 29%; }
+
+.btn-cars {
+  width: 15%; }
+
+/*# sourceMappingURL=footer.css.map */

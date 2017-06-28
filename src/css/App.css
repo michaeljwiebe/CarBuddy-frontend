@@ -1,24 +1,82 @@
+* {
+  box-sizing: border-box; }
+
+body {
+  background-color: #73605B; }
+
 .App {
+  max-width: 500px;
+  margin: 0 auto;
   text-align: center;
-}
+  background-color: #73605B;
+  height: 100vh;
+  color: #e4e4e4; }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
+.header {
+  height: 70px; }
 
-.App-intro {
-  font-size: large;
-}
+.logo {
+  position: relative; }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
+.logo-main-container {
+  width: 20%;
+  left: 20px; }
+
+.logo-main-image {
+  font-size: 45px; }
+
+.logo-main-text {
+  font-size: 18px;
+  margin-top: -5px; }
+
+.logo-sign-in-text {
+  top: 10px;
+  width: 100%;
+  left: 0;
+  font-size: 60px;
+  text-shadow: 3px 4px black;
+  margin-top: -10px;
+  margin-bottom: 10px; }
+
+.logo-sign-in-image {
+  top: 10px;
+  width: 100%;
+  left: 0;
+  height: 160px;
+  font-size: 150px;
+  text-shadow: 3px 4px black; }
+
+.signinup-container {
+  position: relative;
+  top: 200px; }
+
+.welcome-msg {
+  position: relative;
+  right: -100px;
+  top: -60px;
+  font-size: 14px;
+  width: 60%; }
+
+.reservations-viewer {
+  margin-top: 80px; }
+
+.reservations-header {
+  font-size: 18px;
+  text-decoration: underline; }
+
+.content-container {
+  position: relative;
+  height: 0; }
+
+.reservations-and-reserve-container {
+  top: -400px; }
+
+.cars-and-reviews-container {
+  top: -265px; }
+
+/*# sourceMappingURL=App.css.map */
