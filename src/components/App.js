@@ -648,14 +648,14 @@ class App extends Component {
 				function(data) {
 					let imageURL = data.avatar_url.split("");
 					let secondHalfUrl = imageURL.splice(32);
-					secondHalfUrl.splice(0, 0, "http://carbuddy.amazonaws.com");
+					secondHalfUrl.splice(0, 0, "http://carbuddy.s3.amazonaws.com");
 					imageURL = secondHalfUrl.join("");
 
 					// http://carbuddy.s3.amazonaws.com/users....
 					// http://s3.amazonaws.com/carbuddy
 					console.log(data);
 					this.setState({
-						userImage: secondHalfUrl,
+						userImage: imageURL,
 						editUser: false,
 						viewCarsAndReviews: true
 					});
