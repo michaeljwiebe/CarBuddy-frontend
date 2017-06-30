@@ -57,6 +57,7 @@ class App extends Component {
 			signUp: false,
 			signIn: true,
 			user: { id: 1, name: "Michael Wiebe" },
+			userImage: null,
 			// user: null,
 			viewCarsAndReviews: false,
 			carToReview: null,
@@ -156,7 +157,7 @@ class App extends Component {
 			}
 			openReviewEditor = null;
 		} else {
-			userAvatar = this.state.user.avatar_url;
+			userAvatar = this.state.user.userImage;
 			logoText = "logo logo-main-text";
 			logoImage = "logo logo-main-image";
 			logoContainer = "logo logo-main-container";
@@ -646,7 +647,11 @@ class App extends Component {
 			.then(
 				function(data) {
 					console.log(data);
-					this.setState({ user: data, editUser: false, viewCarsAndReviews: true });
+					this.setState({
+						userImage: data.avatar_url,
+						editUser: false,
+						viewCarsAndReviews: true
+					});
 				}.bind(this)
 			);
 	}
