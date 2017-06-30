@@ -157,7 +157,7 @@ class App extends Component {
 			}
 			openReviewEditor = null;
 		} else {
-			userAvatar = this.state.user.userImage;
+			userAvatar = this.state.userImage;
 			logoText = "logo logo-main-text";
 			logoImage = "logo logo-main-image";
 			logoContainer = "logo logo-main-container";
