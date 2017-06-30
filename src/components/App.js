@@ -622,9 +622,9 @@ class App extends Component {
 	uploadUserImage(userInfo) {
 		let url;
 		if (userInfo.method === "update") {
-			url = "/users/update_image/" + userInfo.id;
+			url = "https://carbuddy.herokuapp.com/users/update_image/" + userInfo.id;
 		} else {
-			url = "/users/upload_image";
+			url = "https://carbuddy.herokuapp.com/users/upload_image";
 		}
 		var data = new FormData();
 		var imagedata = document.querySelector('input[type="file"]').files[0];
