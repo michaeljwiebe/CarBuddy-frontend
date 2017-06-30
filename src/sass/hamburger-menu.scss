@@ -3,7 +3,7 @@
 .hamburger{
     position: relative;
     right: -120vw;
-    top: -110px;
+    top: -60px;
     z-index: 5;
     height: 310px;
     width: 120px;
@@ -16,8 +16,7 @@
 }
 .hamburger-show{
     position: relative;
-    right: -380px;
-    top: -110px;
+    right: -45vw;
 }
 // .hamburger{
 //     position: absolute;
@@ -66,7 +65,7 @@
 }
 .hamburger-close-btn{
     position: relative;
-    left: 83px;
+    right: -160px;
     top: 1px;
     font-size: 27px;
 }

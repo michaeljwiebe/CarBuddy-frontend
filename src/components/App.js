@@ -646,6 +646,13 @@ class App extends Component {
 			})
 			.then(
 				function(data) {
+					let splitURL = data.avatar_url.split("/carbuddy/");
+					splitURL.splice(0, 1, "http://carbuddy.s3.amazonaws.com/");
+					let splitURL2 = data.avatar_url.split("http://s3.amazonaws.com/carbuddy");
+					console.log(splitURL);
+					console.log(splitURL2);
+					// http://carbuddy.s3.amazonaws.com/users....
+					// http://s3.amazonaws.com/carbuddy
 					console.log(data);
 					this.setState({
 						userImage: data.avatar_url,
