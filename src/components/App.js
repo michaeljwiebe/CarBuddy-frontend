@@ -646,16 +646,16 @@ class App extends Component {
 			})
 			.then(
 				function(data) {
-					let splitURL = data.avatar_url.split("/carbuddy/");
-					splitURL.splice(0, 1, "http://carbuddy.s3.amazonaws.com/");
-					let splitURL2 = data.avatar_url.split("http://s3.amazonaws.com/carbuddy");
-					console.log(splitURL);
-					console.log(splitURL2);
+					let imageURL = data.avatar_url.split("");
+					let secondHalfUrl = imageURL.splice(32);
+					secondHalfUrl.splice(0, 0, "http://carbuddy.amazonaws.com");
+					imageURL = secondHalfUrl.join("");
+
 					// http://carbuddy.s3.amazonaws.com/users....
 					// http://s3.amazonaws.com/carbuddy
 					console.log(data);
 					this.setState({
-						userImage: data.avatar_url,
+						userImage: secondHalfUrl,
 						editUser: false,
 						viewCarsAndReviews: true
 					});
