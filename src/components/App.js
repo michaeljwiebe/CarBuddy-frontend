@@ -646,10 +646,7 @@ class App extends Component {
 			})
 			.then(
 				function(data) {
-					let imageURL = data.avatar_url.split("");
-					let secondHalfUrl = imageURL.splice(32);
-					secondHalfUrl.splice(0, 0, "http://carbuddy.s3.amazonaws.com");
-					imageURL = secondHalfUrl.join("");
+					let imageURL = this.modifyURL(data.avatar_url);
 
 					// http://carbuddy.s3.amazonaws.com/users....
 					// http://s3.amazonaws.com/carbuddy
@@ -661,6 +658,13 @@ class App extends Component {
 					});
 				}.bind(this)
 			);
+	}
+	modifyURL(url) {
+		let imageURL = url.split("");
+		let secondHalfUrl = imageURL.splice(32);
+		secondHalfUrl.splice(0, 0, "http://carbuddy.s3.amazonaws.com");
+		let returningImageURL = secondHalfUrl.join("");
+		return returningImageURL;
 	}
 
 	signIn(props) {
@@ -699,6 +703,12 @@ class App extends Component {
 	loadCars() {
 		axios.get("https://carbuddy.herokuapp.com/cars").then(
 			function(response) {
+				response.data.forEach(function(car) {
+					let imageURL = data.avatar_url.split("");
+					let secondHalfUrl = imageURL.splice(32);
+					secondHalfUrl.splice(0, 0, "http://carbuddy.s3.amazonaws.com");
+					imageURL = secondHalfUrl.join("");
+				});
 				this.setState({ cars: response.data });
 			}.bind(this)
 		);
