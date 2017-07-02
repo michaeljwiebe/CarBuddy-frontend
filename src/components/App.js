@@ -372,7 +372,7 @@ class App extends Component {
 	}
 	addCar(props) {
 		axios
-			.post("https://carbuddy.herokuapp.com/cars", {
+			.post("/cars", {
 				data: {
 					make_model: props.make_model,
 					year: props.year,
@@ -415,9 +415,11 @@ class App extends Component {
 			})
 			.then(
 				function(data) {
-					console.log(data);
+					// let imageURL = data.avatar_url.split("");
+					// let secondHalfUrl = imageURL.splice(32);
+					// secondHalfUrl.splice(0, 0, "http://carbuddy.s3.amazonaws.com");
+					// imageURL = secondHalfUrl.join("");
 					this.loadCars();
-					// this.setState({ user: data, editUser: false, viewCarsAndReviews: true });
 				}.bind(this)
 			);
 	}
@@ -425,7 +427,7 @@ class App extends Component {
 	deleteCar(event) {
 		axios({
 			method: "delete",
-			url: "https://carbuddy.herokuapp.com/cars/" + event.target.value
+			url: "/cars/" + event.target.value
 		}).then(
 			function(response) {
 				this.setState({ cars: response.data });
@@ -458,7 +460,7 @@ class App extends Component {
 	updateReview(props) {
 		axios({
 			method: "patch",
-			url: "https://carbuddy.herokuapp.com/reviews/" + props.id,
+			url: "/reviews/" + props.id,
 			params: {
 				title: props.title,
 				description: props.description,
@@ -495,7 +497,7 @@ class App extends Component {
 
 	makeReview(props) {
 		axios
-			.post("https://carbuddy.herokuapp.com/reviews", {
+			.post("/reviews", {
 				data: {
 					car_id: props.car_id,
 					title: props.title,
@@ -517,7 +519,7 @@ class App extends Component {
 
 	makeReservation(props) {
 		axios
-			.post("https://carbuddy.herokuapp.com/reservations", {
+			.post("/reservations", {
 				data: {
 					car_id: props.car_id,
 					start_date: props.start_date,
@@ -557,7 +559,7 @@ class App extends Component {
 	}
 	createUser(props) {
 		axios
-			.post("https://carbuddy.herokuapp.com/users", {
+			.post("/users", {
 				data: {
 					name: props.name,
 					address: props.address,
@@ -583,7 +585,7 @@ class App extends Component {
 		console.log(this.state.user.id);
 		axios({
 			method: "delete",
-			url: "https://carbuddy.herokuapp.com/users/" + this.state.user.id
+			url: "/users/" + this.state.user.id
 		}).then(
 			function(response) {
 				this.signOut();
@@ -605,7 +607,7 @@ class App extends Component {
 	updateUserInfo(props) {
 		axios({
 			method: "patch",
-			url: "https://carbuddy.herokuapp.com/users/" + this.state.user.id,
+			url: "/users/" + this.state.user.id,
 			params: {
 				username: props.username,
 				password: props.password,
@@ -623,9 +625,9 @@ class App extends Component {
 	uploadUserImage(userInfo) {
 		let url;
 		if (userInfo.method === "update") {
-			url = "https://carbuddy.herokuapp.com/users/update_image/" + userInfo.id;
+			url = "/users/update_image/" + userInfo.id;
 		} else {
-			url = "https://carbuddy.herokuapp.com/users/upload_image";
+			url = "/users/upload_image";
 		}
 		var data = new FormData();
 		var imagedata = document.querySelector('input[type="file"]').files[0];
@@ -646,16 +648,16 @@ class App extends Component {
 			})
 			.then(
 				function(data) {
-					let imageURL = data.avatar_url.split("");
-					let secondHalfUrl = imageURL.splice(32);
-					secondHalfUrl.splice(0, 0, "http://carbuddy.s3.amazonaws.com");
-					imageURL = secondHalfUrl.join("");
+					// let imageURL = data.avatar_url.split("");
+					// let secondHalfUrl = imageURL.splice(32);
+					// secondHalfUrl.splice(0, 0, "http://carbuddy.s3.amazonaws.com");
+					// imageURL = secondHalfUrl.join("");
 
 					// http://carbuddy.s3.amazonaws.com/users....
 					// http://s3.amazonaws.com/carbuddy
 					console.log(data);
 					this.setState({
-						userImage: imageURL,
+						userImage: data.avatar_url,
 						editUser: false,
 						viewCarsAndReviews: true
 					});
@@ -665,7 +667,7 @@ class App extends Component {
 
 	signIn(props) {
 		axios
-			.post("https://carbuddy.herokuapp.com/sign_in", {
+			.post("/sign_in", {
 				data: {
 					username: props.username,
 					password: props.password
@@ -697,14 +699,14 @@ class App extends Component {
 		this.hamburgerToggle();
 	}
 	loadCars() {
-		axios.get("https://carbuddy.herokuapp.com/cars").then(
+		axios.get("/cars").then(
 			function(response) {
 				this.setState({ cars: response.data });
 			}.bind(this)
 		);
 	}
 	loadReviews() {
-		axios.get("https://carbuddy.herokuapp.com/reviews").then(
+		axios.get("/reviews").then(
 			function(response) {
 				this.setState({
 					reviews: response.data
@@ -713,7 +715,7 @@ class App extends Component {
 		);
 	}
 	loadReservations() {
-		axios.get("https://carbuddy.herokuapp.com/reservations").then(
+		axios.get("/reservations").then(
 			function(response) {
 				this.setState({ reservations: response.data });
 			}.bind(this)
