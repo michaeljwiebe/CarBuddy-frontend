@@ -1,4 +1,3 @@
-//get project online
 //set this up with all position: relative, almost working. other strategy would be to set several media queries?
 // Why does it look so bad on tablet?
 
@@ -73,6 +72,7 @@ class App extends Component {
 		this.createUser = this.createUser.bind(this);
 		this.editUser = this.editUser.bind(this);
 		this.updateUserInfo = this.updateUserInfo.bind(this);
+		this.modifyURL = this.modifyURL.bind(this);
 		this.uploadUserImage = this.uploadUserImage.bind(this);
 		this.uploadCarImage = this.uploadCarImage.bind(this);
 		this.deleteUser = this.deleteUser.bind(this);
@@ -230,7 +230,7 @@ class App extends Component {
 					function(car, index) {
 						let removeCar;
 						let editReviewBtn;
-						carAvatar = car.avatar;
+						carAvatar = car.avatar_url;
 
 						if (car.owner_id === this.state.user.id) {
 							removeCar = (
@@ -405,12 +405,11 @@ class App extends Component {
 
 		data.append("data", imagedata);
 
-		fetch("/cars/image", {
+		fetch("https://carbuddy.herokuapp.com/cars/image", {
 			method: "POST",
 			body: data
 		})
 			.then(function(response) {
-				console.log(response);
 				return response.json();
 			})
 			.then(
@@ -646,13 +645,20 @@ class App extends Component {
 			})
 			.then(
 				function(data) {
-					let imageURL = this.modifyURL(data.avatar_url);
+					//i attempted to seperate this out into a function (commented below) so i could call it on the car image upload too. function is modifyURL, written below. but that didn't work.
+					let imageURL = data.avatar_url.split("");
+					let secondHalfUrl = imageURL.splice(32);
+					secondHalfUrl.splice(0, 0, "http://carbuddy.s3.amazonaws.com");
+					let returningImageURL = secondHalfUrl.join("");
 
-					// http://carbuddy.s3.amazonaws.com/users....
-					// http://s3.amazonaws.com/carbuddy
+					// let imageURL = this.modifyURL(data.avatar_url); //didn't work
+
+					// http://carbuddy.s3.amazonaws.com/users.... -- for image to display
+					// http://s3.amazonaws.com/carbuddy -- from backend
+					console.log("user image fetch:");
 					console.log(data);
 					this.setState({
-						userImage: imageURL,
+						userImage: returningImageURL,
 						editUser: false,
 						viewCarsAndReviews: true
 					});
@@ -703,12 +709,13 @@ class App extends Component {
 	loadCars() {
 		axios.get("https://carbuddy.herokuapp.com/cars").then(
 			function(response) {
-				response.data.forEach(function(car) {
-					let imageURL = data.avatar_url.split("");
-					let secondHalfUrl = imageURL.splice(32);
-					secondHalfUrl.splice(0, 0, "http://carbuddy.s3.amazonaws.com");
-					imageURL = secondHalfUrl.join("");
-				});
+				response.data.forEach(
+					function(car) {
+						console.log("car:");
+						console.log(car.avatar);
+						car.avatar_url = this.modifyURL(car.avatar_url);
+					}.bind(this)
+				);
 				this.setState({ cars: response.data });
 			}.bind(this)
 		);
