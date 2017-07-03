@@ -9,6 +9,8 @@
 //add minimap with location of each potential car to reserve, shrink car img, display car stats
 
 //USABILITY
+//my reservations not working
+//hamburger visible on sign in
 //add cost to my reservations
 //add mpg, year, avg reviews to car description
 //screen is insisting on being taller than i want
@@ -55,9 +57,9 @@ class App extends Component {
 			reservations: [],
 			signUp: false,
 			signIn: true,
-			user: { id: 1, name: "Michael Wiebe" },
+			// user: { id: 1, name: "Michael Wiebe" },
 			userImage: null,
-			// user: null,
+			user: null,
 			viewCarsAndReviews: false,
 			carToReview: null,
 			reviewToEdit: null,
@@ -94,6 +96,7 @@ class App extends Component {
 
 	render() {
 		let hamburgerIcon;
+		let hamburger;
 		let welcomeMsg;
 		let addCarBtn;
 		let addCar;
@@ -166,7 +169,22 @@ class App extends Component {
 					<i className="fa fa-bars" aria-hidden="true" />
 				</div>
 			);
+			addCarBtn = <div className="hamburger-btn" onClick={this.openAddCar}>Add a car</div>;
 			editUserBtn = <div className="hamburger-btn" onClick={this.editUser}>Edit User</div>;
+			signOutBtn = <div className="hamburger-btn" onClick={this.signOut}>Sign Out</div>;
+			hamburger = (
+				<div className="hamburger flex">
+					<img src={userAvatar} className="user-avatar" alt="user" />
+					<div className="hamburger-btns-container">
+						{addCarBtn}
+						{editUserBtn}
+						{signOutBtn}
+					</div>
+					<div onClick={this.hamburgerToggle} className="hamburger-close-btn">
+						<i className="fa fa-window-close-o" aria-hidden="true" />
+					</div>
+				</div>
+			);
 			userReservationsBtn = (
 				<div className="footer-menu-btn btn-reservations" onClick={this.viewReservations}>
 					Reservations
@@ -183,8 +201,6 @@ class App extends Component {
 				</div>
 			);
 			welcomeMsg = <div className="welcome-msg">Welcome {this.state.user.name}!</div>;
-			addCarBtn = <div className="hamburger-btn" onClick={this.openAddCar}>Add a car</div>;
-			signOutBtn = <div className="hamburger-btn" onClick={this.signOut}>Sign Out</div>;
 			footer = (
 				<div className="footer-menu flex">
 					{userReservationsBtn}
@@ -327,18 +343,8 @@ class App extends Component {
 					</div>
 					<div>{signUpComponent}</div>
 				</div>
+				{hamburger}
 				<div>
-					<div className="hamburger">
-						<div onClick={this.hamburgerToggle} className="hamburger-close-btn">
-							<i className="fa fa-window-close-o" aria-hidden="true" />
-						</div>
-						<div className="hamburger-content-container">
-							<img src={userAvatar} className="user-avatar" alt="user" />
-							{addCarBtn}
-							{editUserBtn}
-							{signOutBtn}
-						</div>
-					</div>
 					<div className={contentContainerClasses}>
 						{googleMap}
 						{addCar}

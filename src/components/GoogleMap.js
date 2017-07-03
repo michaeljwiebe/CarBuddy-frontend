@@ -30,7 +30,7 @@ class GoogleMap extends Component {
 				maxWidth: "500px",
 				height: "20vh",
 				margin: "0 auto",
-				top: "-58px",
+				top: "98px",
 				zIndex: "3",
 				borderBottom: "1px solid black",
 				borderTop: "1px solid black"
