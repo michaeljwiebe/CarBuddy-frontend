@@ -5,12 +5,8 @@
 //max-width on body/app -- how do phone browsers work with varying pixel densities?
 //map won't shrink with page below
 
-//NEW FEATURES
-//add minimap with location of each potential car to reserve, shrink car img, display car stats
-
 //USABILITY
-//my reservations not working
-//logic broken for excluding cars from available list, can reserve car twice for same hour
+//user image not being passed to sign in, userImage state is null
 
 //CONVENIENCE
 //add cost to my reservations
@@ -28,6 +24,7 @@
 //sign in error message
 
 //EXTRA FEATURES
+//add minimap with location of each potential car to reserve, shrink car img, display car stats
 //add Stripe payment system
 
 import React, { Component } from "react";
@@ -235,7 +232,7 @@ class App extends Component {
 				userReservations = (
 					<UserReservations
 						allReservations={this.state.reservations}
-						user_id={this.state.user.id}
+						userId={this.state.user.id}
 						cars={this.state.cars}
 					/>
 				);
@@ -421,9 +418,7 @@ class App extends Component {
 			})
 			.then(
 				function(data) {
-					console.log(data);
 					this.loadCars();
-					// this.setState({ user: data, editUser: false, viewCarsAndReviews: true });
 				}.bind(this)
 			);
 	}
@@ -586,7 +581,6 @@ class App extends Component {
 	}
 
 	deleteUser() {
-		console.log(this.state.user.id);
 		axios({
 			method: "delete",
 			url: "https://carbuddy.herokuapp.com/users/" + this.state.user.id
@@ -647,23 +641,21 @@ class App extends Component {
 			body: data
 		})
 			.then(function(response) {
-				console.log(response);
 				return response.json();
 			})
 			.then(
 				function(data) {
-					//i attempted to seperate this out into a function (commented below) so i could call it on the car image upload too. function is modifyURL, written below. but that didn't work.
+					//i attempted to seperate this out into a function (commented below) so i could call it on the car image upload too. function is modifyURL, written below. that didn't work but it does for the uploadCarImage function
+					// let imageURL = this.modifyURL(data.avatar_url); //didn't work
+
 					let imageURL = data.avatar_url.split("");
 					let secondHalfUrl = imageURL.splice(32);
 					secondHalfUrl.splice(0, 0, "http://carbuddy.s3.amazonaws.com");
 					let returningImageURL = secondHalfUrl.join("");
 
-					// let imageURL = this.modifyURL(data.avatar_url); //didn't work
-
 					// http://carbuddy.s3.amazonaws.com/users.... -- for image to display
-					// http://s3.amazonaws.com/carbuddy -- from backend
-					console.log("user image fetch:");
-					console.log(data);
+					// http://s3.amazonaws.com/carbuddy -- what i'm getting from the backend
+
 					this.setState({
 						userImage: returningImageURL,
 						editUser: false,
@@ -718,8 +710,6 @@ class App extends Component {
 			function(response) {
 				response.data.forEach(
 					function(car) {
-						console.log("car:");
-						console.log(car.avatar);
 						car.avatar_url = this.modifyURL(car.avatar_url);
 					}.bind(this)
 				);

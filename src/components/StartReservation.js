@@ -32,7 +32,8 @@ class StartReservation extends Component {
 			carToReserve: null,
 			reservations: props.reservations,
 			cars: props.cars,
-			carsToRender: []
+			carsToRender: [],
+			availableCars: 0
 		};
 		this.updateStartHour = this.updateStartHour.bind(this);
 		this.ampmHour = this.ampmHour.bind(this);
@@ -237,7 +238,19 @@ class StartReservation extends Component {
 			);
 		} else {
 			datesInput = "";
-			availableCars = <div className="available-cars">{this.state.carsToRender}</div>;
+			availableCars = (
+				<div>
+					<div />
+					<div className="available-cars">
+						There are
+						{" "}
+						{this.state.availableCars.length}
+						{" "}
+						cars avaiable for the period you requested.
+						{this.state.carsToRender}
+					</div>
+				</div>
+			);
 		}
 		return (
 			<div>
@@ -266,7 +279,6 @@ class StartReservation extends Component {
 		});
 	}
 	viewAvailableCars() {
-		console.log("viewcars");
 		let unAvailableCars;
 		let conflictingReservations;
 		let carsToRender;
@@ -294,7 +306,6 @@ class StartReservation extends Component {
 				inputs: false
 			},
 			function() {
-				console.log(this.state.reservations);
 				conflictingReservations = this.state.reservations.filter(
 					function(reservation, index) {
 						let dbStart = new Date(reservation.start_date);
@@ -313,6 +324,8 @@ class StartReservation extends Component {
 				carsToRender = this.state.cars.filter(function(car) {
 					return unAvailableCars.indexOf(car.id) === -1;
 				});
+				this.setState({ availableCars: carsToRender });
+
 				carDivsToRender = carsToRender.map(
 					function(car) {
 						return (
@@ -320,7 +333,7 @@ class StartReservation extends Component {
 								<img src={car.avatar_url} className="car-img-large" alt="car" />
 								<div className="reserve-car-info">
 									<div>{car.year}-{car.make_model}</div>
-									<div>MPG:{car.mpg}</div>
+									<div>MPG: {car.mpg}</div>
 									<div>Price: ${car.price} per day</div>
 									<div>Rating:{car.ratings}</div>
 								</div>
@@ -358,7 +371,6 @@ class StartReservation extends Component {
 		} else if (ampm === "AM" || ampmHour === 12) {
 			JSHour = parseInt(ampmHour, 10);
 		}
-		console.log(JSHour);
 		return JSHour;
 	}
 

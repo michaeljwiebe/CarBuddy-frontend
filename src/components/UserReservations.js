@@ -7,6 +7,7 @@ class userReservations extends Component {
 		this.state = {
 			allReservations: props.allReservations,
 			cars: props.cars,
+			userId: props.userId,
 			userReservations: [],
 			editReservation: false,
 			viewUserReservations: true,
@@ -65,7 +66,7 @@ class userReservations extends Component {
 		if (this.state.viewCarReservations === true) {
 			userCars = this.state.cars.filter(
 				function(car) {
-					return car.owner_id === this.props.user_id;
+					return car.owner_id === this.state.userId;
 				}.bind(this)
 			);
 			console.log(userCars); //works, car objects
@@ -126,14 +127,16 @@ class userReservations extends Component {
 	cancelCarReservation(event) {
 		axios({
 			method: "delete",
-			url: "/reservations/" + event.target.value
+			url: "https://carbuddy.herokuapp.com/reservations/" + event.target.value
 		}).then(
 			function(response) {
 				let userReservations = this.setUserReservations(response.data);
 
 				this.setState({
 					allReservations: response.data,
-					userReservations: userReservations
+					userReservations: userReservations,
+					viewUserReservations: false,
+					viewCarReservations: true
 				});
 			}.bind(this)
 		);
@@ -141,13 +144,15 @@ class userReservations extends Component {
 	cancelUserReservation(event) {
 		axios({
 			method: "delete",
-			url: "/reservations/" + event.target.value
+			url: "https://carbuddy.herokuapp.com/reservations/" + event.target.value
 		}).then(
 			function(response) {
 				let userReservations = this.setUserReservations(response.data);
 				this.setState({
 					allReservations: response.data,
-					userReservations: userReservations
+					userReservations: userReservations,
+					viewUserReservations: true,
+					viewCarReservations: false
 				});
 			}.bind(this)
 		);
@@ -156,7 +161,7 @@ class userReservations extends Component {
 		// sorts reservations and returns only user's reservations
 		let reservations = allReservations.filter(
 			function(reservation) {
-				return reservation.renter_id === this.props.user_id;
+				return parseInt(reservation.renter_id) === this.state.userId;
 			}.bind(this)
 		);
 		return reservations;
