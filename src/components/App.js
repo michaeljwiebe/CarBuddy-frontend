@@ -3,19 +3,21 @@
 
 //AWS for group project -- maybe not!
 //max-width on body/app -- how do phone browsers work with varying pixel densities?
-//map won't shrink with page
+//map won't shrink with page below
 
 //NEW FEATURES
 //add minimap with location of each potential car to reserve, shrink car img, display car stats
 
 //USABILITY
 //my reservations not working
-//hamburger visible on sign in
+//logic broken for excluding cars from available list, can reserve car twice for same hour
+
+//CONVENIENCE
 //add cost to my reservations
 //add mpg, year, avg reviews to car description
-//screen is insisting on being taller than i want
-//logic broken for excluding cars from available list, can reserve car twice for same hour
-//post review button not working
+//car address?
+//small map for each car location on ReserveCar
+//click background to close hamburger
 
 //STYLE POINTS
 //shadow effects on buttons/cars/reservation divs
@@ -25,8 +27,7 @@
 // car logo slides left below 420px
 //sign in error message
 
-//car address?
-//small map for each car location on ReserveCar
+//EXTRA FEATURES
 //add Stripe payment system
 
 import React, { Component } from "react";
@@ -474,7 +475,7 @@ class App extends Component {
 				this.setState({
 					reviews: response.data,
 					reviewToEdit: null,
-					carsAndReviews: true
+					viewCarsAndReviews: true
 				});
 			}.bind(this)
 		);
