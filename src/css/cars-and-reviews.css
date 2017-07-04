@@ -22,10 +22,10 @@
 .car-img-small {
   width: 45vw;
   max-width: 240px;
-  min-width: 150px;
+  min-width: 140px;
   height: 30vw;
   max-height: 160px;
-  min-height: 100px; }
+  min-height: 95px; }
 
 .car-reviews {
   width: 45%;

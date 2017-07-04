@@ -1,12 +1,6 @@
-//set this up with all position: relative, almost working. other strategy would be to set several media queries?
 // Why does it look so bad on tablet?
 
-//AWS for group project -- maybe not!
-//max-width on body/app -- how do phone browsers work with varying pixel densities?
-//map won't shrink with page below
-
 //USABILITY
-//user image not being passed to sign in, userImage state is null
 
 //CONVENIENCE
 //add cost to my reservations
@@ -20,8 +14,9 @@
 //buttons can be styled, why not use those?
 
 //MINOR ISSUES
-// car logo slides left below 420px
-//sign in error message
+//map won't shrink with page -- likely due to excessive nested divs with styling that i can't change
+//car logo slides left below 420px
+//no sign in error message
 
 //EXTRA FEATURES
 //add minimap with location of each potential car to reserve, shrink car img, display car stats
@@ -390,8 +385,8 @@ class App extends Component {
 			.then(
 				function(response) {
 					this.uploadCarImage();
+					this.loadCars();
 					this.setState({
-						cars: response.data,
 						addCar: false,
 						viewCarsAndReviews: true
 					});
@@ -423,13 +418,22 @@ class App extends Component {
 			);
 	}
 
+	modifyArrayURLs(array) {
+		array.forEach(
+			function(car) {
+				car.avatar_url = this.modifyURL(car.avatar_url);
+				return car;
+			}.bind(this)
+		);
+	}
+
 	deleteCar(event) {
 		axios({
 			method: "delete",
 			url: "https://carbuddy.herokuapp.com/cars/" + event.target.value
 		}).then(
 			function(response) {
-				this.setState({ cars: response.data });
+				this.loadCars();
 			}.bind(this)
 		);
 	}
@@ -685,8 +689,10 @@ class App extends Component {
 					if (response.data === "") {
 						return;
 					} else {
+						let userImage = this.modifyURL(response.data.avatar_url);
 						this.setState({
 							user: response.data,
+							userImage: userImage,
 							viewCarsAndReviews: true
 						});
 					}
