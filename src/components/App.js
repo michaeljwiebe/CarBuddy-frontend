@@ -15,8 +15,9 @@
 
 //MINOR ISSUES
 //map won't shrink with page -- likely due to excessive nested divs with styling that i can't change
-//car logo slides left below 420px
+//car logo slides left below 420px -- i don't understand why this happens
 //no sign in error message
+//add titles for inputs on edit user
 
 //EXTRA FEATURES
 //add minimap with location of each potential car to reserve, shrink car img, display car stats
@@ -144,6 +145,7 @@ class App extends Component {
 		if (this.state.user === null) {
 			logoText = "logo logo-sign-in-text";
 			logoImage = "logo logo-sign-in-image";
+			userAvatar = null;
 			if (this.state.signIn === true) {
 				signUpBtn = <div className="btn btn-sign-up" onClick={this.signUp}>Sign Up</div>;
 				signInComponent = <div><SignIn signIn={this.signIn} /> {signUpBtn} </div>;
@@ -700,6 +702,7 @@ class App extends Component {
 			);
 	}
 	signOut() {
+		this.hamburgerToggle();
 		this.setState({
 			user: null,
 			signIn: true,
@@ -709,7 +712,6 @@ class App extends Component {
 			viewReservations: false,
 			editUser: false
 		});
-		this.hamburgerToggle();
 	}
 	loadCars() {
 		axios.get("https://carbuddy.herokuapp.com/cars").then(
