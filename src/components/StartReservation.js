@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import GoogleMap from "./GoogleMap";
 
 import "../css/StartReservation.css";
 
@@ -298,6 +299,19 @@ class StartReservation extends Component {
 		let startMsec = Date.parse(startDate);
 		let endMsec = Date.parse(endDate);
 		let elapsedHours = (endMsec - startMsec) / 3600000;
+		let smallMap = {
+			position: "relative",
+			width: "50%",
+			maxWidth: "250px",
+			minWidth: "160px",
+			height: "20vh",
+			margin: "0 auto",
+			top: "98px",
+			zIndex: "3",
+			borderBottom: "1px solid black",
+			borderTop: "1px solid black"
+		};
+		let smallMapZoom = 14;
 		this.setState(
 			{
 				reservation_hours: elapsedHours,
@@ -328,6 +342,8 @@ class StartReservation extends Component {
 
 				carDivsToRender = carsToRender.map(
 					function(car) {
+						console.log(car.lat);
+						console.log(car.lng);
 						return (
 							<div className="available-car flex">
 								<img src={car.avatar_url} className="car-img-large" alt="car" />
@@ -337,6 +353,13 @@ class StartReservation extends Component {
 									<div>Price: ${car.price} per day</div>
 									<div>Rating:{car.ratings}</div>
 								</div>
+								<GoogleMap
+									zoom={smallMapZoom}
+									cars={this.state.cars}
+									styles={smallMap}
+									lat={parseInt(car.lat)}
+									lng={parseInt(car.lng)}
+								/>
 
 								<button
 									className="btn btn-reserve-car"

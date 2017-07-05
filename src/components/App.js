@@ -1,4 +1,7 @@
-// Why does it look so bad on tablet?
+//4 database tables, 10 components and 15 API calls
+//paperclip gem
+//googlemaps integration with markers
+//blood, sweat, tears, hundreds of milligrams of coffee
 
 //USABILITY
 
@@ -235,7 +238,27 @@ class App extends Component {
 				);
 			}
 			if (this.state.viewCarsAndReviews === true) {
-				googleMap = <GoogleMap cars={this.state.cars} />;
+				let bigMap = {
+					position: "relative",
+					width: "100%",
+					maxWidth: "500px",
+					height: "20vh",
+					margin: "0 auto",
+					top: "98px",
+					zIndex: "3",
+					borderBottom: "1px solid black",
+					borderTop: "1px solid black"
+				};
+				let bigMapZoom = 12;
+				googleMap = (
+					<GoogleMap
+						styles={bigMap}
+						zoom={bigMapZoom}
+						cars={this.state.cars}
+						lat={39.9524}
+						lng={-75.1636}
+					/>
+				);
 				carsAndReviewsStyles = "cars-and-reviews";
 				carsAndReviews = this.state.cars.map(
 					function(car, index) {
@@ -291,12 +314,13 @@ class App extends Component {
 						return (
 							<div key={index} className="flex car-description-reviews">
 								<div className="car-make-model">
-									{car.year + " " + car.make_model}
+									{car.make_model}
 								</div>
 								<div className="car-description">
 									<img src={carAvatar} className="car-img-small" alt="car" />
-									<div className="car-mpg" />
-									<div className="car-address" />
+									<div>Year: {car.year}</div>
+									<div>MPG: {car.mpg}</div>
+									<div>Cost per day: ${car.price}</div>
 								</div>
 								<div className="car-reviews">
 									{reviews}
