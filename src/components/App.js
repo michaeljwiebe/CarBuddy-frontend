@@ -1,31 +1,28 @@
-//get project online
-//set this up with all position: relative, almost working. other strategy would be to set several media queries?
-// Why does it look so bad on tablet?
-
-//AWS for group project -- maybe not!
-//max-width on body/app -- how do phone browsers work with varying pixel densities?
-//map won't shrink with page
-
-//NEW FEATURES
-//add minimap with location of each potential car to reserve, shrink car img, display car stats
+//4 database tables, 10 components and 15 API calls
+//paperclip gem
+//googlemaps integration with markers
+//blood, sweat, tears, hundreds of milligrams of caffeinne
 
 //USABILITY
-//add cost to my reservations
+
+//CONVENIENCE
 //add mpg, year, avg reviews to car description
-//screen is insisting on being taller than i want
-//logic broken for excluding cars from available list, can reserve car twice for same hour
-//post review button not working
+//car address?
+//small map for each car location on ReserveCar
+//click background to close hamburger
 
 //STYLE POINTS
 //shadow effects on buttons/cars/reservation divs
 //buttons can be styled, why not use those?
 
 //MINOR ISSUES
-// car logo slides left below 420px
-//sign in error message
+//map won't shrink with page -- likely due to excessive nested divs with styling that i can't change
+//car logo slides left below 420px -- i don't understand why this happens
+//no sign in error message
+//add titles for inputs on edit user
 
-//car address?
-//small map for each car location on ReserveCar
+//EXTRA FEATURES
+//add minimap with location of each potential car to reserve, shrink car img, display car stats
 //add Stripe payment system
 
 import React, { Component } from "react";
@@ -56,9 +53,9 @@ class App extends Component {
 			reservations: [],
 			signUp: false,
 			signIn: true,
-			user: { id: 1, name: "Michael Wiebe" },
+			// user: { id: 1, name: "Michael Wiebe" },
 			userImage: null,
-			// user: null,
+			user: null,
 			viewCarsAndReviews: false,
 			carToReview: null,
 			reviewToEdit: null,
@@ -73,6 +70,7 @@ class App extends Component {
 		this.createUser = this.createUser.bind(this);
 		this.editUser = this.editUser.bind(this);
 		this.updateUserInfo = this.updateUserInfo.bind(this);
+		this.modifyURL = this.modifyURL.bind(this);
 		this.uploadUserImage = this.uploadUserImage.bind(this);
 		this.uploadCarImage = this.uploadCarImage.bind(this);
 		this.deleteUser = this.deleteUser.bind(this);
@@ -94,6 +92,7 @@ class App extends Component {
 
 	render() {
 		let hamburgerIcon;
+		let hamburger;
 		let welcomeMsg;
 		let addCarBtn;
 		let addCar;
@@ -148,6 +147,7 @@ class App extends Component {
 		if (this.state.user === null) {
 			logoText = "logo logo-sign-in-text";
 			logoImage = "logo logo-sign-in-image";
+			userAvatar = null;
 			if (this.state.signIn === true) {
 				signUpBtn = <div className="btn btn-sign-up" onClick={this.signUp}>Sign Up</div>;
 				signInComponent = <div><SignIn signIn={this.signIn} /> {signUpBtn} </div>;
@@ -166,25 +166,41 @@ class App extends Component {
 					<i className="fa fa-bars" aria-hidden="true" />
 				</div>
 			);
+			addCarBtn = <div className="hamburger-btn" onClick={this.openAddCar}>Add a car</div>;
 			editUserBtn = <div className="hamburger-btn" onClick={this.editUser}>Edit User</div>;
+			signOutBtn = <div className="hamburger-btn" onClick={this.signOut}>Sign Out</div>;
+			hamburger = (
+				<div className="hamburger flex">
+					<img src={userAvatar} className="user-avatar" alt="user" />
+					<div className="hamburger-btns-container">
+						{addCarBtn}
+						{editUserBtn}
+						{signOutBtn}
+					</div>
+					<div onClick={this.hamburgerToggle} className="hamburger-close-btn">
+						<i className="fa fa-window-close-o" aria-hidden="true" />
+					</div>
+				</div>
+			);
 			userReservationsBtn = (
-				<div className="footer-menu-btn btn-reservations" onClick={this.viewReservations}>
+				<div
+					className="btn footer-menu-btn btn-reservations"
+					onClick={this.viewReservations}
+				>
 					Reservations
 				</div>
 			);
 			startCarReservationBtn = (
-				<div className="footer-menu-btn btn-find-car" onClick={this.startReservation}>
+				<div className="btn footer-menu-btn btn-find-car" onClick={this.startReservation}>
 					Find a car
 				</div>
 			);
 			carsAndReviewsBtn = (
-				<div onClick={this.showCarsAndReviews} className="footer-menu-btn btn-cars">
+				<div onClick={this.showCarsAndReviews} className="btn footer-menu-btn btn-cars">
 					Cars
 				</div>
 			);
 			welcomeMsg = <div className="welcome-msg">Welcome {this.state.user.name}!</div>;
-			addCarBtn = <div className="hamburger-btn" onClick={this.openAddCar}>Add a car</div>;
-			signOutBtn = <div className="hamburger-btn" onClick={this.signOut}>Sign Out</div>;
 			footer = (
 				<div className="footer-menu flex">
 					{userReservationsBtn}
@@ -218,24 +234,44 @@ class App extends Component {
 				userReservations = (
 					<UserReservations
 						allReservations={this.state.reservations}
-						user_id={this.state.user.id}
+						userId={this.state.user.id}
 						cars={this.state.cars}
 					/>
 				);
 			}
 			if (this.state.viewCarsAndReviews === true) {
-				googleMap = <GoogleMap cars={this.state.cars} />;
+				let bigMap = {
+					position: "relative",
+					width: "100%",
+					maxWidth: "500px",
+					height: "20vh",
+					margin: "0 auto",
+					top: "98px",
+					zIndex: "3",
+					borderBottom: "1px solid black",
+					borderTop: "1px solid black"
+				};
+				let bigMapZoom = 12;
+				googleMap = (
+					<GoogleMap
+						styles={bigMap}
+						zoom={bigMapZoom}
+						cars={this.state.cars}
+						lat={39.9524}
+						lng={-75.1636}
+					/>
+				);
 				carsAndReviewsStyles = "cars-and-reviews";
 				carsAndReviews = this.state.cars.map(
 					function(car, index) {
 						let removeCar;
 						let editReviewBtn;
-						carAvatar = car.avatar;
+						carAvatar = car.avatar_url;
 
 						if (car.owner_id === this.state.user.id) {
 							removeCar = (
 								<button
-									className="value-btn"
+									className="btn value-btn"
 									onClick={this.deleteCar}
 									value={car.id}
 								>
@@ -249,7 +285,7 @@ class App extends Component {
 								if (review.reviewer.id === this.state.user.id) {
 									editReviewBtn = (
 										<button
-											className="value-btn btn-edit-review"
+											className="btn value-btn btn-edit-review"
 											onClick={this.editReview}
 											value={JSON.stringify(review)}
 										>
@@ -280,19 +316,20 @@ class App extends Component {
 						return (
 							<div key={index} className="flex car-description-reviews">
 								<div className="car-make-model">
-									{car.year + " " + car.make_model}
+									{car.make_model}
 								</div>
 								<div className="car-description">
 									<img src={carAvatar} className="car-img-small" alt="car" />
-									<div className="car-mpg" />
-									<div className="car-address" />
+									<div>Year: {car.year}</div>
+									<div>MPG: {car.mpg}</div>
+									<div>Cost per day: ${car.price}</div>
 								</div>
 								<div className="car-reviews">
 									{reviews}
 								</div>
 								<div>
 									<button
-										className="value-btn"
+										className="btn value-btn"
 										onClick={this.startReview}
 										value={JSON.stringify(car.id)}
 									>
@@ -327,18 +364,8 @@ class App extends Component {
 					</div>
 					<div>{signUpComponent}</div>
 				</div>
+				{hamburger}
 				<div>
-					<div className="hamburger">
-						<div onClick={this.hamburgerToggle} className="hamburger-close-btn">
-							<i className="fa fa-window-close-o" aria-hidden="true" />
-						</div>
-						<div className="hamburger-content-container">
-							<img src={userAvatar} className="user-avatar" alt="user" />
-							{addCarBtn}
-							{editUserBtn}
-							{signOutBtn}
-						</div>
-					</div>
 					<div className={contentContainerClasses}>
 						{googleMap}
 						{addCar}
@@ -386,8 +413,8 @@ class App extends Component {
 			.then(
 				function(response) {
 					this.uploadCarImage();
+					this.loadCars();
 					this.setState({
-						cars: response.data,
 						addCar: false,
 						viewCarsAndReviews: true
 					});
@@ -405,23 +432,27 @@ class App extends Component {
 
 		data.append("data", imagedata);
 
-		fetch("/cars/image", {
+		fetch("https://carbuddy.herokuapp.com/cars/image", {
 			method: "POST",
 			body: data
 		})
 			.then(function(response) {
-				console.log(response);
 				return response.json();
 			})
 			.then(
 				function(data) {
-					// let imageURL = data.avatar_url.split("");
-					// let secondHalfUrl = imageURL.splice(32);
-					// secondHalfUrl.splice(0, 0, "http://carbuddy.s3.amazonaws.com");
-					// imageURL = secondHalfUrl.join("");
 					this.loadCars();
 				}.bind(this)
 			);
+	}
+
+	modifyArrayURLs(array) {
+		array.forEach(
+			function(car) {
+				car.avatar_url = this.modifyURL(car.avatar_url);
+				return car;
+			}.bind(this)
+		);
 	}
 
 	deleteCar(event) {
@@ -430,7 +461,7 @@ class App extends Component {
 			url: "/cars/" + event.target.value
 		}).then(
 			function(response) {
-				this.setState({ cars: response.data });
+				this.loadCars();
 			}.bind(this)
 		);
 	}
@@ -471,7 +502,7 @@ class App extends Component {
 				this.setState({
 					reviews: response.data,
 					reviewToEdit: null,
-					carsAndReviews: true
+					viewCarsAndReviews: true
 				});
 			}.bind(this)
 		);
@@ -582,7 +613,6 @@ class App extends Component {
 	}
 
 	deleteUser() {
-		console.log(this.state.user.id);
 		axios({
 			method: "delete",
 			url: "/users/" + this.state.user.id
@@ -643,26 +673,29 @@ class App extends Component {
 			body: data
 		})
 			.then(function(response) {
-				console.log(response);
 				return response.json();
 			})
 			.then(
 				function(data) {
-					// let imageURL = data.avatar_url.split("");
-					// let secondHalfUrl = imageURL.splice(32);
-					// secondHalfUrl.splice(0, 0, "http://carbuddy.s3.amazonaws.com");
-					// imageURL = secondHalfUrl.join("");
+					let imageURL = data.avatar_url.split("");
+					let secondHalfUrl = imageURL.splice(32);
+					secondHalfUrl.splice(0, 0, "http://carbuddy.s3.amazonaws.com");
+					let returningImageURL = secondHalfUrl.join("");
 
-					// http://carbuddy.s3.amazonaws.com/users....
-					// http://s3.amazonaws.com/carbuddy
-					console.log(data);
 					this.setState({
-						userImage: data.avatar_url,
+						userImage: returningImageURL,
 						editUser: false,
 						viewCarsAndReviews: true
 					});
 				}.bind(this)
 			);
+	}
+	modifyURL(url) {
+		let imageURL = url.split("");
+		let secondHalfUrl = imageURL.splice(32);
+		secondHalfUrl.splice(0, 0, "http://carbuddy.s3.amazonaws.com");
+		let returningImageURL = secondHalfUrl.join("");
+		return returningImageURL;
 	}
 
 	signIn(props) {
@@ -678,8 +711,10 @@ class App extends Component {
 					if (response.data === "") {
 						return;
 					} else {
+						let userImage = this.modifyURL(response.data.avatar_url);
 						this.setState({
 							user: response.data,
+							userImage: userImage,
 							viewCarsAndReviews: true
 						});
 					}
@@ -687,6 +722,7 @@ class App extends Component {
 			);
 	}
 	signOut() {
+		this.hamburgerToggle();
 		this.setState({
 			user: null,
 			signIn: true,
@@ -696,11 +732,15 @@ class App extends Component {
 			viewReservations: false,
 			editUser: false
 		});
-		this.hamburgerToggle();
 	}
 	loadCars() {
 		axios.get("/cars").then(
 			function(response) {
+				response.data.forEach(
+					function(car) {
+						car.avatar_url = this.modifyURL(car.avatar_url);
+					}.bind(this)
+				);
 				this.setState({ cars: response.data });
 			}.bind(this)
 		);

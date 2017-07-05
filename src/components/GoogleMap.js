@@ -20,21 +20,11 @@ const MarkerComponent = ({ text }) => (
 class GoogleMap extends Component {
 	constructor(props) {
 		super(props);
-		this.center = { lat: 39.9524, lng: -75.1636 };
-		this.zoom = 12;
+		this.center = { lat: props.lat, lng: props.lng };
+		this.zoom = props.zoom;
+		this.styles = props.styles;
 		this.state = {
-			cars: props.cars,
-			styles: {
-				position: "relative",
-				width: "100%",
-				maxWidth: "500px",
-				height: "20vh",
-				margin: "0 auto",
-				top: "-58px",
-				zIndex: "3",
-				borderBottom: "1px solid black",
-				borderTop: "1px solid black"
-			}
+			cars: props.cars
 		};
 	}
 	render() {
@@ -43,7 +33,7 @@ class GoogleMap extends Component {
 		});
 		return (
 			<GoogleMapReact
-				style={this.state.styles}
+				style={this.styles}
 				bootstrapURLKeys={{
 					key: "AIzaSyCFrQcAO1Xbv9gTVT9KLDFZnMZznSvhMg4"
 				}}
