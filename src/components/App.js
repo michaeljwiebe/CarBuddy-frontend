@@ -1,9 +1,11 @@
-// Why does it look so bad on tablet?
+//4 database tables, 10 components and 15 API calls
+//paperclip gem
+//googlemaps integration with markers
+//blood, sweat, tears, hundreds of milligrams of caffeinne
 
 //USABILITY
 
 //CONVENIENCE
-//add cost to my reservations
 //add mpg, year, avg reviews to car description
 //car address?
 //small map for each car location on ReserveCar
@@ -181,17 +183,20 @@ class App extends Component {
 				</div>
 			);
 			userReservationsBtn = (
-				<div className="footer-menu-btn btn-reservations" onClick={this.viewReservations}>
+				<div
+					className="btn footer-menu-btn btn-reservations"
+					onClick={this.viewReservations}
+				>
 					Reservations
 				</div>
 			);
 			startCarReservationBtn = (
-				<div className="footer-menu-btn btn-find-car" onClick={this.startReservation}>
+				<div className="btn footer-menu-btn btn-find-car" onClick={this.startReservation}>
 					Find a car
 				</div>
 			);
 			carsAndReviewsBtn = (
-				<div onClick={this.showCarsAndReviews} className="footer-menu-btn btn-cars">
+				<div onClick={this.showCarsAndReviews} className="btn footer-menu-btn btn-cars">
 					Cars
 				</div>
 			);
@@ -235,7 +240,27 @@ class App extends Component {
 				);
 			}
 			if (this.state.viewCarsAndReviews === true) {
-				googleMap = <GoogleMap cars={this.state.cars} />;
+				let bigMap = {
+					position: "relative",
+					width: "100%",
+					maxWidth: "500px",
+					height: "20vh",
+					margin: "0 auto",
+					top: "98px",
+					zIndex: "3",
+					borderBottom: "1px solid black",
+					borderTop: "1px solid black"
+				};
+				let bigMapZoom = 12;
+				googleMap = (
+					<GoogleMap
+						styles={bigMap}
+						zoom={bigMapZoom}
+						cars={this.state.cars}
+						lat={39.9524}
+						lng={-75.1636}
+					/>
+				);
 				carsAndReviewsStyles = "cars-and-reviews";
 				carsAndReviews = this.state.cars.map(
 					function(car, index) {
@@ -246,7 +271,7 @@ class App extends Component {
 						if (car.owner_id === this.state.user.id) {
 							removeCar = (
 								<button
-									className="value-btn"
+									className="btn value-btn"
 									onClick={this.deleteCar}
 									value={car.id}
 								>
@@ -260,7 +285,7 @@ class App extends Component {
 								if (review.reviewer.id === this.state.user.id) {
 									editReviewBtn = (
 										<button
-											className="value-btn btn-edit-review"
+											className="btn value-btn btn-edit-review"
 											onClick={this.editReview}
 											value={JSON.stringify(review)}
 										>
@@ -291,19 +316,20 @@ class App extends Component {
 						return (
 							<div key={index} className="flex car-description-reviews">
 								<div className="car-make-model">
-									{car.year + " " + car.make_model}
+									{car.make_model}
 								</div>
 								<div className="car-description">
 									<img src={carAvatar} className="car-img-small" alt="car" />
-									<div className="car-mpg" />
-									<div className="car-address" />
+									<div>Year: {car.year}</div>
+									<div>MPG: {car.mpg}</div>
+									<div>Cost per day: ${car.price}</div>
 								</div>
 								<div className="car-reviews">
 									{reviews}
 								</div>
 								<div>
 									<button
-										className="value-btn"
+										className="btn value-btn"
 										onClick={this.startReview}
 										value={JSON.stringify(car.id)}
 									>

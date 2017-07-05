@@ -53,8 +53,16 @@ class userReservations extends Component {
 									{" "}Until
 									{" " + endEST + " "}
 								</div>
+								<div>
+									Total cost: $
+									{reservationCar[0].price / 24 * reservation.reservation_hours}
+								</div>
 							</div>
-							<button onClick={this.cancelUserReservation} value={reservation.id}>
+							<button
+								className="btn btn-cancel-reservation"
+								onClick={this.cancelUserReservation}
+								value={reservation.id}
+							>
 								Cancel Reservation
 							</button>
 						</div>

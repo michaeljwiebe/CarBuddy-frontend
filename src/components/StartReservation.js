@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import GoogleMap from "./GoogleMap";
 
 import "../css/StartReservation.css";
 
@@ -298,6 +299,14 @@ class StartReservation extends Component {
 		let startMsec = Date.parse(startDate);
 		let endMsec = Date.parse(endDate);
 		let elapsedHours = (endMsec - startMsec) / 3600000;
+		let smallMap = {
+			position: "relative",
+			width: "60%",
+			height: "20vh",
+			margin: "0 auto",
+			border: "1px solid black"
+		};
+		let smallMapZoom = 14;
 		this.setState(
 			{
 				reservation_hours: elapsedHours,
@@ -327,16 +336,30 @@ class StartReservation extends Component {
 				this.setState({ availableCars: carsToRender });
 
 				carDivsToRender = carsToRender.map(
-					function(car) {
+					function(car, index) {
+						console.log(index);
+						console.log(car.lat);
+						console.log(car.lng);
 						return (
 							<div className="available-car flex">
-								<img src={car.avatar_url} className="car-img-large" alt="car" />
 								<div className="reserve-car-info">
-									<div>{car.year}-{car.make_model}</div>
+									<div>{car.make_model} - {car.year}</div>
+									<img
+										src={car.avatar_url}
+										className="car-img-large"
+										alt="car"
+									/>
 									<div>MPG: {car.mpg}</div>
 									<div>Price: ${car.price} per day</div>
 									<div>Rating:{car.ratings}</div>
 								</div>
+								<GoogleMap
+									zoom={smallMapZoom}
+									cars={this.state.cars}
+									styles={smallMap}
+									lat={parseFloat(car.lat)}
+									lng={parseFloat(car.lng)}
+								/>
 
 								<button
 									className="btn btn-reserve-car"
