@@ -1,12 +1,11 @@
 //4 database tables, 10 components and 15 API calls
 //paperclip gem
 //googlemaps integration with markers
-//blood, sweat, tears, hundreds of milligrams of coffee
+//blood, sweat, tears, hundreds of milligrams of caffeinne
 
 //USABILITY
 
 //CONVENIENCE
-//add cost to my reservations
 //add mpg, year, avg reviews to car description
 //car address?
 //small map for each car location on ReserveCar
@@ -184,17 +183,20 @@ class App extends Component {
 				</div>
 			);
 			userReservationsBtn = (
-				<div className="footer-menu-btn btn-reservations" onClick={this.viewReservations}>
+				<div
+					className="btn footer-menu-btn btn-reservations"
+					onClick={this.viewReservations}
+				>
 					Reservations
 				</div>
 			);
 			startCarReservationBtn = (
-				<div className="footer-menu-btn btn-find-car" onClick={this.startReservation}>
+				<div className="btn footer-menu-btn btn-find-car" onClick={this.startReservation}>
 					Find a car
 				</div>
 			);
 			carsAndReviewsBtn = (
-				<div onClick={this.showCarsAndReviews} className="footer-menu-btn btn-cars">
+				<div onClick={this.showCarsAndReviews} className="btn footer-menu-btn btn-cars">
 					Cars
 				</div>
 			);
@@ -269,7 +271,7 @@ class App extends Component {
 						if (car.owner_id === this.state.user.id) {
 							removeCar = (
 								<button
-									className="value-btn"
+									className="btn value-btn"
 									onClick={this.deleteCar}
 									value={car.id}
 								>
@@ -283,7 +285,7 @@ class App extends Component {
 								if (review.reviewer.id === this.state.user.id) {
 									editReviewBtn = (
 										<button
-											className="value-btn btn-edit-review"
+											className="btn value-btn btn-edit-review"
 											onClick={this.editReview}
 											value={JSON.stringify(review)}
 										>
@@ -327,7 +329,7 @@ class App extends Component {
 								</div>
 								<div>
 									<button
-										className="value-btn"
+										className="btn value-btn"
 										onClick={this.startReview}
 										value={JSON.stringify(car.id)}
 									>

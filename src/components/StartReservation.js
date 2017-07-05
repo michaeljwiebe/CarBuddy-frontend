@@ -301,15 +301,10 @@ class StartReservation extends Component {
 		let elapsedHours = (endMsec - startMsec) / 3600000;
 		let smallMap = {
 			position: "relative",
-			width: "50%",
-			maxWidth: "250px",
-			minWidth: "160px",
+			width: "60%",
 			height: "20vh",
 			margin: "0 auto",
-			top: "98px",
-			zIndex: "3",
-			borderBottom: "1px solid black",
-			borderTop: "1px solid black"
+			border: "1px solid black"
 		};
 		let smallMapZoom = 14;
 		this.setState(
@@ -341,7 +336,8 @@ class StartReservation extends Component {
 				this.setState({ availableCars: carsToRender });
 
 				carDivsToRender = carsToRender.map(
-					function(car) {
+					function(car, index) {
+						console.log(index);
 						console.log(car.lat);
 						console.log(car.lng);
 						return (
@@ -357,8 +353,8 @@ class StartReservation extends Component {
 									zoom={smallMapZoom}
 									cars={this.state.cars}
 									styles={smallMap}
-									lat={parseInt(car.lat)}
-									lng={parseInt(car.lng)}
+									lat={parseFloat(car.lat)}
+									lng={parseFloat(car.lng)}
 								/>
 
 								<button
