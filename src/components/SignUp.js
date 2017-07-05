@@ -4,11 +4,11 @@ class SignUp extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			name: "",
-			address: "",
-			zip: "",
-			username: "",
-			password: ""
+			name: null,
+			address: null,
+			zip: null,
+			username: null,
+			password: null
 		};
 		this.updateName = this.updateName.bind(this);
 		this.updateAddress = this.updateAddress.bind(this);
@@ -24,7 +24,8 @@ class SignUp extends Component {
 					className="input"
 					type="text"
 					onChange={this.updateName}
-					placeholder="name"
+					placeholder="name (required)"
+					required
 				/>
 				<input
 					className="input"
@@ -42,13 +43,15 @@ class SignUp extends Component {
 					className="input"
 					type="text"
 					onChange={this.updateUsername}
-					placeholder="username"
+					placeholder="username (required)"
+					required
 				/>
 				<input
 					className="input"
 					type="text"
 					onChange={this.updatePassword}
-					placeholder="password"
+					placeholder="password (required)"
+					required
 				/>
 				<form action="" encType="multipart/form-data">
 					<div>Upload a photo:</div>

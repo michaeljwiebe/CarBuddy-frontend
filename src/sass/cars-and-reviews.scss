@@ -3,7 +3,8 @@
 .cars-and-reviews{
     height: 63.5vh;
     position: relative;
-    top: -9vh;
+    top: 15vh;
+    border: 2px solid black;
     overflow-y: scroll;
 }
 
@@ -18,11 +19,19 @@
 
 .car-description{
     width: 45%;
+    margin-left: -25px;
 }
 
 .car-img{
     border: 1px solid black;
-    width: 47%;
+}
+.car-img-small{
+    width: 45vw;
+    max-width: 240px;
+    min-width: 140px;
+    height: 30vw;
+    max-height: 160px;
+    min-height: 95px;
 }
 
 .car-mpg{}
@@ -30,8 +39,9 @@
 .car-address{}
 
 .car-reviews{
-    width: 40%;
-    margin-left: 10px;
+    width: 45%;
+    margin-left: 25px;
+    margin-right: -25px;
 
 }
 

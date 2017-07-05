@@ -1,31 +1,26 @@
-//get project online
-//set this up with all position: relative, almost working. other strategy would be to set several media queries?
 // Why does it look so bad on tablet?
 
-//AWS for group project -- maybe not!
-//max-width on body/app -- how do phone browsers work with varying pixel densities?
-//map won't shrink with page
-
-//NEW FEATURES
-//add minimap with location of each potential car to reserve, shrink car img, display car stats
-
 //USABILITY
+
+//CONVENIENCE
 //add cost to my reservations
 //add mpg, year, avg reviews to car description
-//screen is insisting on being taller than i want
-//logic broken for excluding cars from available list, can reserve car twice for same hour
-//post review button not working
+//car address?
+//small map for each car location on ReserveCar
+//click background to close hamburger
 
 //STYLE POINTS
 //shadow effects on buttons/cars/reservation divs
 //buttons can be styled, why not use those?
 
 //MINOR ISSUES
-// car logo slides left below 420px
-//sign in error message
+//map won't shrink with page -- likely due to excessive nested divs with styling that i can't change
+//car logo slides left below 420px -- i don't understand why this happens
+//no sign in error message
+//add titles for inputs on edit user
 
-//car address?
-//small map for each car location on ReserveCar
+//EXTRA FEATURES
+//add minimap with location of each potential car to reserve, shrink car img, display car stats
 //add Stripe payment system
 
 import React, { Component } from "react";
@@ -56,8 +51,9 @@ class App extends Component {
 			reservations: [],
 			signUp: false,
 			signIn: true,
-			user: { id: 1, name: "Michael Wiebe" },
-			// user: null,
+			// user: { id: 1, name: "Michael Wiebe" },
+			userImage: null,
+			user: null,
 			viewCarsAndReviews: false,
 			carToReview: null,
 			reviewToEdit: null,
@@ -72,6 +68,7 @@ class App extends Component {
 		this.createUser = this.createUser.bind(this);
 		this.editUser = this.editUser.bind(this);
 		this.updateUserInfo = this.updateUserInfo.bind(this);
+		this.modifyURL = this.modifyURL.bind(this);
 		this.uploadUserImage = this.uploadUserImage.bind(this);
 		this.uploadCarImage = this.uploadCarImage.bind(this);
 		this.deleteUser = this.deleteUser.bind(this);
@@ -93,6 +90,7 @@ class App extends Component {
 
 	render() {
 		let hamburgerIcon;
+		let hamburger;
 		let welcomeMsg;
 		let addCarBtn;
 		let addCar;
@@ -147,6 +145,7 @@ class App extends Component {
 		if (this.state.user === null) {
 			logoText = "logo logo-sign-in-text";
 			logoImage = "logo logo-sign-in-image";
+			userAvatar = null;
 			if (this.state.signIn === true) {
 				signUpBtn = <div className="btn btn-sign-up" onClick={this.signUp}>Sign Up</div>;
 				signInComponent = <div><SignIn signIn={this.signIn} /> {signUpBtn} </div>;
@@ -156,7 +155,7 @@ class App extends Component {
 			}
 			openReviewEditor = null;
 		} else {
-			userAvatar = this.state.user.avatar;
+			userAvatar = this.state.userImage;
 			logoText = "logo logo-main-text";
 			logoImage = "logo logo-main-image";
 			logoContainer = "logo logo-main-container";
@@ -165,7 +164,22 @@ class App extends Component {
 					<i className="fa fa-bars" aria-hidden="true" />
 				</div>
 			);
+			addCarBtn = <div className="hamburger-btn" onClick={this.openAddCar}>Add a car</div>;
 			editUserBtn = <div className="hamburger-btn" onClick={this.editUser}>Edit User</div>;
+			signOutBtn = <div className="hamburger-btn" onClick={this.signOut}>Sign Out</div>;
+			hamburger = (
+				<div className="hamburger flex">
+					<img src={userAvatar} className="user-avatar" alt="user" />
+					<div className="hamburger-btns-container">
+						{addCarBtn}
+						{editUserBtn}
+						{signOutBtn}
+					</div>
+					<div onClick={this.hamburgerToggle} className="hamburger-close-btn">
+						<i className="fa fa-window-close-o" aria-hidden="true" />
+					</div>
+				</div>
+			);
 			userReservationsBtn = (
 				<div className="footer-menu-btn btn-reservations" onClick={this.viewReservations}>
 					Reservations
@@ -182,8 +196,6 @@ class App extends Component {
 				</div>
 			);
 			welcomeMsg = <div className="welcome-msg">Welcome {this.state.user.name}!</div>;
-			addCarBtn = <div className="hamburger-btn" onClick={this.openAddCar}>Add a car</div>;
-			signOutBtn = <div className="hamburger-btn" onClick={this.signOut}>Sign Out</div>;
 			footer = (
 				<div className="footer-menu flex">
 					{userReservationsBtn}
@@ -217,7 +229,7 @@ class App extends Component {
 				userReservations = (
 					<UserReservations
 						allReservations={this.state.reservations}
-						user_id={this.state.user.id}
+						userId={this.state.user.id}
 						cars={this.state.cars}
 					/>
 				);
@@ -229,7 +241,7 @@ class App extends Component {
 					function(car, index) {
 						let removeCar;
 						let editReviewBtn;
-						carAvatar = car.avatar;
+						carAvatar = car.avatar_url;
 
 						if (car.owner_id === this.state.user.id) {
 							removeCar = (
@@ -326,18 +338,8 @@ class App extends Component {
 					</div>
 					<div>{signUpComponent}</div>
 				</div>
+				{hamburger}
 				<div>
-					<div className="hamburger">
-						<div onClick={this.hamburgerToggle} className="hamburger-close-btn">
-							<i className="fa fa-window-close-o" aria-hidden="true" />
-						</div>
-						<div className="hamburger-content-container">
-							<img src={userAvatar} className="user-avatar" alt="user" />
-							{addCarBtn}
-							{editUserBtn}
-							{signOutBtn}
-						</div>
-					</div>
 					<div className={contentContainerClasses}>
 						{googleMap}
 						{addCar}
@@ -371,7 +373,7 @@ class App extends Component {
 	}
 	addCar(props) {
 		axios
-			.post("/cars", {
+			.post("https://carbuddy.herokuapp.com/cars", {
 				data: {
 					make_model: props.make_model,
 					year: props.year,
@@ -385,8 +387,8 @@ class App extends Component {
 			.then(
 				function(response) {
 					this.uploadCarImage();
+					this.loadCars();
 					this.setState({
-						cars: response.data,
 						addCar: false,
 						viewCarsAndReviews: true
 					});
@@ -404,30 +406,36 @@ class App extends Component {
 
 		data.append("data", imagedata);
 
-		fetch("/cars/image", {
+		fetch("https://carbuddy.herokuapp.com/cars/image", {
 			method: "POST",
 			body: data
 		})
 			.then(function(response) {
-				console.log(response);
 				return response.json();
 			})
 			.then(
 				function(data) {
-					console.log(data);
 					this.loadCars();
-					// this.setState({ user: data, editUser: false, viewCarsAndReviews: true });
 				}.bind(this)
 			);
+	}
+
+	modifyArrayURLs(array) {
+		array.forEach(
+			function(car) {
+				car.avatar_url = this.modifyURL(car.avatar_url);
+				return car;
+			}.bind(this)
+		);
 	}
 
 	deleteCar(event) {
 		axios({
 			method: "delete",
-			url: "/cars/" + event.target.value
+			url: "https://carbuddy.herokuapp.com/cars/" + event.target.value
 		}).then(
 			function(response) {
-				this.setState({ cars: response.data });
+				this.loadCars();
 			}.bind(this)
 		);
 	}
@@ -457,7 +465,7 @@ class App extends Component {
 	updateReview(props) {
 		axios({
 			method: "patch",
-			url: "/reviews/" + props.id,
+			url: "https://carbuddy.herokuapp.com/reviews/" + props.id,
 			params: {
 				title: props.title,
 				description: props.description,
@@ -468,7 +476,7 @@ class App extends Component {
 				this.setState({
 					reviews: response.data,
 					reviewToEdit: null,
-					carsAndReviews: true
+					viewCarsAndReviews: true
 				});
 			}.bind(this)
 		);
@@ -494,7 +502,7 @@ class App extends Component {
 
 	makeReview(props) {
 		axios
-			.post("/reviews", {
+			.post("https://carbuddy.herokuapp.com/reviews", {
 				data: {
 					car_id: props.car_id,
 					title: props.title,
@@ -516,7 +524,7 @@ class App extends Component {
 
 	makeReservation(props) {
 		axios
-			.post("/reservations", {
+			.post("https://carbuddy.herokuapp.com/reservations", {
 				data: {
 					car_id: props.car_id,
 					start_date: props.start_date,
@@ -556,7 +564,7 @@ class App extends Component {
 	}
 	createUser(props) {
 		axios
-			.post("/users", {
+			.post("https://carbuddy.herokuapp.com/users", {
 				data: {
 					name: props.name,
 					address: props.address,
@@ -579,10 +587,9 @@ class App extends Component {
 	}
 
 	deleteUser() {
-		console.log(this.state.user.id);
 		axios({
 			method: "delete",
-			url: "/users/" + this.state.user.id
+			url: "https://carbuddy.herokuapp.com/users/" + this.state.user.id
 		}).then(
 			function(response) {
 				this.signOut();
@@ -604,7 +611,7 @@ class App extends Component {
 	updateUserInfo(props) {
 		axios({
 			method: "patch",
-			url: "/users/" + this.state.user.id,
+			url: "https://carbuddy.herokuapp.com/users/" + this.state.user.id,
 			params: {
 				username: props.username,
 				password: props.password,
@@ -622,9 +629,9 @@ class App extends Component {
 	uploadUserImage(userInfo) {
 		let url;
 		if (userInfo.method === "update") {
-			url = "/users/update_image/" + userInfo.id;
+			url = "https://carbuddy.herokuapp.com/users/update_image/" + userInfo.id;
 		} else {
-			url = "/users/upload_image";
+			url = "https://carbuddy.herokuapp.com/users/upload_image";
 		}
 		var data = new FormData();
 		var imagedata = document.querySelector('input[type="file"]').files[0];
@@ -640,20 +647,40 @@ class App extends Component {
 			body: data
 		})
 			.then(function(response) {
-				console.log(response);
 				return response.json();
 			})
 			.then(
 				function(data) {
-					console.log(data);
-					this.setState({ user: data, editUser: false, viewCarsAndReviews: true });
+					//i attempted to seperate this out into a function (commented below) so i could call it on the car image upload too. function is modifyURL, written below. that didn't work but it does for the uploadCarImage function
+					// let imageURL = this.modifyURL(data.avatar_url); //didn't work
+
+					let imageURL = data.avatar_url.split("");
+					let secondHalfUrl = imageURL.splice(32);
+					secondHalfUrl.splice(0, 0, "http://carbuddy.s3.amazonaws.com");
+					let returningImageURL = secondHalfUrl.join("");
+
+					// http://carbuddy.s3.amazonaws.com/users.... -- for image to display
+					// http://s3.amazonaws.com/carbuddy -- what i'm getting from the backend
+
+					this.setState({
+						userImage: returningImageURL,
+						editUser: false,
+						viewCarsAndReviews: true
+					});
 				}.bind(this)
 			);
+	}
+	modifyURL(url) {
+		let imageURL = url.split("");
+		let secondHalfUrl = imageURL.splice(32);
+		secondHalfUrl.splice(0, 0, "http://carbuddy.s3.amazonaws.com");
+		let returningImageURL = secondHalfUrl.join("");
+		return returningImageURL;
 	}
 
 	signIn(props) {
 		axios
-			.post("/sign_in", {
+			.post("https://carbuddy.herokuapp.com/sign_in", {
 				data: {
 					username: props.username,
 					password: props.password
@@ -664,8 +691,10 @@ class App extends Component {
 					if (response.data === "") {
 						return;
 					} else {
+						let userImage = this.modifyURL(response.data.avatar_url);
 						this.setState({
 							user: response.data,
+							userImage: userImage,
 							viewCarsAndReviews: true
 						});
 					}
@@ -673,6 +702,7 @@ class App extends Component {
 			);
 	}
 	signOut() {
+		this.hamburgerToggle();
 		this.setState({
 			user: null,
 			signIn: true,
@@ -682,17 +712,21 @@ class App extends Component {
 			viewReservations: false,
 			editUser: false
 		});
-		this.hamburgerToggle();
 	}
 	loadCars() {
-		axios.get("/cars").then(
+		axios.get("https://carbuddy.herokuapp.com/cars").then(
 			function(response) {
+				response.data.forEach(
+					function(car) {
+						car.avatar_url = this.modifyURL(car.avatar_url);
+					}.bind(this)
+				);
 				this.setState({ cars: response.data });
 			}.bind(this)
 		);
 	}
 	loadReviews() {
-		axios.get("/reviews").then(
+		axios.get("https://carbuddy.herokuapp.com/reviews").then(
 			function(response) {
 				this.setState({
 					reviews: response.data
@@ -701,7 +735,7 @@ class App extends Component {
 		);
 	}
 	loadReservations() {
-		axios.get("/reservations").then(
+		axios.get("https://carbuddy.herokuapp.com/reservations").then(
 			function(response) {
 				this.setState({ reservations: response.data });
 			}.bind(this)

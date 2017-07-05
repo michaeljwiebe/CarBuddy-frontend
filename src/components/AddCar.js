@@ -6,7 +6,7 @@ class AddCar extends Component {
 		this.state = {
 			make_model: "",
 			year: "",
-			MPG: "",
+			mpg: "",
 			price: "",
 			lat: "",
 			lng: "",
@@ -44,7 +44,7 @@ class AddCar extends Component {
 				<input
 					className="input"
 					onChange={this.updateMPG}
-					value={this.state.MPG}
+					value={this.state.mpg}
 					placeholder="MPG"
 				/>
 				<input
@@ -77,7 +77,7 @@ class AddCar extends Component {
 						this.setState({
 							make_model: "",
 							year: "",
-							MPG: "",
+							mpg: "",
 							price: "",
 							lat: "",
 							lng: ""
@@ -97,7 +97,7 @@ class AddCar extends Component {
 		this.setState({ year: event.target.value });
 	}
 	updateMPG(event) {
-		this.setState({ MPG: event.target.value });
+		this.setState({ mpg: event.target.value });
 	}
 	updatePrice(event) {
 		this.setState({ price: event.target.value });
