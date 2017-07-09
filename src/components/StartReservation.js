@@ -342,9 +342,13 @@ class StartReservation extends Component {
 						console.log(car.lng);
 						return (
 							<div className="available-car flex">
-								<img src={car.avatar_url} className="car-img-large" alt="car" />
 								<div className="reserve-car-info">
-									<div>{car.year}-{car.make_model}</div>
+									<div>{car.make_model} - {car.year}</div>
+									<img
+										src={car.avatar_url}
+										className="car-img-large"
+										alt="car"
+									/>
 									<div>MPG: {car.mpg}</div>
 									<div>Price: ${car.price} per day</div>
 									<div>Rating:{car.ratings}</div>
