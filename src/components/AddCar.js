@@ -55,7 +55,12 @@ class AddCar extends Component {
 				/>
 				<form action="" encType="multipart/form-data">
 					<div>Upload a photo:</div>
-					<input className="input" type="file" name="picture" defaultValue="fileName" />
+					<input
+						className="input btn"
+						type="file"
+						name="picture"
+						defaultValue="fileName"
+					/>
 				</form>
 				<br />
 				<div className="btn" onClick={this.handleAddCar}>Add Car</div>

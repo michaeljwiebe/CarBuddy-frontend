@@ -64,8 +64,12 @@ body {
   font-size: 14px;
   width: 60%; }
 
-.reservations-viewer {
+.reservations-viewer-container {
   margin-top: 80px; }
+
+.reservations-viewer {
+  height: 68vh;
+  overflow-y: scroll; }
 
 .reservations-header {
   font-size: 18px;

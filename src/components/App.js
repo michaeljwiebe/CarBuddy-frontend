@@ -1,3 +1,5 @@
+//remove console logs?
+
 //4 database tables, 10 components and 15 API calls
 //paperclip gem
 //googlemaps integration with markers
