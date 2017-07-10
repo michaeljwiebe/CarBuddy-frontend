@@ -6,9 +6,8 @@
 //USABILITY
 
 //CONVENIENCE
-//add mpg, year, avg reviews to car description
-//car address?
-//small map for each car location on ReserveCar
+//add avg reviews to start reservation car description
+//display car address
 //click background to close hamburger
 
 //STYLE POINTS

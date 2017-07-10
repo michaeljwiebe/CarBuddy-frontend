@@ -351,7 +351,6 @@ class StartReservation extends Component {
 									/>
 									<div>MPG: {car.mpg}</div>
 									<div>Price: ${car.price} per day</div>
-									<div>Rating:{car.ratings}</div>
 								</div>
 								<GoogleMap
 									zoom={smallMapZoom}
