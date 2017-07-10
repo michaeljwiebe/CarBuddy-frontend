@@ -239,15 +239,17 @@ class StartReservation extends Component {
 			);
 		} else {
 			datesInput = "";
+			let pluralCars;
+			if (this.state.availableCars.length === 1) {
+				pluralCars = <span>is {this.state.availableCars.length} car</span>;
+			} else {
+				pluralCars = <span>are {this.state.availableCars.length} cars</span>;
+			}
 			availableCars = (
 				<div>
 					<div />
 					<div className="available-cars">
-						There are
-						{" "}
-						{this.state.availableCars.length}
-						{" "}
-						cars avaiable for the period you requested.
+						There {pluralCars} avaiable for the period you requested.
 						{this.state.carsToRender}
 					</div>
 				</div>
@@ -337,9 +339,6 @@ class StartReservation extends Component {
 
 				carDivsToRender = carsToRender.map(
 					function(car, index) {
-						console.log(index);
-						console.log(car.lat);
-						console.log(car.lng);
 						return (
 							<div className="available-car flex">
 								<div className="reserve-car-info">
@@ -351,7 +350,6 @@ class StartReservation extends Component {
 									/>
 									<div>MPG: {car.mpg}</div>
 									<div>Price: ${car.price} per day</div>
-									<div>Rating:{car.ratings}</div>
 								</div>
 								<GoogleMap
 									zoom={smallMapZoom}

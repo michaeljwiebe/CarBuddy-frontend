@@ -1,3 +1,5 @@
+//remove console logs?
+
 //4 database tables, 10 components and 15 API calls
 //paperclip gem
 //googlemaps integration with markers
@@ -6,12 +8,13 @@
 //USABILITY
 
 //CONVENIENCE
-//add mpg, year, avg reviews to car description
-//car address?
-//small map for each car location on ReserveCar
+//add avg reviews to start reservation car description
+//display car address
 //click background to close hamburger
 
 //STYLE POINTS
+//images scale on reserve car
+//images remain centered on reserve car with page width change
 //shadow effects on buttons/cars/reservation divs
 //buttons can be styled, why not use those?
 

@@ -47,7 +47,7 @@ body{
 .logo-main-text{
     font-size: 18px;
     margin-top: -5px;
-    text-shadow: 2px 3px black;    
+    text-shadow: 2px 3px black;
 }
 
 .logo-sign-in-text{
@@ -82,8 +82,13 @@ body{
     width: 60%;
 }
 
-.reservations-viewer{
+.reservations-viewer-container{
     margin-top: 80px;
+}
+
+.reservations-viewer{
+    height: 68vh;
+    overflow-y: scroll;
 }
 
 .reservations-header{
