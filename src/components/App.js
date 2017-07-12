@@ -1,32 +1,10 @@
 //remove console logs?
+//problems with urls, localhost...
 
 //4 database tables, 10 components and 15 API calls
 //paperclip gem
 //googlemaps integration with markers
 //blood, sweat, tears, hundreds of milligrams of caffeinne
-
-//USABILITY
-
-//CONVENIENCE
-//add avg reviews to start reservation car description
-//display car address
-//click background to close hamburger
-
-//STYLE POINTS
-//images scale on reserve car
-//images remain centered on reserve car with page width change
-//shadow effects on buttons/cars/reservation divs
-//buttons can be styled, why not use those?
-
-//MINOR ISSUES
-//map won't shrink with page -- likely due to excessive nested divs with styling that i can't change
-//car logo slides left below 420px -- i don't understand why this happens
-//no sign in error message
-//add titles for inputs on edit user
-
-//EXTRA FEATURES
-//add minimap with location of each potential car to reserve, shrink car img, display car stats
-//add Stripe payment system
 
 import React, { Component } from "react";
 import axios from "axios";
@@ -361,7 +339,7 @@ class App extends Component {
 						</div>
 						{hamburgerIcon}
 					</div>
-					<div>{welcomeMsg}</div>
+					{welcomeMsg}
 					<div className="signinup-container">
 						{signInComponent}
 					</div>
