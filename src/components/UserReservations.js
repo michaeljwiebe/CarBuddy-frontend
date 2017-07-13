@@ -108,7 +108,11 @@ class userReservations extends Component {
 									{" " + endEST}
 								</div>
 							</div>
-							<button onClick={this.cancelCarReservation} value={reservation.id}>
+							<button
+								className="btn btn-cancel-reservation"
+								onClick={this.cancelCarReservation}
+								value={reservation.id}
+							>
 								Cancel Reservation
 							</button>
 
@@ -119,15 +123,17 @@ class userReservations extends Component {
 		}
 
 		return (
-			<div className="reservations-viewer">
+			<div className="reservations-viewer-container">
 				<div className="reservations-header">{myReservationsHeader}</div>
 				<div onClick={this.viewCarReservations} className="btn">
 					My Car's Reservations
 				</div>
 				<div onClick={this.viewUserReservations} className="btn">
 					My Reservations
-					<div>{userCarReservationDivs}</div>
-					<div>{userReservationsDivs}</div>
+					<div className="reservations-viewer">
+						<div>{userCarReservationDivs}</div>
+						<div>{userReservationsDivs}</div>
+					</div>
 				</div>
 			</div>
 		);
