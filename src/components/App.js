@@ -1,10 +1,22 @@
 //remove console logs?
-//problems with urls, localhost...
+//problems with urls, can't add car or edit review localhost...?
 
-//4 database tables, 10 components and 15 API calls
-//paperclip gem
-//googlemaps integration with markers
-//blood, sweat, tears, hundreds of milligrams of caffeinne
+//XMLHttpRequest cannot load //https://carbuddy.herokuapp.com/reviews/8?title=Not+worth+it&description=Expensive+and+guzzles+gas!+Maybe+that%27s+what+you%27re+into+though.&rating=3.
+//Method PATCH is not allowed by Access-Control-Allow-Methods in preflight response.
+
+//moved
+//trans skills in PI to healthcare
+//reflect, start in tech because it is transforming world
+//community - building relationships, connecting people
+//economy - using resources wisely, supporting local people
+//avid cyclist, beautifully connect community and economy
+//fully featured one page react web app with rails backend currently hosted on heroku and AWS
+//purpose to make it easier for people to give up car
+//keep money locally, facilitate better use of resources, and build community
+//incorporates paperclip gem for attaching images, google maps, 4 database tables, 10 components, and 16 API calls
+//When buttons are clicked, App's state changes and 'if' statements in the render function direct a different component to be displayed without changing the route.
+//blood, sweat, tears, and hundreds of milligrams of caffeinne
+//-----START VIDEO
 
 import React, { Component } from "react";
 import axios from "axios";
@@ -34,7 +46,6 @@ class App extends Component {
 			reservations: [],
 			signUp: false,
 			signIn: true,
-			// user: { id: 1, name: "Michael Wiebe" },
 			userImage: null,
 			user: null,
 			viewCarsAndReviews: false,
