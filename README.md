@@ -8,7 +8,7 @@ I developed this one-page app with a React.js frontend and a Ruby on Rails [back
 ### Challenges
 The way I deal track down bugs is by testing different solutions then commenting the results of those tests inside my code at the site of the bug. I've found this technique to be extremely useful for resolving issues, not just in javascript but when working with responsive design in CSS as well.
 
-A significant challenge was handling creation of reservations with user-controlled start and end times. I first attempted to incorporate a couple different existing date time pickers which both turned out to have issues making them hard to work with. Rather than use these I decided to build my own date time picker using HTML <select> tags linked to javascript objects. I built concise logic to show 28, 29, 30, or 31 days depending on the month and year selected.  I also converted back and forth between world/military and US time though I discovered afterwards that I may not have needed to.
+A significant challenge was handling creation of reservations with user-controlled start and end times. I first attempted to incorporate a couple different existing date time pickers which both turned out to have issues making them hard to work with. Rather than use these I decided to build my own date time picker using HTML `<select>` tags linked to javascript objects. I built concise logic to show 28, 29, 30, or 31 days depending on the month and year selected.  I also converted back and forth between world/military and US time though I discovered afterwards that I may not have needed to.
 
 Another challenge with making reservations was preventing cars from being double booked. To solve this I researched the javascript Date object and used the built-in functionality to convert dates to milliseconds and use simple 'if' statement inequalities to check for overlapping reservation times.
 
@@ -46,6 +46,7 @@ Another challenge with making reservations was preventing cars from being double
 
 The app has 10 components with the main one, App.js, controlling the rendering of all the others through booleans or objects in App.js's state. All API calls are performed through App.js with the exception of two which happen in the UserReservation.js component as an experiment in reduction of complexity. When buttons are clicked, App.js's state is changed and 'if' statements in the render function direct a different component to be displayed without changing the route. I systematically followed this format in all of my components. The following is a simplified and commented example of this format:
 
+```
 import React, { Component } from "react";
 
 
@@ -104,7 +105,7 @@ class App extends Component(
         )
     }
 )
-
+```
 
 
 
