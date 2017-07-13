@@ -87,7 +87,7 @@ body{
 }
 
 .reservations-viewer{
-    height: 65vh;
+    height: calc(100vh - 170px);
     overflow-y: scroll;
 }
 
@@ -98,10 +98,7 @@ body{
 
 .content-container{
     position: relative;
-    // top: -400px; or no top property // good for reservations, find a car pages
-    //no top property best for edit user and add car
-    // top: 265px; // good for cars and reviews page
-    height:0; //this works for main pages but when I go to add car/edit user I get
+    height: 0;
 
 }
 .reservations-and-reserve-container{
