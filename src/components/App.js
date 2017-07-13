@@ -391,7 +391,7 @@ class App extends Component {
 	}
 	addCar(props) {
 		axios
-			.post("http://carbuddy.herokuapp.com/cars", {
+			.post("https://carbuddy.herokuapp.com/cars", {
 				data: {
 					make_model: props.make_model,
 					year: props.year,
@@ -450,7 +450,7 @@ class App extends Component {
 	deleteCar(event) {
 		axios({
 			method: "delete",
-			url: "http://carbuddy.herokuapp.com/cars/" + event.target.value
+			url: "https://carbuddy.herokuapp.com/cars/" + event.target.value
 		}).then(
 			function(response) {
 				this.loadCars();
@@ -483,7 +483,7 @@ class App extends Component {
 	updateReview(props) {
 		axios({
 			method: "patch",
-			url: "http://carbuddy.herokuapp.com/reviews/" + props.id,
+			url: "https://carbuddy.herokuapp.com/reviews/" + props.id,
 			params: {
 				title: props.title,
 				description: props.description,
@@ -520,7 +520,7 @@ class App extends Component {
 
 	makeReview(props) {
 		axios
-			.post("http://carbuddy.herokuapp.com/reviews", {
+			.post("https://carbuddy.herokuapp.com/reviews", {
 				data: {
 					car_id: props.car_id,
 					title: props.title,
@@ -542,7 +542,7 @@ class App extends Component {
 
 	makeReservation(props) {
 		axios
-			.post("http://carbuddy.herokuapp.com/reservations", {
+			.post("https://carbuddy.herokuapp.com/reservations", {
 				data: {
 					car_id: props.car_id,
 					start_date: props.start_date,
@@ -582,7 +582,7 @@ class App extends Component {
 	}
 	createUser(props) {
 		axios
-			.post("http://carbuddy.herokuapp.com/users", {
+			.post("https://carbuddy.herokuapp.com/users", {
 				data: {
 					name: props.name,
 					address: props.address,
@@ -607,7 +607,7 @@ class App extends Component {
 	deleteUser() {
 		axios({
 			method: "delete",
-			url: "http://carbuddy.herokuapp.com/users/" + this.state.user.id
+			url: "https://carbuddy.herokuapp.com/users/" + this.state.user.id
 		}).then(
 			function(response) {
 				this.signOut();
@@ -629,7 +629,7 @@ class App extends Component {
 	updateUserInfo(props) {
 		axios({
 			method: "patch",
-			url: "http://carbuddy.herokuapp.com/users/" + this.state.user.id,
+			url: "https://carbuddy.herokuapp.com/users/" + this.state.user.id,
 			params: {
 				username: props.username,
 				password: props.password,
@@ -647,9 +647,9 @@ class App extends Component {
 	uploadUserImage(userInfo) {
 		let url;
 		if (userInfo.method === "update") {
-			url = "http://carbuddy.herokuapp.com/users/update_image/" + userInfo.id;
+			url = "https://carbuddy.herokuapp.com/users/update_image/" + userInfo.id;
 		} else {
-			url = "http://carbuddy.herokuapp.com/users/upload_image";
+			url = "https://carbuddy.herokuapp.com/users/upload_image";
 		}
 		var data = new FormData();
 		var imagedata = document.querySelector('input[type="file"]').files[0];
@@ -692,7 +692,7 @@ class App extends Component {
 
 	signIn(props) {
 		axios
-			.post("http://carbuddy.herokuapp.com/sign_in", {
+			.post("https://carbuddy.herokuapp.com/sign_in", {
 				data: {
 					username: props.username,
 					password: props.password
@@ -726,7 +726,7 @@ class App extends Component {
 		});
 	}
 	loadCars() {
-		axios.get("http://carbuddy.herokuapp.com/cars").then(
+		axios.get("https://carbuddy.herokuapp.com/cars").then(
 			function(response) {
 				response.data.forEach(
 					function(car) {
@@ -738,7 +738,7 @@ class App extends Component {
 		);
 	}
 	loadReviews() {
-		axios.get("http://carbuddy.herokuapp.com/reviews").then(
+		axios.get("https://carbuddy.herokuapp.com/reviews").then(
 			function(response) {
 				this.setState({
 					reviews: response.data
@@ -747,7 +747,7 @@ class App extends Component {
 		);
 	}
 	loadReservations() {
-		axios.get("http://carbuddy.herokuapp.com/reservations").then(
+		axios.get("https://carbuddy.herokuapp.com/reservations").then(
 			function(response) {
 				this.setState({ reservations: response.data });
 			}.bind(this)
