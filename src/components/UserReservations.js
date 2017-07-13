@@ -108,7 +108,11 @@ class userReservations extends Component {
 									{" " + endEST}
 								</div>
 							</div>
-							<button onClick={this.cancelCarReservation} value={reservation.id}>
+							<button
+								className="btn btn-cancel-reservation"
+								onClick={this.cancelCarReservation}
+								value={reservation.id}
+							>
 								Cancel Reservation
 							</button>
 
