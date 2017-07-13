@@ -8,40 +8,38 @@ I developed this one-page app with a React.js frontend and a Ruby on Rails [back
 ### Challenges
 The way I deal track down bugs is by testing different solutions then commenting the results of those tests inside my code at the site of the bug. I've found this technique to be extremely useful for resolving issues, not just in javascript but when working with responsive design in CSS as well.
 
-
 A significant challenge was handling creation of reservations with user-controlled start and end times. I first attempted to incorporate a couple different existing date time pickers which both turned out to have issues making them hard to work with. Rather than use these I decided to build my own date time picker using HTML <select> tags linked to javascript objects. I built concise logic to show 28, 29, 30, or 31 days depending on the month and year selected.  I also converted back and forth between world/military and US time though I discovered afterwards that I may not have needed to.
 
 Another challenge with making reservations was preventing cars from being double booked. To solve this I researched the javascript Date object and used the built-in functionality to convert dates to milliseconds and use simple 'if' statement inequalities to check for overlapping reservation times.
 
 ## Future Development
 
-CONVENIENCE
-no sign in error message
-add titles for inputs on edit user
-add avg reviews to start reservation car description
-display car address
-update car location
-click background to close hamburger
+#### Convenience
+* no sign in error message
+* add titles for inputs on edit user
+* add avg reviews to start reservation car description
+* display car address
+* update car location
+* click background to close hamburger
+
+#### Style points
+* images scale on reserve car
+* images remain centered on reserve car with page width change
+* shadow effects on buttons/cars/reservation divs
+* buttons can be styled, why not use those?
 
 
-STYLE POINTS
-images scale on reserve car
-images remain centered on reserve car with page width change
-shadow effects on buttons/cars/reservation divs
-buttons can be styled, why not use those?
-
-
-EXTRA FEATURES
-Display car stats on reservations and find a car
-add Stripe payment system
+#### Extra features
+* Display car stats on reservations and find a car
+* add Stripe payment system
 
 
 ## Known Issues
 
--Getting a preflight request error when sending PATCH requests to Heroku. This was not an error a week ago using the same deployment of the backend. From what I understand this is an error that happens when only certain methods are allowed for APIs. But I do have update methods which correspond to PATCH and show up in the terminal with rails routes
--mobile landscape view experiences difficulties with positioning due to use of vw and vh
--map won't shrink with page -- likely due to excessive nested divs with styling that i can't change
--car image in logo slides left below 420px -- i don't understand why this happens
+* Getting a preflight request error when sending PATCH requests to Heroku. This was not an error a week ago using the same deployment of the backend. From what I understand this is an error that happens when only certain methods are allowed for APIs. But I do have update methods which correspond to PATCH and show up in the terminal with rails routes
+* mobile landscape view experiences difficulties with positioning due to use of vw and vh
+* map won't shrink with page -- likely due to excessive nested divs with styling that i can't change
+* car image in logo slides left below 420px -- i don't understand why this happens
 
 
 ## Technical description
