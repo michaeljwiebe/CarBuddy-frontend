@@ -2,7 +2,7 @@
 I was inspired to build this app because I am an avid bicyclist and I believe it is in the interest of Philadelphia and everyone in it to reduce the number of cars on the road. A user-friendly and effective carsharing platform would do this by making it easier for car owners to get rid of their cars and learn to function without one while still having access to nearby cars when truly necessary.
 
 ## Development
-I developed this one-page app with a React.js frontend and a Ruby on Rails [backend](https://github.com/michaeljwiebe/carbuddy-backend). It was a great learning experience to build a full-stack fully featured (CRUD - Create Read Update Destroy) one-page app incorporating 16 API calls to the backend.
+I developed this single page app with a React.js frontend and a Ruby on Rails [backend](https://github.com/michaeljwiebe/carbuddy-backend). It was a great learning experience to build a full-stack fully featured (CRUD - Create Read Update Destroy) single page app incorporating 16 API calls to the backend.
 
 ### Challenges
 The way I deal track down bugs is by testing different solutions then commenting the results of those tests inside my code at the site of the bug. I've found this technique to be extremely useful for resolving issues, not just in javascript but when working with responsive design in CSS as well.
