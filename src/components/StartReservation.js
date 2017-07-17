@@ -100,6 +100,7 @@ class StartReservation extends Component {
 			daysPerMonthList = daysList31;
 		}
 
+		//I determined that I needed to convert back and forth from Javascript's notation for date and time to the American system so I wrote the two code blocks below and later functions ampmHour and jsHour to convert months and hours from Javascript to American and vice versa. I realized after writing it that it may not have been necessary if I would have known more about what is possible using javascript's built in Date object. Nonetheless, I wrote it and it works.
 		if (this.state.start_month === 0) {
 			textStartMonth = "January";
 		} else if (this.state.start_month === 1) {

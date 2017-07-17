@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+//Its really nice to have these small components that handle simple functions such as this one. My ability to focus and close in on the problem becomes so much greater using this method of increasing modularity. Though with many of these components, writing them was simple enough that I didn't end up having very many issues to deal with at all. I'd call that a win!
+
 class StartReview extends Component {
 	constructor(props) {
 		super(props);
