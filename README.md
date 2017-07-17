@@ -25,13 +25,9 @@ add avg reviews to start reservation car description
 display car address
 click background to close hamburger
 
-
 #### Style points
-* images scale on reserve car
 * images remain centered on reserve car with page width change
 * shadow effects on buttons/cars/reservation divs
-* buttons can be styled, why not use those?
-
 
 #### Extra features
 * Display car stats on reservations and find a car
