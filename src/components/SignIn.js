@@ -26,12 +26,15 @@ class SignIn extends Component {
 			</div>
 		);
 	}
+
 	updateUsername(event) {
 		this.setState({ username: event.target.value });
 	}
+
 	updatePassword(event) {
 		this.setState({ password: event.target.value });
 	}
+
 	handleSignIn() {
 		this.props.signIn(this.state);
 	}

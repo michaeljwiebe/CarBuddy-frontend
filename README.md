@@ -16,11 +16,14 @@ Another challenge with making reservations was preventing cars from being double
 ## Future Development
 
 CONVENIENCE
-no sign in error message
+add update car location button to reservations
+allow viewing of main page of app without being signed in
+style sign in/sign up buttons to work with above, maybe taking the place of the hamburger button or being placed into the hamburger menu
+add car picture to reservations
+add sign in error message
 add titles for inputs on edit user
 add avg reviews to start reservation car description
 display car address
-update car location
 click background to close hamburger
 
 

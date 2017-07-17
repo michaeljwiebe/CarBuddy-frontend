@@ -68,6 +68,7 @@ class AddCar extends Component {
 			</div>
 		);
 	}
+
 	handleAddCar() {
 		this.showLoadIcon();
 		navigator.geolocation.getCurrentPosition(
@@ -92,18 +93,23 @@ class AddCar extends Component {
 			}.bind(this)
 		);
 	}
+
 	showLoadIcon() {
 		this.setState({ loading: true });
 	}
+
 	updateMake_Model(event) {
 		this.setState({ make_model: event.target.value });
 	}
+
 	updateYear(event) {
 		this.setState({ year: event.target.value });
 	}
+
 	updateMPG(event) {
 		this.setState({ mpg: event.target.value });
 	}
+
 	updatePrice(event) {
 		this.setState({ price: event.target.value });
 	}

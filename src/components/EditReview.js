@@ -53,18 +53,23 @@ class EditReview extends Component {
 			</div>
 		);
 	}
+
 	handleUpdateReview() {
 		this.props.updateReview(this.state);
 	}
+
 	updateTitle(event) {
 		this.setState({ title: event.target.value });
 	}
+
 	updateDescription(event) {
 		this.setState({ description: event.target.value });
 	}
+
 	updateRating(event) {
 		this.setState({ rating: event.target.value });
 	}
+
 	componentWillReceiveProps(newProps) {
 		this.setState({
 			title: newProps.reviewToEdit.title,

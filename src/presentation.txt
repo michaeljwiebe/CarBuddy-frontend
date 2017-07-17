@@ -1,0 +1,13 @@
+//moved trans skills in PI to healthcare
+//reflect, start in tech because it is transforming world
+//community - building relationships, connecting people
+//economy - using resources wisely, supporting local people
+//avid cyclist, beautifully connect community and economy
+//fully featured one page react web app with rails backend
+//purpose to make it easier for people to give up car while also
+//facilitate better use of resources, keep money locally, and build community
+//incorporates paperclip gem for attaching images, google maps, 4 database tables, 10 components, and 16 API calls
+//When buttons are clicked, App's state changes and 'if' statements in the render function direct a different component to be displayed without changing the route.
+//react bc i could write it systematically by breaking code up into more manageable chunks
+//blood, sweat, tears, and hundreds of milligrams of caffeinne
+//-----START VIDEO
