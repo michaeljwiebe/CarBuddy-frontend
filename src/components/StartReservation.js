@@ -89,6 +89,7 @@ class StartReservation extends Component {
 				View Cars
 			</div>
 		);
+
 		if (this.state.start_month % 2 === 1 && this.state.start_month !== 1) {
 			daysPerMonthList = daysList30;
 		} else if (this.state.start_month === 1 && this.state.start_year % 4 !== 0) {
@@ -98,6 +99,8 @@ class StartReservation extends Component {
 		} else {
 			daysPerMonthList = daysList31;
 		}
+
+		//I determined that I needed to convert back and forth from Javascript's notation for date and time to the American system so I wrote the two code blocks below and later functions ampmHour and jsHour to convert months and hours from Javascript to American and vice versa. I realized after writing it that it may not have been necessary if I would have known more about what is possible using javascript's built in Date object. Nonetheless, I wrote it and it works.
 		if (this.state.start_month === 0) {
 			textStartMonth = "January";
 		} else if (this.state.start_month === 1) {
@@ -123,6 +126,7 @@ class StartReservation extends Component {
 		} else if (this.state.start_month === 11) {
 			textStartMonth = "December";
 		}
+
 		if (this.state.end_month === 0) {
 			textEndMonth = "January";
 		} else if (this.state.end_month === 1) {
@@ -281,6 +285,7 @@ class StartReservation extends Component {
 			end_year: today.getYear() + 1900
 		});
 	}
+
 	viewAvailableCars() {
 		let unAvailableCars;
 		let conflictingReservations;
@@ -374,6 +379,7 @@ class StartReservation extends Component {
 			}.bind(this)
 		);
 	}
+
 	ampmHour(jsHour) {
 		let AMPMHour;
 		if (jsHour > 12) {
@@ -383,6 +389,7 @@ class StartReservation extends Component {
 		}
 		return AMPMHour;
 	}
+
 	jsHour(ampmHour, ampm) {
 		let JSHour;
 		if (ampm === "PM" && ampmHour !== 12) {
@@ -407,20 +414,24 @@ class StartReservation extends Component {
 			end_hour: defaultEndTime
 		});
 	}
+
 	updateEndHour(event) {
 		this.setState({
 			end_hour: this.jsHour(event.target.value, this.state.end_AMPM)
 		});
 	}
+
 	updateStartDay(event) {
 		this.setState({
 			start_day: event.target.value,
 			end_day: event.target.value
 		});
 	}
+
 	updateEndDay(event) {
 		this.setState({ end_day: event.target.value });
 	}
+
 	updateStartMonth(event) {
 		let jsStartMonth;
 		if (event.target.value === "January") {
@@ -450,6 +461,7 @@ class StartReservation extends Component {
 		}
 		this.setState({ start_month: jsStartMonth, end_month: jsStartMonth });
 	}
+
 	updateEndMonth(event) {
 		let jsEndMonth;
 		if (event.target.value === "January") {
@@ -479,12 +491,14 @@ class StartReservation extends Component {
 		}
 		this.setState({ end_month: jsEndMonth });
 	}
+
 	updateStartYear(event) {
 		this.setState({
 			start_year: event.target.value,
 			end_year: event.target.value
 		});
 	}
+
 	updateEndYear(event) {
 		this.setState({ end_year: event.target.value });
 	}
@@ -497,9 +511,11 @@ class StartReservation extends Component {
 			car_id: event.target.value
 		});
 	}
+
 	updateStartAMPM(event) {
 		this.setState({ start_AMPM: event.target.value });
 	}
+
 	updateEndAMPM(event) {
 		this.setState({ end_AMPM: event.target.value });
 	}

@@ -61,21 +61,27 @@ class SignUp extends Component {
 			</div>
 		);
 	}
+
 	handleCreateUser() {
 		this.props.createUser(this.state);
 	}
+
 	updateName(event) {
 		this.setState({ name: event.target.value });
 	}
+
 	updateAddress(event) {
 		this.setState({ address: event.target.value });
 	}
+
 	updateZip(event) {
 		this.setState({ zip: event.target.value });
 	}
+
 	updateUsername(event) {
 		this.setState({ username: event.target.value });
 	}
+
 	updatePassword(event) {
 		this.setState({ password: event.target.value });
 	}

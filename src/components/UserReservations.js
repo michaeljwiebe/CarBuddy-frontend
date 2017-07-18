@@ -32,6 +32,8 @@ class userReservations extends Component {
 		let userCarReserved;
 		let myReservationsHeader;
 
+		console.log(this.state);
+
 		if (this.state.viewUserReservations === true) {
 			myReservationsHeader = "My Reservations";
 			userReservationsDivs = this.state.userReservations.map(
@@ -43,19 +45,28 @@ class userReservations extends Component {
 					endEST = new Date(reservation.end_date).toLocaleString();
 
 					return (
-						<div key={index}>
+						<div key={index} className="reservation">
 							{reservationCar[0].make_model}
-							<div>
+							<div className="flex">
+								<img
+									src={reservationCar[0].avatar_url}
+									className="reservations-car-img"
+									alt="reserved car"
+								/>
 								<div>
-									{" "}From
-									{" " + startEST + " "}
-								</div><div>
-									{" "}Until
-									{" " + endEST + " "}
-								</div>
-								<div>
-									Total cost: $
-									{reservationCar[0].price / 24 * reservation.reservation_hours}
+									<div>
+										{" "}From
+										{" " + startEST + " "}
+									</div><div>
+										{" "}Until
+										{" " + endEST + " "}
+									</div>
+									<div>
+										Total cost: $
+										{reservationCar[0].price /
+											24 *
+											reservation.reservation_hours}
+									</div>
 								</div>
 							</div>
 							<button
@@ -77,15 +88,15 @@ class userReservations extends Component {
 					return car.owner_id === this.state.userId;
 				}.bind(this)
 			);
-			console.log(userCars); //works, car objects
+			console.log(userCars); //works, returns user's cars as objects
 			userCarIds = userCars.map(function(userCar) {
 				return userCar.id;
 			});
-			console.log(userCarIds); // works, array of ids
+			console.log(userCarIds); // works, returns only array of car ids
 			carReservations = this.state.allReservations.filter(function(reservation) {
 				return userCarIds.indexOf(reservation.car_id) > -1;
 			});
-			console.log(carReservations); // returns reservations array
+			console.log(carReservations); // returns user's car reservations array
 			myReservationsHeader = "My Car's Reservations";
 			userCarReservationDivs = carReservations.map(
 				function(reservation, index) {
@@ -96,16 +107,30 @@ class userReservations extends Component {
 
 					startEST = new Date(reservation.start_date).toLocaleString();
 					endEST = new Date(reservation.end_date).toLocaleString();
+
 					return (
-						<div key={index}>
+						<div key={index} className="reservation">
 							<div>{userCarReserved[0].make_model}</div>
-							<div>
+							<div className="flex">
+								<img
+									className="reservations-car-img"
+									src={userCarReserved[0].avatar_url}
+									alt="reserved car"
+								/>
 								<div>
-									From
-									{" " + startEST + " "}
-								</div><div>
-									Until
-									{" " + endEST}
+									<div>
+										From
+										{" " + startEST + " "}
+									</div><div>
+										Until
+										{" " + endEST}
+									</div>
+									<div>
+										Total cost: $
+										{userCarReserved[0].price /
+											24 *
+											reservation.reservation_hours}
+									</div>
 								</div>
 							</div>
 							<button
@@ -175,7 +200,7 @@ class userReservations extends Component {
 		// sorts reservations and returns only user's reservations
 		let reservations = allReservations.filter(
 			function(reservation) {
-				return parseInt(reservation.renter_id) === this.state.userId;
+				return parseInt(reservation.renter_id, 10) === this.state.userId;
 			}.bind(this)
 		);
 		return reservations;

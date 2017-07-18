@@ -1,22 +1,4 @@
-//remove console logs?
-//problems with urls, can't add car or edit review localhost...?
-
-//XMLHttpRequest cannot load //https://carbuddy.herokuapp.com/reviews/8?title=Not+worth+it&description=Expensive+and+guzzles+gas!+Maybe+that%27s+what+you%27re+into+though.&rating=3.
-//Method PATCH is not allowed by Access-Control-Allow-Methods in preflight response.
-
-//moved
-//trans skills in PI to healthcare
-//reflect, start in tech because it is transforming world
-//community - building relationships, connecting people
-//economy - using resources wisely, supporting local people
-//avid cyclist, beautifully connect community and economy
-//fully featured one page react web app with rails backend currently hosted on heroku and AWS
-//purpose to make it easier for people to give up car
-//keep money locally, facilitate better use of resources, and build community
-//incorporates paperclip gem for attaching images, google maps, 4 database tables, 10 components, and 16 API calls
-//When buttons are clicked, App's state changes and 'if' statements in the render function direct a different component to be displayed without changing the route.
-//blood, sweat, tears, and hundreds of milligrams of caffeinne
-//-----START VIDEO
+//This component controls the app. All other components are rendered inside it and the values in its state determine what the end user sees. This component performs almost all of the API calls using axios or fetch. All of the CSS is also imported into this component for simplicity's sake.
 
 import React, { Component } from "react";
 import axios from "axios";
@@ -26,6 +8,7 @@ import "../css/hamburger-menu.css";
 import "../css/inputs-and-buttons.css";
 import "../css/cars-and-reviews.css";
 import "../css/footer.css";
+import "../css/UserReservations.css";
 
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
@@ -41,9 +24,11 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			//these arrays will be filled as API calls return from the backend. The calls happen just before the render function runs.
 			cars: [],
 			reviews: [],
 			reservations: [],
+			//these values control what the end user sees on the screen.
 			signUp: false,
 			signIn: true,
 			userImage: null,
@@ -56,6 +41,7 @@ class App extends Component {
 			viewReservations: false,
 			editUser: false
 		};
+		//binding 'this' to functions in this way is necessary in React when the function uses the 'this' keyword.
 		this.signIn = this.signIn.bind(this);
 		this.signUp = this.signUp.bind(this);
 		this.signOut = this.signOut.bind(this);
@@ -83,6 +69,7 @@ class App extends Component {
 	}
 
 	render() {
+		//the variables that are being used to control the render are all declared here with no values because they will be assigned values inside the render depending on the state of the app.
 		let hamburgerIcon;
 		let hamburger;
 		let welcomeMsg;
@@ -112,43 +99,23 @@ class App extends Component {
 		let carAvatar;
 		let footer;
 
-		if (this.state.reserveCar === true) {
-			newReservation = (
-				<StartReservation
-					makeReservation={this.makeReservation}
-					reservations={this.state.reservations}
-					cars={this.state.cars}
-					inputs={true}
-				/>
-			);
-		}
-		if (this.state.carToReview !== null) {
-			newReview = (
-				<StartReview carToReview={this.state.carToReview} makeReview={this.makeReview} />
-			);
-		}
-		if (this.state.reviewToEdit !== null) {
-			openReviewEditor = (
-				<EditReview
-					reviewToEdit={this.state.reviewToEdit}
-					updateReview={this.updateReview}
-				/>
-			);
-		}
-
+		//the values of above variables are first controlled by the state of the user which is null if no user is signed in or the user object if the user is signed in.
 		if (this.state.user === null) {
 			logoText = "logo logo-sign-in-text";
 			logoImage = "logo logo-sign-in-image";
 			userAvatar = null;
+			openReviewEditor = null;
+
 			if (this.state.signIn === true) {
 				signUpBtn = <div className="btn btn-sign-up" onClick={this.signUp}>Sign Up</div>;
 				signInComponent = <div><SignIn signIn={this.signIn} /> {signUpBtn} </div>;
 			}
+
 			if (this.state.signUp === true) {
 				signUpComponent = <SignUp createUser={this.createUser} />;
 			}
-			openReviewEditor = null;
 		} else {
+			//on user sign-in, these variables are given values. Button variables will not change values.
 			userAvatar = this.state.userImage;
 			logoText = "logo logo-main-text";
 			logoImage = "logo logo-main-image";
@@ -158,6 +125,7 @@ class App extends Component {
 					<i className="fa fa-bars" aria-hidden="true" />
 				</div>
 			);
+			//the three buttons directly below get rendered inside the hamburger variable following them. I chose to do this in order to increase modularity and make it possible to put the same buttons in other places very easily. I didn't end up doing that because I decided that the most logical and user-friendly way to set the app up was to put these less-often-used buttons in the hamburger menu only.
 			addCarBtn = <div className="hamburger-btn" onClick={this.openAddCar}>Add a car</div>;
 			editUserBtn = <div className="hamburger-btn" onClick={this.editUser}>Edit User</div>;
 			signOutBtn = <div className="hamburger-btn" onClick={this.signOut}>Sign Out</div>;
@@ -174,6 +142,7 @@ class App extends Component {
 					</div>
 				</div>
 			);
+			//the three buttons below are always rendered at the bottom of the screen when the user is signed in.
 			userReservationsBtn = (
 				<div
 					className="btn footer-menu-btn btn-reservations"
@@ -201,15 +170,47 @@ class App extends Component {
 				</div>
 			);
 
+			if (this.state.reserveCar === true) {
+				newReservation = (
+					<StartReservation
+						makeReservation={this.makeReservation}
+						reservations={this.state.reservations}
+						cars={this.state.cars}
+						inputs={true}
+					/>
+				);
+			}
+
+			if (this.state.carToReview !== null) {
+				newReview = (
+					<StartReview
+						carToReview={this.state.carToReview}
+						makeReview={this.makeReview}
+					/>
+				);
+			}
+
+			if (this.state.reviewToEdit !== null) {
+				openReviewEditor = (
+					<EditReview
+						reviewToEdit={this.state.reviewToEdit}
+						updateReview={this.updateReview}
+					/>
+				);
+			}
+
 			if (this.state.editUser || this.state.addCar || this.state.carToReview) {
 				contentContainerClasses = "content-container";
 			}
+
 			if (this.state.viewReservations || this.state.reserveCar) {
 				contentContainerClasses = "content-container reservations-and-reserve-container";
 			}
+
 			if (this.state.viewCarsAndReviews) {
 				contentContainerClasses = "content-container cars-and-reviews-container";
 			}
+
 			if (this.state.editUser === true) {
 				editUser = (
 					<EditUser
@@ -219,9 +220,11 @@ class App extends Component {
 					/>
 				);
 			}
+
 			if (this.state.addCar === true) {
 				addCar = <AddCar addCar={this.addCar} />;
 			}
+
 			if (this.state.viewReservations === true) {
 				userReservations = (
 					<UserReservations
@@ -231,6 +234,7 @@ class App extends Component {
 					/>
 				);
 			}
+
 			if (this.state.viewCarsAndReviews === true) {
 				let bigMap = {
 					position: "relative",
@@ -338,6 +342,7 @@ class App extends Component {
 
 		console.log(this.state);
 
+		//this is the return portion of the app's render function. The values of the variables below as well as their styles are set in the logic above.
 		return (
 			<div className="App">
 				<div>
@@ -373,10 +378,12 @@ class App extends Component {
 			</div>
 		);
 	}
+
 	hamburgerToggle() {
 		let hamburgerMenu = document.getElementsByClassName("hamburger")[0];
 		hamburgerMenu.classList.toggle("hamburger-show");
 	}
+
 	openAddCar() {
 		this.setState({
 			addCar: true,
@@ -389,6 +396,7 @@ class App extends Component {
 		});
 		this.hamburgerToggle();
 	}
+
 	addCar(props) {
 		axios
 			.post("https://carbuddy.herokuapp.com/cars", {
@@ -457,6 +465,7 @@ class App extends Component {
 			}.bind(this)
 		);
 	}
+
 	showCarsAndReviews() {
 		this.setState({
 			carToReview: null,
@@ -468,6 +477,7 @@ class App extends Component {
 			editUser: false
 		});
 	}
+
 	viewReservations() {
 		this.setState({
 			carToReview: null,
@@ -499,6 +509,7 @@ class App extends Component {
 			}.bind(this)
 		);
 	}
+
 	editReview(event) {
 		this.setState({
 			reviewToEdit: JSON.parse(event.target.value),
@@ -566,6 +577,7 @@ class App extends Component {
 				}.bind(this)
 			);
 	}
+
 	startReservation(event) {
 		this.setState({
 			reserveCar: true,
@@ -577,9 +589,11 @@ class App extends Component {
 			editUser: false
 		});
 	}
+
 	signUp() {
 		this.setState({ signUp: true, signIn: false });
 	}
+
 	createUser(props) {
 		axios
 			.post("https://carbuddy.herokuapp.com/users", {
@@ -614,6 +628,7 @@ class App extends Component {
 			}.bind(this)
 		);
 	}
+
 	editUser() {
 		this.setState({
 			reserveCar: false,
@@ -626,6 +641,7 @@ class App extends Component {
 		});
 		this.hamburgerToggle();
 	}
+
 	updateUserInfo(props) {
 		axios({
 			method: "patch",
@@ -682,6 +698,7 @@ class App extends Component {
 				}.bind(this)
 			);
 	}
+
 	modifyURL(url) {
 		let imageURL = url.split("");
 		let secondHalfUrl = imageURL.splice(32);
@@ -713,6 +730,7 @@ class App extends Component {
 				}.bind(this)
 			);
 	}
+
 	signOut() {
 		this.hamburgerToggle();
 		this.setState({
@@ -725,6 +743,7 @@ class App extends Component {
 			editUser: false
 		});
 	}
+
 	loadCars() {
 		axios.get("https://carbuddy.herokuapp.com/cars").then(
 			function(response) {
@@ -737,6 +756,7 @@ class App extends Component {
 			}.bind(this)
 		);
 	}
+
 	loadReviews() {
 		axios.get("https://carbuddy.herokuapp.com/reviews").then(
 			function(response) {
@@ -746,6 +766,7 @@ class App extends Component {
 			}.bind(this)
 		);
 	}
+
 	loadReservations() {
 		axios.get("https://carbuddy.herokuapp.com/reservations").then(
 			function(response) {
@@ -753,6 +774,8 @@ class App extends Component {
 			}.bind(this)
 		);
 	}
+
+	//this function will run once befor the app renders for the first time. I put each axios call into a seperate function so that I could call them again individually when it was needed.
 	componentWillMount() {
 		this.loadCars();
 		this.loadReviews();

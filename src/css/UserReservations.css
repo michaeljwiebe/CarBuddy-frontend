@@ -1,0 +1,36 @@
+.reservations-viewer-container {
+  margin-top: 40px; }
+
+.reservations-viewer {
+  height: calc(100vh - 170px);
+  overflow-y: scroll; }
+
+.reservation {
+  border: 1px solid black;
+  margin: 5px 0; }
+
+.reservations-header {
+  font-size: 18px;
+  text-decoration: underline; }
+
+.reservations-car-img {
+  width: 45vw;
+  min-width: 150px;
+  max-width: 270px;
+  margin: 5px;
+  height: 30vw;
+  min-height: 100px;
+  max-height: 180px; }
+
+.reservations-and-reserve-container {
+  top: -36vh; }
+
+.cars-and-reviews-container {
+  top: -265px; }
+
+@media all and (max-width: 420px) {
+  .reservations-car-img {
+    min-width: 270px;
+    min-height: 180px; } }
+
+/*# sourceMappingURL=UserReservations.css.map */

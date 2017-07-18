@@ -73,9 +73,11 @@ class EditUser extends Component {
 			</div>
 		);
 	}
+
 	handleUpdateUserInfo() {
 		this.props.updateUserInfo(this.state);
 	}
+
 	handleDeleteUser() {
 		this.props.deleteUser();
 	}
@@ -83,15 +85,19 @@ class EditUser extends Component {
 	updateUsername(event) {
 		this.setState({ username: event.target.value });
 	}
+
 	updatePassword(event) {
 		this.setState({ password: event.target.value });
 	}
+
 	updateName(event) {
 		this.setState({ name: event.target.value });
 	}
+
 	updateAddress(event) {
 		this.setState({ address: event.target.value });
 	}
+
 	updateZip(event) {
 		this.setState({ zip: event.target.value });
 	}
