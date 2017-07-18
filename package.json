@@ -2,7 +2,7 @@
   "name": "frontend-carbuddy",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3000",
+  "homepage": "http://michaeljwiebe.github.io/CarBuddy-frontend",
   "dependencies": {
     "axios": "^0.16.2",
     "react": "^15.6.1",
