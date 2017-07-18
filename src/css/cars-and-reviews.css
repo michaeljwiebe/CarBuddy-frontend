@@ -1,5 +1,5 @@
 .cars-and-reviews {
-  height: 63.5vh;
+  height: calc(80vh - 99px);
   position: relative;
   top: 15vh;
   border: 2px solid black;

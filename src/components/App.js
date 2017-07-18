@@ -8,6 +8,7 @@ import "../css/hamburger-menu.css";
 import "../css/inputs-and-buttons.css";
 import "../css/cars-and-reviews.css";
 import "../css/footer.css";
+import "../css/UserReservations.css";
 
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
