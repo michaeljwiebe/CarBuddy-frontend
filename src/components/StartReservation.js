@@ -1,3 +1,11 @@
+//This component features my very own date time picker.
+//I used js files listing the potential number of days that a month could have as well as the months and years that I wanted to have available to pick.
+//I mapped those files into option tags so that I could put them into a a select tag on the frontend
+//I then wrote logic to use the correct number of days depending on which month (and year to account for leap years) was selected
+//I then built selectors for hour, AM/PM, month, day of the month, and year for both start start and finish of reservations.
+//To prevent double-booking I built new Date objects with the data that was selected and converted them into milliseconds so that I could easily determine if the requested reservation times overlapped with any other reservation that was already in the database. This gave me a list of car IDs that the user making the current reservation should not be available to choose.
+//I then display the cars that were not listed in the above array as options to reserve.
+
 import React, { Component } from "react";
 import GoogleMap from "./GoogleMap";
 
