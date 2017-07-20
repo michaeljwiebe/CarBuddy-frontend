@@ -46,13 +46,28 @@ Another challenge with making reservations was preventing cars from being double
 The app has 10 components with the main one, App.js, controlling the rendering of all the others through booleans or objects in App.js's state. All API calls are performed through App.js with the exception of two which happen in the UserReservation.js component as an experiment in reduction of complexity. When buttons are clicked, App.js's state is changed and 'if' statements in the render function direct a different component to be displayed without changing the route. I systematically followed this format in all of my components. The following is a simplified and commented example of this format:
 
 ```
+//required import to all React components
 import React, { Component } from "react";
 
+//import necessary .js files using syntax below:
+import AddCar from 'AddCar';
+
+//and CSS using:
+import 'main.css';
+
+//it is also possible to write 'dumb functions' in separate files which do not have variables with
+//the ability to be updated. Dumb function syntax will look like vanilla Javascript function,
+//no constructor, no state
+
+//react class initialization for 'smart functions', or functions with variables that will change
+//as the app is used is below
 
 class App extends Component(
     constructor(props){
         super(props); //required for React
-        //this.state stores data from the backend and holds booleans that determine what is rendered by default. Button clicks change these booleans and will cause the app to render different components
+        //this.state stores data from the backend and holds booleans that determine what is rendered by
+        //default. Button clicks change these booleans and will cause the app to render different
+        //components
         this.state = {
             cars: [],
             reservations: [],
@@ -60,11 +75,18 @@ class App extends Component(
             viewReservations: false
         };
 
-        //below binding of this is necessary for functions using this keyword in React
+        //binding of this (seen below) is necessary for functions using this keyword in React,
+        //here is a straightforward, systematic way to do it
 
         this.viewCars = this.viewCars.bind(this);
         this.viewReservations = this.viewReservations.bind(this);
     }
+
+    //'this' can and must be bound using '.bind(this)' after the closing curly brace of
+    //anonymous functions. Doing it looks like this:
+    //myItemsArray.forEach(function(item){
+        //doStuff
+    //}.bind(this))
 
     viewCars(){
         this.setState({
@@ -93,8 +115,10 @@ class App extends Component(
             reservations = <Reservations reservations={this.state.reservations} />
         }
 
+        //all React content being rendered must be wrapped in a single HTML element
+        //everything that you want to appear on the frontend must be inside the return
+        //of the class' render function
         return(
-            //all React content being rendered must be wrapped in a single HTML element
             <div className="content">
                 {viewCarsBtn}
                 {viewReservationsBtn}
@@ -104,6 +128,10 @@ class App extends Component(
         )
     }
 )
+
+//export is required in all js files so that they can be imported into others where needed
+export default App;
+
 ```
 
 
