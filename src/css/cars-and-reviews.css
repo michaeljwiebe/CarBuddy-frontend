@@ -1,7 +1,7 @@
 .cars-and-reviews {
-  height: calc(80vh - 99px);
+  height: calc(80vh - 107px);
   position: relative;
-  top: 15vh;
+  top: 98px;
   border: 2px solid black;
   overflow-y: scroll; }
 
