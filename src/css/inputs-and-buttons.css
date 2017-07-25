@@ -1,6 +1,6 @@
 .inputs-container {
   position: relative;
-  top: 100px;
+  top: -100px;
   left: 10%;
   width: 80%;
   max-width: 500px; }
