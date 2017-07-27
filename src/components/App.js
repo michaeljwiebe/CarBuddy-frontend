@@ -28,6 +28,9 @@ class App extends Component {
 			cars: [],
 			reviews: [],
 			reservations: [],
+			//these are the user's coordinates used for centering map and updating car locations
+			lat: "",
+			lng: "",
 			//these values control what the end user sees on the screen.
 			signUp: false,
 			signIn: true,
@@ -66,6 +69,7 @@ class App extends Component {
 		this.loadCars = this.loadCars.bind(this);
 		this.loadReviews = this.loadReviews.bind(this);
 		this.loadReservations = this.loadReservations.bind(this);
+		this.getCurrentCoordinates = this.getCurrentCoordinates.bind(this);
 	}
 
 	render() {
@@ -222,7 +226,14 @@ class App extends Component {
 			}
 
 			if (this.state.addCar === true) {
-				addCar = <AddCar addCar={this.addCar} />;
+				addCar = (
+					<AddCar
+						addCar={this.addCar}
+						getCurrentCoordinates={this.getCurrentCoordinates}
+						lat={this.state.lat}
+						lng={this.state.lng}
+					/>
+				);
 			}
 
 			if (this.state.viewReservations === true) {
@@ -253,8 +264,8 @@ class App extends Component {
 						styles={bigMap}
 						zoom={bigMapZoom}
 						cars={this.state.cars}
-						lat={39.9524}
-						lng={-75.1636}
+						lat={this.state.lat}
+						lng={this.state.lng}
 					/>
 				);
 				carsAndReviewsStyles = "cars-and-reviews";
@@ -395,6 +406,19 @@ class App extends Component {
 			editUser: false
 		});
 		this.hamburgerToggle();
+		this.getCurrentCoordinates();
+	}
+
+	getCurrentCoordinates() {
+		console.log("got coords");
+		navigator.geolocation.getCurrentPosition(
+			function(position) {
+				this.setState({
+					lat: position.coords.latitude,
+					lng: position.coords.longitude
+				});
+			}.bind(this)
+		);
 	}
 
 	addCar(props) {
@@ -464,6 +488,7 @@ class App extends Component {
 				this.loadCars();
 			}.bind(this)
 		);
+		this.getCurrentCoordinates();
 	}
 
 	showCarsAndReviews() {
@@ -476,6 +501,7 @@ class App extends Component {
 			viewReservations: false,
 			editUser: false
 		});
+		this.getCurrentCoordinates();
 	}
 
 	viewReservations() {
@@ -488,6 +514,7 @@ class App extends Component {
 			viewReservations: true,
 			editUser: false
 		});
+		this.getCurrentCoordinates();
 	}
 
 	updateReview(props) {
@@ -515,6 +542,7 @@ class App extends Component {
 			reviewToEdit: JSON.parse(event.target.value),
 			viewCarsAndReviews: false
 		});
+		this.getCurrentCoordinates();
 	}
 
 	startReview(event) {
@@ -527,6 +555,7 @@ class App extends Component {
 			viewReservations: false,
 			editUser: false
 		});
+		this.getCurrentCoordinates();
 	}
 
 	makeReview(props) {
@@ -549,6 +578,7 @@ class App extends Component {
 					});
 				}.bind(this)
 			);
+		this.getCurrentCoordinates();
 	}
 
 	makeReservation(props) {
@@ -588,6 +618,7 @@ class App extends Component {
 			viewReservations: false,
 			editUser: false
 		});
+		this.getCurrentCoordinates();
 	}
 
 	signUp() {
@@ -640,6 +671,7 @@ class App extends Component {
 			editUser: true
 		});
 		this.hamburgerToggle();
+		this.getCurrentCoordinates();
 	}
 
 	updateUserInfo(props) {
@@ -780,6 +812,7 @@ class App extends Component {
 		this.loadCars();
 		this.loadReviews();
 		this.loadReservations();
+		this.getCurrentCoordinates();
 	}
 }
 

@@ -8,8 +8,8 @@ class AddCar extends Component {
 			year: "",
 			mpg: "",
 			price: "",
-			lat: "",
-			lng: "",
+			lat: props.lat,
+			lng: props.lng,
 			loading: false
 		};
 		this.updateYear = this.updateYear.bind(this);
@@ -71,27 +71,15 @@ class AddCar extends Component {
 
 	handleAddCar() {
 		this.showLoadIcon();
-		navigator.geolocation.getCurrentPosition(
-			function(position) {
-				this.setState(
-					{
-						lat: position.coords.latitude,
-						lng: position.coords.longitude
-					},
-					function() {
-						this.props.addCar(this.state);
-						this.setState({
-							make_model: "",
-							year: "",
-							mpg: "",
-							price: "",
-							lat: "",
-							lng: ""
-						});
-					}.bind(this)
-				);
-			}.bind(this)
-		);
+		this.props.addCar(this.state);
+		this.setState({
+			make_model: "",
+			year: "",
+			mpg: "",
+			price: "",
+			lat: "",
+			lng: ""
+		});
 	}
 
 	showLoadIcon() {
