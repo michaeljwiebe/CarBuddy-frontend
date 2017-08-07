@@ -9,19 +9,26 @@
     max-width: 500px;
     border-top: 2px solid;
     background-color: $bg-color;
+    justify-content: space-around;
 }
 .footer-menu-btn{
     margin: 5px 10px;
 }
 
 .btn-reservations{
-    width: 35%;
+    width: 28%;
+    min-width: 100px;
+    max-width: 120px;
 }
 
 .btn-find-car{
-    width:29%;
+    width: 20%;
+    min-width: 80px;
+    max-width: 100px;
 }
 
-.btn-cars{
-    width: 15%;
+.btn-my-cars, .btn-cars{
+    width: 22%;
+    min-width: 70px;
+    max-width: 110px;
 }

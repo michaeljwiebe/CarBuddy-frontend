@@ -1,11 +1,18 @@
 //This component controls the app. All other components are rendered inside it and the values in its state determine what the end user sees. This component performs almost all of the API calls using axios or fetch. All of the CSS is also imported into this component for simplicity's sake.
 
+//make cars button 'my cars' when cars is active, show small picture, large map, update location btn
+//move remove car btn to mycars page
+//update location btn to current reservations on right side, move cancel to left side
+//move delete car to mycars view
+//build in edit car functionality from mycars page
+
 import React, { Component } from "react";
 import axios from "axios";
 
 import "../css/App.css";
 import "../css/hamburger-menu.css";
-import "../css/inputs-and-buttons.css";
+import "../css/buttons.css";
+import "../css/inputs.css";
 import "../css/cars-and-reviews.css";
 import "../css/footer.css";
 import "../css/UserReservations.css";
@@ -19,6 +26,7 @@ import StartReservation from "./StartReservation";
 import StartReview from "./StartReview";
 import EditReview from "./EditReview";
 import GoogleMap from "./GoogleMap";
+import MyCars from "./MyCars";
 
 class App extends Component {
 	constructor(props) {
@@ -36,7 +44,10 @@ class App extends Component {
 			signIn: true,
 			userImage: null,
 			user: null,
+			//user info below for rapid testing purposes, not currently working
+			// user: { username: "arnold", password: "a", name: "Arnold", id: 49 },
 			viewCarsAndReviews: false,
+			viewMyCars: false,
 			carToReview: null,
 			reviewToEdit: null,
 			reserveCar: false,
@@ -62,7 +73,8 @@ class App extends Component {
 		this.viewReservations = this.viewReservations.bind(this);
 		this.editReview = this.editReview.bind(this);
 		this.updateReview = this.updateReview.bind(this);
-		this.showCarsAndReviews = this.showCarsAndReviews.bind(this);
+		this.viewCarsAndReviews = this.viewCarsAndReviews.bind(this);
+		this.viewMyCars = this.viewMyCars.bind(this);
 		this.deleteCar = this.deleteCar.bind(this);
 		this.addCar = this.addCar.bind(this);
 		this.openAddCar = this.openAddCar.bind(this);
@@ -86,6 +98,8 @@ class App extends Component {
 		let contentContainerClasses;
 		let carsAndReviews;
 		let carsAndReviewsBtn;
+		let myCarsBtn;
+		let myCars;
 		let carsAndReviewsStyles;
 		let openReviewEditor;
 		let startCarReservationBtn;
@@ -103,7 +117,7 @@ class App extends Component {
 		let carAvatar;
 		let footer;
 
-		//the values of above variables are first controlled by the state of the user which is null if no user is signed in or the user object if the user is signed in.
+		//the values of above variables are first controlled by the state of the user which is the user object if the user is signed in or null if not.
 		if (this.state.user === null) {
 			logoText = "logo logo-sign-in-text";
 			logoImage = "logo logo-sign-in-image";
@@ -146,7 +160,9 @@ class App extends Component {
 					</div>
 				</div>
 			);
-			//the three buttons below are always rendered at the bottom of the screen when the user is signed in.
+
+			//three of four buttons below (either All Cars or My Cars) are always rendered at the bottom of the screen when the user is signed in.
+
 			userReservationsBtn = (
 				<div
 					className="btn footer-menu-btn btn-reservations"
@@ -160,17 +176,30 @@ class App extends Component {
 					Find a car
 				</div>
 			);
-			carsAndReviewsBtn = (
-				<div onClick={this.showCarsAndReviews} className="btn footer-menu-btn btn-cars">
-					Cars
-				</div>
-			);
 			welcomeMsg = <div className="welcome-msg">Welcome {this.state.user.name}!</div>;
+
+			if (this.state.viewCarsAndReviews === true) {
+				myCarsBtn = (
+					<div onClick={this.viewMyCars} className="btn footer-menu-btn btn-my-cars">
+						My Cars
+					</div>
+				);
+			} else {
+				carsAndReviewsBtn = (
+					<div
+						onClick={this.viewCarsAndReviews}
+						className="btn footer-menu-btn btn-cars"
+					>
+						All Cars
+					</div>
+				);
+			}
 			footer = (
 				<div className="footer-menu flex">
 					{userReservationsBtn}
 					{startCarReservationBtn}
 					{carsAndReviewsBtn}
+					{myCarsBtn}
 				</div>
 			);
 
@@ -211,10 +240,6 @@ class App extends Component {
 				contentContainerClasses = "content-container reservations-and-reserve-container";
 			}
 
-			if (this.state.viewCarsAndReviews) {
-				contentContainerClasses = "content-container cars-and-reviews-container";
-			}
-
 			if (this.state.editUser === true) {
 				editUser = (
 					<EditUser
@@ -245,6 +270,15 @@ class App extends Component {
 					/>
 				);
 			}
+			if (this.state.viewMyCars === true) {
+				myCars = (
+					<MyCars
+						cars={this.state.cars}
+						userId={this.state.user.id}
+						getCurrentCoordinates={this.getCurrentCoordinates}
+					/>
+				);
+			}
 
 			if (this.state.viewCarsAndReviews === true) {
 				let bigMap = {
@@ -268,6 +302,8 @@ class App extends Component {
 						lng={this.state.lng}
 					/>
 				);
+				contentContainerClasses = "content-container cars-and-reviews-container";
+				carsAndReviewsBtn = "";
 				carsAndReviewsStyles = "cars-and-reviews";
 				carsAndReviews = this.state.cars.map(
 					function(car, index) {
@@ -383,6 +419,7 @@ class App extends Component {
 						{editUser}
 						{userReservations}
 						{openReviewEditor}
+						{myCars}
 					</div>
 					{footer}
 				</div>
@@ -395,6 +432,13 @@ class App extends Component {
 		hamburgerMenu.classList.toggle("hamburger-show");
 	}
 
+	viewMyCars() {
+		this.setState({
+			viewMyCars: true,
+			viewCarsAndReviews: false
+		});
+	}
+
 	openAddCar() {
 		this.setState({
 			addCar: true,
@@ -403,7 +447,8 @@ class App extends Component {
 			reserveCar: false,
 			viewCarsAndReviews: false,
 			viewReservations: false,
-			editUser: false
+			editUser: false,
+			viewMyCars: false
 		});
 		this.hamburgerToggle();
 		this.getCurrentCoordinates();
@@ -491,7 +536,7 @@ class App extends Component {
 		this.getCurrentCoordinates();
 	}
 
-	showCarsAndReviews() {
+	viewCarsAndReviews() {
 		this.setState({
 			carToReview: null,
 			viewCarsAndReviews: true,
@@ -499,7 +544,8 @@ class App extends Component {
 			reviewToEdit: null,
 			reserveCar: false,
 			viewReservations: false,
-			editUser: false
+			editUser: false,
+			viewMyCars: false
 		});
 		this.getCurrentCoordinates();
 	}
@@ -512,6 +558,7 @@ class App extends Component {
 			reviewToEdit: null,
 			reserveCar: false,
 			viewReservations: true,
+			viewMyCars: false,
 			editUser: false
 		});
 		this.getCurrentCoordinates();
@@ -553,7 +600,8 @@ class App extends Component {
 			reviewToEdit: null,
 			reserveCar: false,
 			viewReservations: false,
-			editUser: false
+			editUser: false,
+			viewMyCars: false
 		});
 		this.getCurrentCoordinates();
 	}
@@ -602,7 +650,8 @@ class App extends Component {
 						reserveCar: false,
 						addCar: false,
 						viewReservations: true,
-						editUser: false
+						editUser: false,
+						viewMyCars: false
 					});
 				}.bind(this)
 			);
@@ -616,7 +665,8 @@ class App extends Component {
 			addCar: false,
 			reviewToEdit: null,
 			viewReservations: false,
-			editUser: false
+			editUser: false,
+			viewMyCars: false
 		});
 		this.getCurrentCoordinates();
 	}
@@ -668,7 +718,8 @@ class App extends Component {
 			addCar: false,
 			reviewToEdit: null,
 			viewReservations: false,
-			editUser: true
+			editUser: true,
+			viewMyCars: false
 		});
 		this.hamburgerToggle();
 		this.getCurrentCoordinates();
@@ -772,6 +823,7 @@ class App extends Component {
 			reserveCar: false,
 			carToReview: null,
 			viewReservations: false,
+			viewMyCars: false,
 			editUser: false
 		});
 	}
