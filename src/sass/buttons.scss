@@ -1,7 +1,5 @@
 @import 'variables';
 
-//make a btn-wide class;
-
 .sign-in{
     position: relative;
     left: 4%;
@@ -50,7 +48,6 @@
     margin: 5px 27%
 }
 
-
 .btn-reserve-car{
     line-height: 18px;
     margin: 8px 76px 3px;
@@ -59,6 +56,11 @@
 .btn-make-review{
     margin: 30px;
 }
+
 .btn-cancel-reservation{
     line-height: 0;
+}
+
+.btn-update-my-car-coordinates{
+    width: 92%;
 }

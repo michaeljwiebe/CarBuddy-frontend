@@ -4,7 +4,10 @@
 //move remove car btn to mycars page
 //update location btn to current reservations on right side, move cancel to left side
 //move delete car to mycars view
-//build in edit car functionality from mycars page
+//build in edit car functionality to mycars page
+//move my car reservations to mycars page
+//build array for past reservations, button to access
+//add indicator to reservation if within 24h
 
 import React, { Component } from "react";
 import axios from "axios";
@@ -78,6 +81,7 @@ class App extends Component {
 		this.deleteCar = this.deleteCar.bind(this);
 		this.addCar = this.addCar.bind(this);
 		this.openAddCar = this.openAddCar.bind(this);
+		this.updateCarCoordinates = this.updateCarCoordinates.bind(this);
 		this.loadCars = this.loadCars.bind(this);
 		this.loadReviews = this.loadReviews.bind(this);
 		this.loadReservations = this.loadReservations.bind(this);
@@ -236,7 +240,7 @@ class App extends Component {
 				contentContainerClasses = "content-container";
 			}
 
-			if (this.state.viewReservations || this.state.reserveCar) {
+			if (this.state.viewReservations || this.state.reserveCar || this.state.viewMyCars) {
 				contentContainerClasses = "content-container reservations-and-reserve-container";
 			}
 
@@ -275,7 +279,8 @@ class App extends Component {
 					<MyCars
 						cars={this.state.cars}
 						userId={this.state.user.id}
-						getCurrentCoordinates={this.getCurrentCoordinates}
+						updateCarCoordinates={this.updateCarCoordinates}
+						deleteCar={this.deleteCar}
 					/>
 				);
 			}
@@ -437,6 +442,7 @@ class App extends Component {
 			viewMyCars: true,
 			viewCarsAndReviews: false
 		});
+		this.getCurrentCoordinates();
 	}
 
 	openAddCar() {
@@ -464,6 +470,27 @@ class App extends Component {
 				});
 			}.bind(this)
 		);
+	}
+
+	updateCarCoordinates(event) {
+		console.log(this.state.lat);
+		axios
+			.post(
+				"https://carbuddy.herokuapp.com/cars/update_car_coordinates/" + event.target.value,
+				{
+					data: {
+						lat: this.state.lat,
+						lng: this.state.lng
+					}
+				}
+			)
+			.then(
+				function(response) {
+					this.setState({
+						cars: response.data
+					});
+				}.bind(this)
+			);
 	}
 
 	addCar(props) {

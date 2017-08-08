@@ -1,1 +1,20 @@
 @import 'variables';
+
+.user-cars-container{
+    position: relative;
+    top: 45px;
+}
+.user-cars{
+    overflow-y: scroll;
+    height: calc(100vh - 130px);
+}
+.user-car{}
+.user-car-make-model{}
+.user-car-img{
+    width: 60vw;
+    height: 40vw;
+    max-width: 300px;
+    max-height: 200px;
+}
+.user-car-info{}
+.user-car-info-list{}
