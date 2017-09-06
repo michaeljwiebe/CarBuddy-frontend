@@ -459,7 +459,7 @@ class App extends Component {
 		this.hamburgerToggle();
 		this.getCurrentCoordinates();
 	}
-
+// @kiana this method is called continuously so the frontend user doesn't have to wait for it to resolve
 	getCurrentCoordinates() {
 		console.log("got coords");
 		navigator.geolocation.getCurrentPosition(
@@ -472,8 +472,9 @@ class App extends Component {
 		);
 	}
 
+// @kiana this is the method that sends info to the backend.
 	updateCarCoordinates(event) {
-		console.log(this.state.lat); //this prints lat
+		console.log(this.state.lat); //this prints the lat correctly
 		axios
 			.post(
 				"https://carbuddy.herokuapp.com/cars/update_car_coordinates/" + event.target.value,
@@ -486,6 +487,7 @@ class App extends Component {
 			)
 			.then(
 				function(response) {
+					console.log(response.data);//returns all the cars, the one with highest ID will have null location data
 					this.setState({
 						cars: response.data
 					});

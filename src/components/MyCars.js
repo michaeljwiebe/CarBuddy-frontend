@@ -77,7 +77,6 @@ class MyCars extends Component {
 				);
 			}.bind(this)
 		);
-		console.log(userCars);
 		return (
 			<div className="user-cars-container">
 				<div>My Cars</div>
