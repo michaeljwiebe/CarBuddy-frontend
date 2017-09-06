@@ -88,7 +88,7 @@ class MyCars extends Component {
 			</div>
 		);
 	}
-
+	//this successfully passes car id
 	handleUpdateCarCoordinates(event) {
 		this.props.updateCarCoordinates(event);
 	}

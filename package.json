@@ -4,7 +4,10 @@
   "private": true,
   "homepage": "http://michaeljwiebe.github.io/CarBuddy-frontend",
   "dependencies": {
+    "@mapbox/point-geometry": "^0.1.0",
     "axios": "^0.16.2",
+    "google-map-react": "^0.24.0",
+    "http-server": "^0.10.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-scripts": "1.0.10"

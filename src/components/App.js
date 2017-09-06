@@ -473,7 +473,7 @@ class App extends Component {
 	}
 
 	updateCarCoordinates(event) {
-		console.log(this.state.lat);
+		console.log(this.state.lat); //this prints lat
 		axios
 			.post(
 				"https://carbuddy.herokuapp.com/cars/update_car_coordinates/" + event.target.value,
