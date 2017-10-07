@@ -2,6 +2,10 @@
 # carBuddy
 I was inspired to build this app because I am an avid bicyclist and I believe it is in the interest of Philadelphia and everyone in it to reduce the number of cars on the road. A user-friendly and effective carsharing platform would do this by making it easier for car owners to get rid of their cars and learn to function without one while still having access to nearby cars when truly necessary.
 
+##Setup
+`npm install` - installs dependencies
+`npm start` - spins up localhost:3000
+
 ## Development
 I developed this single page app with a React.js frontend and a Ruby on Rails [backend](https://github.com/michaeljwiebe/carbuddy-backend). It was a great learning experience to build a full-stack fully featured (CRUD - Create Read Update Destroy) single page app incorporating 16 API calls to the backend.
 
@@ -45,6 +49,7 @@ Another challenge with making reservations was preventing cars from being double
 
 The app has 10 components with the main one, App.js, controlling the rendering of all the others through booleans or objects in App.js's state. All API calls are performed through App.js with the exception of two which happen in the UserReservation.js component as an experiment in reduction of complexity. When buttons are clicked, App.js's state is changed and 'if' statements in the render function direct a different component to be displayed without changing the route. I systematically followed this format in all of my components. The following is a simplified and commented example of this format:
 
+Imports:
 ```
 //required import to all React components
 import React, { Component } from "react";
@@ -54,14 +59,13 @@ import AddCar from 'AddCar';
 
 //and CSS using:
 import 'main.css';
+```
 
-//it is also possible to write 'dumb functions' in separate files which do not have variables with
-//the ability to be updated. Dumb function syntax will look like vanilla Javascript function,
-//no constructor, no state
+it is also possible to write 'dumb functions' in separate files which do not have variables with the ability to be updated. Dumb function syntax will look much more like vanilla Javascript, it will not have a constructor or a state.
 
-//react class initialization for 'smart functions', or functions with variables that will change
-//as the app is used is below
+react class initialization for smart components, or components that keep track of their own state with as the app is used is below
 
+```
 class App extends Component(
     constructor(props){
         super(props); //required for React
@@ -76,7 +80,7 @@ class App extends Component(
         };
 
         //binding of this (seen below) is necessary for functions using this keyword in React,
-        //here is a straightforward, systematic way to do it
+        //here is a straightforward way to do it that will prevent errors
 
         this.viewCars = this.viewCars.bind(this);
         this.viewReservations = this.viewReservations.bind(this);
