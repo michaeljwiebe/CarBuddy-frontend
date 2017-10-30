@@ -59,9 +59,7 @@ class MyCars extends Component {
 				);
 				return (
 					<div className="user-car">
-						<div className="user-car-make-model">
-							{car.year + " " + car.make_model}
-						</div>
+						<div className="user-car-make-model">{car.year + " " + car.make_model}</div>
 						<div className="flex">
 							<img className="user-car-img" src={car.avatar_url} />
 							<div className="user-car-info">
@@ -73,17 +71,16 @@ class MyCars extends Component {
 						</div>
 						{googleMap}
 						{updateCoordinatesBtn}
+						{/* updateCoordinatesBtn */}
 					</div>
 				);
 			}.bind(this)
 		);
+		console.log(userCars);
 		return (
 			<div className="user-cars-container">
 				<div>My Cars</div>
-				<div className="user-cars">
-					{userCarDivs}
-				</div>
-
+				<div className="user-cars">{userCarDivs}</div>
 			</div>
 		);
 	}

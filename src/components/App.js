@@ -129,8 +129,16 @@ class App extends Component {
 			openReviewEditor = null;
 
 			if (this.state.signIn === true) {
-				signUpBtn = <div className="btn btn-sign-up" onClick={this.signUp}>Sign Up</div>;
-				signInComponent = <div><SignIn signIn={this.signIn} /> {signUpBtn} </div>;
+				signUpBtn = (
+					<div className="btn btn-sign-up" onClick={this.signUp}>
+						Sign Up
+					</div>
+				);
+				signInComponent = (
+					<div>
+						<SignIn signIn={this.signIn} /> {signUpBtn}{" "}
+					</div>
+				);
 			}
 
 			if (this.state.signUp === true) {
@@ -148,9 +156,21 @@ class App extends Component {
 				</div>
 			);
 			//the three buttons directly below get rendered inside the hamburger variable following them. I chose to do this in order to increase modularity and make it possible to put the same buttons in other places very easily. I didn't end up doing that because I decided that the most logical and user-friendly way to set the app up was to put these less-often-used buttons in the hamburger menu only.
-			addCarBtn = <div className="hamburger-btn" onClick={this.openAddCar}>Add a car</div>;
-			editUserBtn = <div className="hamburger-btn" onClick={this.editUser}>Edit User</div>;
-			signOutBtn = <div className="hamburger-btn" onClick={this.signOut}>Sign Out</div>;
+			addCarBtn = (
+				<div className="hamburger-btn" onClick={this.openAddCar}>
+					Add a car
+				</div>
+			);
+			editUserBtn = (
+				<div className="hamburger-btn" onClick={this.editUser}>
+					Edit User
+				</div>
+			);
+			signOutBtn = (
+				<div className="hamburger-btn" onClick={this.signOut}>
+					Sign Out
+				</div>
+			);
 			hamburger = (
 				<div className="hamburger flex">
 					<img src={userAvatar} className="user-avatar" alt="user" />
@@ -168,10 +188,7 @@ class App extends Component {
 			//three of four buttons below (either All Cars or My Cars) are always rendered at the bottom of the screen when the user is signed in.
 
 			userReservationsBtn = (
-				<div
-					className="btn footer-menu-btn btn-reservations"
-					onClick={this.viewReservations}
-				>
+				<div className="btn footer-menu-btn btn-reservations" onClick={this.viewReservations}>
 					Reservations
 				</div>
 			);
@@ -190,10 +207,7 @@ class App extends Component {
 				);
 			} else {
 				carsAndReviewsBtn = (
-					<div
-						onClick={this.viewCarsAndReviews}
-						className="btn footer-menu-btn btn-cars"
-					>
+					<div onClick={this.viewCarsAndReviews} className="btn footer-menu-btn btn-cars">
 						All Cars
 					</div>
 				);
@@ -220,19 +234,13 @@ class App extends Component {
 
 			if (this.state.carToReview !== null) {
 				newReview = (
-					<StartReview
-						carToReview={this.state.carToReview}
-						makeReview={this.makeReview}
-					/>
+					<StartReview carToReview={this.state.carToReview} makeReview={this.makeReview} />
 				);
 			}
 
 			if (this.state.reviewToEdit !== null) {
 				openReviewEditor = (
-					<EditReview
-						reviewToEdit={this.state.reviewToEdit}
-						updateReview={this.updateReview}
-					/>
+					<EditReview reviewToEdit={this.state.reviewToEdit} updateReview={this.updateReview} />
 				);
 			}
 
@@ -318,11 +326,7 @@ class App extends Component {
 
 						if (car.owner_id === this.state.user.id) {
 							removeCar = (
-								<button
-									className="btn value-btn"
-									onClick={this.deleteCar}
-									value={car.id}
-								>
+								<button className="btn value-btn" onClick={this.deleteCar} value={car.id}>
 									Remove Car
 								</button>
 							);
@@ -345,14 +349,10 @@ class App extends Component {
 									return (
 										<div key={index} className="flex review">
 											<div className="review-title">{review.title}</div>
-											<div className="review-description">
-												{review.description}
-											</div>
+											<div className="review-description">{review.description}</div>
 											<div className="review-reviewer-rating">
 												{review.rating}
-												<i className="fa fa-star" aria-hidden="true" />
-												{" "}
-												-
+												<i className="fa fa-star" aria-hidden="true" /> -
 												{" " + review.reviewer.name}
 												{editReviewBtn}
 											</div>
@@ -363,18 +363,14 @@ class App extends Component {
 						);
 						return (
 							<div key={index} className="flex car-description-reviews">
-								<div className="car-make-model">
-									{car.make_model}
-								</div>
+								<div className="car-make-model">{car.make_model}</div>
 								<div className="car-description">
 									<img src={carAvatar} className="car-img-small" alt="car" />
 									<div>Year: {car.year}</div>
 									<div>MPG: {car.mpg}</div>
 									<div>Cost per day: ${car.price}</div>
 								</div>
-								<div className="car-reviews">
-									{reviews}
-								</div>
+								<div className="car-reviews">{reviews}</div>
 								<div>
 									<button
 										className="btn value-btn"
@@ -408,9 +404,7 @@ class App extends Component {
 						{hamburgerIcon}
 					</div>
 					{welcomeMsg}
-					<div className="signinup-container">
-						{signInComponent}
-					</div>
+					<div className="signinup-container">{signInComponent}</div>
 					<div>{signUpComponent}</div>
 				</div>
 				{hamburger}
@@ -459,7 +453,7 @@ class App extends Component {
 		this.hamburgerToggle();
 		this.getCurrentCoordinates();
 	}
-// @kiana this method is called continuously so the frontend user doesn't have to wait for it to resolve
+
 	getCurrentCoordinates() {
 		console.log("got coords");
 		navigator.geolocation.getCurrentPosition(
@@ -472,22 +466,17 @@ class App extends Component {
 		);
 	}
 
-// @kiana this is the method that sends info to the backend.
 	updateCarCoordinates(event) {
-		console.log(this.state.lat); //this prints the lat correctly
+		console.log(this.state.lat); //this prints lat
 		axios
-			.post(
-				"https://carbuddy.herokuapp.com/cars/update_car_coordinates/" + event.target.value,
-				{
-					data: {
-						lat: this.state.lat,
-						lng: this.state.lng
-					}
+			.post("https://carbuddy.herokuapp.com/cars/update_car_coordinates/" + event.target.value, {
+				data: {
+					lat: this.state.lat,
+					lng: this.state.lng
 				}
-			)
+			})
 			.then(
 				function(response) {
-					console.log(response.data);//returns all the cars, the one with highest ID will have null location data
 					this.setState({
 						cars: response.data
 					});

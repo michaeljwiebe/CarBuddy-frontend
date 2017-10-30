@@ -6,6 +6,10 @@
   overflow-y: scroll;
   height: calc(100vh - 130px); }
 
+.user-car-make-model {
+  border-top: 2px solid;
+  margin-top: 20px; }
+
 .user-car-img {
   width: 60vw;
   height: 40vw;
