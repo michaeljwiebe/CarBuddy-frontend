@@ -1,24 +1,10 @@
 //This component controls the app. All other components are rendered inside it and the values in its state determine what the end user sees. This component performs almost all of the API calls using axios or fetch. All of the CSS is also imported into this component for simplicity's sake.
 
-//make cars button 'my cars' when cars is active, show small picture, large map, update location btn
-//move remove car btn to mycars page
-//update location btn to current reservations on right side, move cancel to left side
-//move delete car to mycars view
-//build in edit car functionality to mycars page
-//move my car reservations to mycars page
-//build array for past reservations, button to access
-//add indicator to reservation if within 24h
-
 import React, { Component } from "react";
 import axios from "axios";
+import firebase from 'firebase';
 
 import "../css/App.css";
-import "../css/hamburger-menu.css";
-import "../css/buttons.css";
-import "../css/inputs.css";
-import "../css/cars-and-reviews.css";
-import "../css/footer.css";
-import "../css/UserReservations.css";
 
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
@@ -88,343 +74,6 @@ class App extends Component {
 		this.getCurrentCoordinates = this.getCurrentCoordinates.bind(this);
 	}
 
-	render() {
-		//the variables that are being used to control the render are all declared here with no values because they will be assigned values inside the render depending on the state of the app.
-		let hamburgerIcon;
-		let hamburger;
-		let welcomeMsg;
-		let addCarBtn;
-		let addCar;
-		let signInComponent;
-		let signUpBtn;
-		let signUpComponent;
-		let signOutBtn;
-		let contentContainerClasses;
-		let carsAndReviews;
-		let carsAndReviewsBtn;
-		let myCarsBtn;
-		let myCars;
-		let carsAndReviewsStyles;
-		let openReviewEditor;
-		let startCarReservationBtn;
-		let newReservation;
-		let userReservationsBtn;
-		let userReservations;
-		let newReview;
-		let googleMap;
-		let editUserBtn;
-		let editUser;
-		let logoText;
-		let logoImage;
-		let logoContainer;
-		let userAvatar;
-		let carAvatar;
-		let footer;
-
-		//the values of above variables are first controlled by the state of the user which is the user object if the user is signed in or null if not.
-		if (this.state.user === null) {
-			logoText = "logo logo-sign-in-text";
-			logoImage = "logo logo-sign-in-image";
-			userAvatar = null;
-			openReviewEditor = null;
-
-			if (this.state.signIn === true) {
-				signUpBtn = (
-					<div className="btn btn-sign-up" onClick={this.signUp}>
-						Sign Up
-					</div>
-				);
-				signInComponent = (
-					<div>
-						<SignIn signIn={this.signIn} /> {signUpBtn}{" "}
-					</div>
-				);
-			}
-
-			if (this.state.signUp === true) {
-				signUpComponent = <SignUp createUser={this.createUser} />;
-			}
-		} else {
-			//on user sign-in, these variables are given values. Button variables will not change values.
-			userAvatar = this.state.userImage;
-			logoText = "logo logo-main-text";
-			logoImage = "logo logo-main-image";
-			logoContainer = "logo logo-main-container";
-			hamburgerIcon = (
-				<div onClick={this.hamburgerToggle} className=" btn hamburger-show-btn">
-					<i className="fa fa-bars" aria-hidden="true" />
-				</div>
-			);
-			//the three buttons directly below get rendered inside the hamburger variable following them. I chose to do this in order to increase modularity and make it possible to put the same buttons in other places very easily. I didn't end up doing that because I decided that the most logical and user-friendly way to set the app up was to put these less-often-used buttons in the hamburger menu only.
-			addCarBtn = (
-				<div className="hamburger-btn" onClick={this.openAddCar}>
-					Add a car
-				</div>
-			);
-			editUserBtn = (
-				<div className="hamburger-btn" onClick={this.editUser}>
-					Edit User
-				</div>
-			);
-			signOutBtn = (
-				<div className="hamburger-btn" onClick={this.signOut}>
-					Sign Out
-				</div>
-			);
-			hamburger = (
-				<div className="hamburger flex">
-					<img src={userAvatar} className="user-avatar" alt="user" />
-					<div className="hamburger-btns-container">
-						{addCarBtn}
-						{editUserBtn}
-						{signOutBtn}
-					</div>
-					<div onClick={this.hamburgerToggle} className="hamburger-close-btn">
-						<i className="fa fa-window-close-o" aria-hidden="true" />
-					</div>
-				</div>
-			);
-
-			//three of four buttons below (either All Cars or My Cars) are always rendered at the bottom of the screen when the user is signed in.
-
-			userReservationsBtn = (
-				<div className="btn footer-menu-btn btn-reservations" onClick={this.viewReservations}>
-					Reservations
-				</div>
-			);
-			startCarReservationBtn = (
-				<div className="btn footer-menu-btn btn-find-car" onClick={this.startReservation}>
-					Find a car
-				</div>
-			);
-			welcomeMsg = <div className="welcome-msg">Welcome {this.state.user.name}!</div>;
-
-			if (this.state.viewCarsAndReviews === true) {
-				myCarsBtn = (
-					<div onClick={this.viewMyCars} className="btn footer-menu-btn btn-my-cars">
-						My Cars
-					</div>
-				);
-			} else {
-				carsAndReviewsBtn = (
-					<div onClick={this.viewCarsAndReviews} className="btn footer-menu-btn btn-cars">
-						All Cars
-					</div>
-				);
-			}
-			footer = (
-				<div className="footer-menu flex">
-					{userReservationsBtn}
-					{startCarReservationBtn}
-					{carsAndReviewsBtn}
-					{myCarsBtn}
-				</div>
-			);
-
-			if (this.state.reserveCar === true) {
-				newReservation = (
-					<StartReservation
-						makeReservation={this.makeReservation}
-						reservations={this.state.reservations}
-						cars={this.state.cars}
-						inputs={true}
-					/>
-				);
-			}
-
-			if (this.state.carToReview !== null) {
-				newReview = (
-					<StartReview carToReview={this.state.carToReview} makeReview={this.makeReview} />
-				);
-			}
-
-			if (this.state.reviewToEdit !== null) {
-				openReviewEditor = (
-					<EditReview reviewToEdit={this.state.reviewToEdit} updateReview={this.updateReview} />
-				);
-			}
-
-			if (this.state.editUser || this.state.addCar || this.state.carToReview) {
-				contentContainerClasses = "content-container";
-			}
-
-			if (this.state.viewReservations || this.state.reserveCar || this.state.viewMyCars) {
-				contentContainerClasses = "content-container reservations-and-reserve-container";
-			}
-
-			if (this.state.editUser === true) {
-				editUser = (
-					<EditUser
-						user={this.state.user}
-						deleteUser={this.deleteUser}
-						updateUserInfo={this.updateUserInfo}
-					/>
-				);
-			}
-
-			if (this.state.addCar === true) {
-				addCar = (
-					<AddCar
-						addCar={this.addCar}
-						getCurrentCoordinates={this.getCurrentCoordinates}
-						lat={this.state.lat}
-						lng={this.state.lng}
-					/>
-				);
-			}
-
-			if (this.state.viewReservations === true) {
-				userReservations = (
-					<UserReservations
-						allReservations={this.state.reservations}
-						userId={this.state.user.id}
-						cars={this.state.cars}
-					/>
-				);
-			}
-			if (this.state.viewMyCars === true) {
-				myCars = (
-					<MyCars
-						cars={this.state.cars}
-						userId={this.state.user.id}
-						updateCarCoordinates={this.updateCarCoordinates}
-						deleteCar={this.deleteCar}
-					/>
-				);
-			}
-
-			if (this.state.viewCarsAndReviews === true) {
-				let bigMap = {
-					position: "relative",
-					width: "100%",
-					maxWidth: "500px",
-					height: "20vh",
-					margin: "0 auto",
-					top: "98px",
-					zIndex: "3",
-					borderBottom: "1px solid black",
-					borderTop: "1px solid black"
-				};
-				let bigMapZoom = 12;
-				googleMap = (
-					<GoogleMap
-						styles={bigMap}
-						zoom={bigMapZoom}
-						cars={this.state.cars}
-						lat={this.state.lat}
-						lng={this.state.lng}
-					/>
-				);
-				contentContainerClasses = "content-container cars-and-reviews-container";
-				carsAndReviewsBtn = "";
-				carsAndReviewsStyles = "cars-and-reviews";
-				carsAndReviews = this.state.cars.map(
-					function(car, index) {
-						let removeCar;
-						let editReviewBtn;
-						carAvatar = car.avatar_url;
-
-						if (car.owner_id === this.state.user.id) {
-							removeCar = (
-								<button className="btn value-btn" onClick={this.deleteCar} value={car.id}>
-									Remove Car
-								</button>
-							);
-						}
-						let reviews = this.state.reviews.map(
-							function(review, index) {
-								editReviewBtn = "";
-								if (review.reviewer.id === this.state.user.id) {
-									editReviewBtn = (
-										<button
-											className="btn value-btn btn-edit-review"
-											onClick={this.editReview}
-											value={JSON.stringify(review)}
-										>
-											Edit Review
-										</button>
-									);
-								}
-								if (car.id === review.car_id) {
-									return (
-										<div key={index} className="flex review">
-											<div className="review-title">{review.title}</div>
-											<div className="review-description">{review.description}</div>
-											<div className="review-reviewer-rating">
-												{review.rating}
-												<i className="fa fa-star" aria-hidden="true" /> -
-												{" " + review.reviewer.name}
-												{editReviewBtn}
-											</div>
-										</div>
-									);
-								}
-							}.bind(this)
-						);
-						return (
-							<div key={index} className="flex car-description-reviews">
-								<div className="car-make-model">{car.make_model}</div>
-								<div className="car-description">
-									<img src={carAvatar} className="car-img-small" alt="car" />
-									<div>Year: {car.year}</div>
-									<div>MPG: {car.mpg}</div>
-									<div>Cost per day: ${car.price}</div>
-								</div>
-								<div className="car-reviews">{reviews}</div>
-								<div>
-									<button
-										className="btn value-btn"
-										onClick={this.startReview}
-										value={JSON.stringify(car.id)}
-									>
-										Review this car
-									</button>
-									{removeCar}
-								</div>
-							</div>
-						);
-					}.bind(this)
-				);
-			}
-		}
-
-		console.log(this.state);
-
-		//this is the return portion of the app's render function. The values of the variables below as well as their styles are set in the logic above.
-		return (
-			<div className="App">
-				<div>
-					<div className="header">
-						<div className={logoContainer}>
-							<div className={logoImage}>
-								<i className="fa fa-car" aria-hidden="true" />
-							</div>
-							<div className={logoText}>carBuddy</div>
-						</div>
-						{hamburgerIcon}
-					</div>
-					{welcomeMsg}
-					<div className="signinup-container">{signInComponent}</div>
-					<div>{signUpComponent}</div>
-				</div>
-				{hamburger}
-				<div>
-					<div className={contentContainerClasses}>
-						{googleMap}
-						{addCar}
-						{newReview}
-						{newReservation}
-						<div className={carsAndReviewsStyles}>{carsAndReviews}</div>
-						{editUser}
-						{userReservations}
-						{openReviewEditor}
-						{myCars}
-					</div>
-					{footer}
-				</div>
-			</div>
-		);
-	}
 
 	hamburgerToggle() {
 		let hamburgerMenu = document.getElementsByClassName("hamburger")[0];
@@ -877,12 +526,363 @@ class App extends Component {
 		);
 	}
 
-	//this function will run once befor the app renders for the first time. I put each axios call into a seperate function so that I could call them again individually when it was needed.
+	//this function will run once before the app renders for the first time. I put each axios call into a seperate function so that I could call them again individually when it was needed.
 	componentWillMount() {
 		this.loadCars();
 		this.loadReviews();
 		this.loadReservations();
 		this.getCurrentCoordinates();
+	}
+
+	render() {
+		//the variables that are being used to control the render are all declared here with no values because they will be assigned values inside the render depending on the state of the app.
+		let hamburgerIcon;
+		let hamburger;
+		let welcomeMsg;
+		let addCarBtn;
+		let addCar;
+		let signInComponent;
+		let signUpBtn;
+		let signUpComponent;
+		let signOutBtn;
+		let contentContainerClasses;
+		let carsAndReviews;
+		let carsAndReviewsBtn;
+		let myCarsBtn;
+		let myCars;
+		let carsAndReviewsStyles;
+		let openReviewEditor;
+		let startCarReservationBtn;
+		let newReservation;
+		let userReservationsBtn;
+		let userReservations;
+		let newReview;
+		let googleMap;
+		let editUserBtn;
+		let editUser;
+		let logoText;
+		let logoImage;
+		let logoContainer;
+		let userAvatar;
+		let carAvatar;
+		let footer;
+
+		//the values of above variables are first controlled by the state of the user which is the user object if the user is signed in or null if not.
+		if (this.state.user === null) {
+			logoText = "logo logo-sign-in-text";
+			logoImage = "logo logo-sign-in-image";
+			userAvatar = null;
+			openReviewEditor = null;
+
+			if (this.state.signIn === true) {
+				signUpBtn = (
+					<div className="btn btn-sign-up" onClick={this.signUp}>
+						Sign Up
+					</div>
+				);
+				signInComponent = (
+					<div>
+						<SignIn signIn={this.signIn} /> {signUpBtn}{" "}
+					</div>
+				);
+			}
+
+			if (this.state.signUp === true) {
+				signUpComponent = <SignUp createUser={this.createUser} />;
+			}
+		} else {
+			//on user sign-in, these variables are given values. Button variables will not change values.
+			userAvatar = this.state.userImage;
+			logoText = "logo logo-main-text";
+			logoImage = "logo logo-main-image";
+			logoContainer = "logo logo-main-container";
+			hamburgerIcon = (
+				<div onClick={this.hamburgerToggle} className=" btn hamburger-show-btn">
+					<i className="fa fa-bars" aria-hidden="true" />
+				</div>
+			);
+			//the three buttons directly below get rendered inside the hamburger variable following them. I chose to do this in order to increase modularity and make it possible to put the same buttons in other places very easily. I didn't end up doing that because I decided that the most logical and user-friendly way to set the app up was to put these less-often-used buttons in the hamburger menu only.
+			addCarBtn = (
+				<div className="hamburger-btn" onClick={this.openAddCar}>
+					Add a car
+				</div>
+			);
+			editUserBtn = (
+				<div className="hamburger-btn" onClick={this.editUser}>
+					Edit User
+				</div>
+			);
+			signOutBtn = (
+				<div className="hamburger-btn" onClick={this.signOut}>
+					Sign Out
+				</div>
+			);
+			hamburger = (
+				<div className="hamburger flex">
+					<img src={userAvatar} className="user-avatar" alt="user" />
+					<div className="hamburger-btns-container">
+						{addCarBtn}
+						{editUserBtn}
+						{signOutBtn}
+					</div>
+					<div onClick={this.hamburgerToggle} className="hamburger-close-btn">
+						<i className="fa fa-window-close-o" aria-hidden="true" />
+					</div>
+				</div>
+			);
+
+			//three of four buttons below (either All Cars or My Cars) are always rendered at the bottom of the screen when the user is signed in.
+
+			userReservationsBtn = (
+				<div className="btn footer-menu-btn btn-reservations" onClick={this.viewReservations}>
+					Reservations
+				</div>
+			);
+			startCarReservationBtn = (
+				<div className="btn footer-menu-btn btn-find-car" onClick={this.startReservation}>
+					Find a car
+				</div>
+			);
+			welcomeMsg = <div className="welcome-msg">Welcome {this.state.user.name}!</div>;
+
+			if (this.state.viewCarsAndReviews === true) {
+				myCarsBtn = (
+					<div onClick={this.viewMyCars} className="btn footer-menu-btn btn-my-cars">
+						My Cars
+					</div>
+				);
+			} else {
+				carsAndReviewsBtn = (
+					<div onClick={this.viewCarsAndReviews} className="btn footer-menu-btn btn-cars">
+						All Cars
+					</div>
+				);
+			}
+			footer = (
+				<div className="footer-menu flex">
+					{userReservationsBtn}
+					{startCarReservationBtn}
+					{carsAndReviewsBtn}
+					{myCarsBtn}
+				</div>
+			);
+
+			if (this.state.reserveCar === true) {
+				newReservation = (
+					<StartReservation
+						makeReservation={this.makeReservation}
+						reservations={this.state.reservations}
+						cars={this.state.cars}
+						inputs={true}
+					/>
+				);
+			}
+
+			if (this.state.carToReview !== null) {
+				newReview = (
+					<StartReview carToReview={this.state.carToReview} makeReview={this.makeReview} />
+				);
+			}
+
+			if (this.state.reviewToEdit !== null) {
+				openReviewEditor = (
+					<EditReview reviewToEdit={this.state.reviewToEdit} updateReview={this.updateReview} />
+				);
+			}
+
+			if (this.state.editUser || this.state.addCar || this.state.carToReview) {
+				contentContainerClasses = "content-container";
+			}
+
+			if (this.state.viewReservations || this.state.reserveCar || this.state.viewMyCars) {
+				contentContainerClasses = "content-container reservations-and-reserve-container";
+			}
+
+			if (this.state.editUser === true) {
+				editUser = (
+					<EditUser
+						user={this.state.user}
+						deleteUser={this.deleteUser}
+						updateUserInfo={this.updateUserInfo}
+					/>
+				);
+			}
+
+			if (this.state.addCar === true) {
+				addCar = (
+					<AddCar
+						addCar={this.addCar}
+						getCurrentCoordinates={this.getCurrentCoordinates}
+						lat={this.state.lat}
+						lng={this.state.lng}
+					/>
+				);
+			}
+
+			if (this.state.viewReservations === true) {
+				userReservations = (
+					<UserReservations
+						allReservations={this.state.reservations}
+						userId={this.state.user.id}
+						cars={this.state.cars}
+					/>
+				);
+			}
+			if (this.state.viewMyCars === true) {
+				myCars = (
+					<MyCars
+						cars={this.state.cars}
+						userId={this.state.user.id}
+						updateCarCoordinates={this.updateCarCoordinates}
+						deleteCar={this.deleteCar}
+					/>
+				);
+			}
+
+			if (this.state.viewCarsAndReviews === true) {
+				let bigMap = {
+					position: "relative",
+					width: "100%",
+					maxWidth: "500px",
+					height: "20vh",
+					margin: "0 auto",
+					top: "98px",
+					zIndex: "3",
+					borderBottom: "1px solid black",
+					borderTop: "1px solid black"
+				};
+				let bigMapZoom = 12;
+				googleMap = (
+					<GoogleMap
+						styles={bigMap}
+						zoom={bigMapZoom}
+						cars={this.state.cars}
+						lat={this.state.lat}
+						lng={this.state.lng}
+					/>
+				);
+				contentContainerClasses = "content-container cars-and-reviews-container";
+				carsAndReviewsBtn = "";
+				carsAndReviewsStyles = "cars-and-reviews";
+				carsAndReviews = this.state.cars.map(
+					function(car, index) {
+						let removeCar;
+						let editReviewBtn;
+						carAvatar = car.avatar_url;
+
+						if (car.owner_id === this.state.user.id) {
+							removeCar = (
+								<button className="btn value-btn" onClick={this.deleteCar} value={car.id}>
+									Remove Car
+								</button>
+							);
+						}
+						let reviews = this.state.reviews.map(
+							function(review, index) {
+								editReviewBtn = "";
+								if (review.reviewer.id === this.state.user.id) {
+									editReviewBtn = (
+										<button
+											className="btn value-btn btn-edit-review"
+											onClick={this.editReview}
+											value={JSON.stringify(review)}
+										>
+											Edit Review
+										</button>
+									);
+								}
+								if (car.id === review.car_id) {
+									return (
+										<div key={index} className="flex review">
+											<div className="review-title">{review.title}</div>
+											<div className="review-description">{review.description}</div>
+											<div className="review-reviewer-rating">
+												{review.rating}
+												<i className="fa fa-star" aria-hidden="true" /> -
+												{" " + review.reviewer.name}
+												{editReviewBtn}
+											</div>
+										</div>
+									);
+								}
+							}.bind(this)
+						);
+						return (
+							<div key={index} className="flex car-description-reviews">
+								<div className="car-make-model">{car.make_model}</div>
+								<div className="car-description">
+									<img src={carAvatar} className="car-img-small" alt="car" />
+									<div>Year: {car.year}</div>
+									<div>MPG: {car.mpg}</div>
+									<div>Cost per day: ${car.price}</div>
+								</div>
+								<div className="car-reviews">{reviews}</div>
+								<div>
+									<button
+										className="btn value-btn"
+										onClick={this.startReview}
+										value={JSON.stringify(car.id)}
+									>
+										Review this car
+									</button>
+									{removeCar}
+								</div>
+							</div>
+						);
+					}.bind(this)
+				);
+			}
+		}
+
+		let firebase = () => (
+			var config = {
+		    apiKey: "AIzaSyBNu6c40-DgHsV8z4pnmNjfbf78JkoN-Lg",
+		    authDomain: "carbuddy-f6a6d.firebaseapp.com",
+		    databaseURL: "https://carbuddy-f6a6d.firebaseio.com",
+		    projectId: "carbuddy-f6a6d",
+		    storageBucket: "",
+		    messagingSenderId: "256868223964"
+		  };
+		  firebase.initializeApp(config);
+	  )
+
+		console.log(this.state);
+
+		//this is the return portion of the app's render function. The values of the variables below as well as their styles are set in the logic above.
+		return (
+			<div className="App">
+				<div>
+					<div className="header">
+						<div className={logoContainer}>
+							<div className={logoImage}>
+								<i className="fa fa-car" aria-hidden="true" />
+							</div>
+							<div className={logoText}>carBuddy</div>
+						</div>
+						{hamburgerIcon}
+					</div>
+					{welcomeMsg}
+					<div className="signinup-container">{signInComponent}</div>
+					<div>{signUpComponent}</div>
+				</div>
+				{hamburger}
+				<div>
+					<div className={contentContainerClasses}>
+						{googleMap}
+						{addCar}
+						{newReview}
+						{newReservation}
+						<div className={carsAndReviewsStyles}>{carsAndReviews}</div>
+						{editUser}
+						{userReservations}
+						{openReviewEditor}
+						{myCars}
+					</div>
+					{footer}
+				</div>
+				{firebase}
+			</div>
+		);
 	}
 }
 
