@@ -77,36 +77,9 @@ class App extends Component {
 
 
 	render() {
-		//the variables that are being used to control the render are all declared here with no values because they will be assigned values inside the render depending on the state of the app.
-		// let hamburgerIcon;
-		// let hamburger;
-		// let welcomeMsg;
-		// let addCarBtn;
-		// let addCar;
-		// let signOutBtn;
-		// let contentContainerClasses;
-		// let carsAndReviews;
-		// let carsAndReviewsBtn;
-		// let myCarsBtn;
-		// let myCars;
-		// let carsAndReviewsStyles;
-		// let openReviewEditor;
-		// let startCarReservationBtn;
-		// let newReservation;
-		// let userReservationsBtn;
-		// let userReservations;
-		// let newReview;
-		// let googleMap;
-		// let editUserBtn;
-		// let editUser;
-		// let logoText;
-		// let logoImage;
-		// let logoContainer;
-		// let userAvatar;
-		// let carAvatar;
-		// let footer;
+		//the variables that are being used to control the render are declared near to where they are used for debuggability and readabily's sake. They initially will have no values because they will be assigned values inside the render depending on the state of the app.
 
-		//the values of above variables are first controlled by the state of the user which is the user object if the user is signed in or null if not.
+		//the values of below variables are first controlled by the state of the user which is the user object if the user is signed in or null if not.
 		let signInComponent;
 		let signUpBtn;
 		let signUpComponent;
