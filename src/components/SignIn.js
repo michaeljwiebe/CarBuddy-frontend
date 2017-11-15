@@ -1,43 +1,51 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
+import { emailChanged, passwordChanged, loginUser } from '../actions';
 
 class SignIn extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			username: "",
-			password: ""
-		};
 
-		this.updateUsername = this.updateUsername.bind(this);
-		this.updatePassword = this.updatePassword.bind(this);
-		this.handleSignIn = this.handleSignIn.bind(this);
-	}
 	render() {
+		console.log("signIn props", this.props)
+		let errorMsg = <div>{this.props.error}</div>;
+
 		return (
 			<div className="input-container sign-in">
-				<input className="input" onChange={this.updateUsername} placeholder="username" />
+				<input 
+					className="input" 
+					onChange={this.onEmailChange.bind(this)}
+					placeholder="email@email.com" 
+					value={this.props.email}
+				/>
 				<input
 					className="input"
 					type="password"
-					onChange={this.updatePassword}
+					onChange={this.onPasswordChange.bind(this)}
 					placeholder="password"
+					value={this.props.password}
 				/>
-				<div className="btn btn-sign-in" onClick={this.handleSignIn}>Sign In</div>
+				{errorMsg}
+				<div className="btn btn-sign-in" onClick={this.onSignIn.bind(this)}>Sign In</div>
 			</div>
 		);
 	}
 
-	updateUsername(event) {
-		this.setState({ username: event.target.value });
+	onEmailChange(event){
+		this.props.emailChanged(event.target.value)
 	}
 
-	updatePassword(event) {
-		this.setState({ password: event.target.value });
+	onPasswordChange(event){
+		this.props.passwordChanged(event.target.value)
 	}
-
-	handleSignIn() {
-		this.props.signIn(this.state);
+	onSignIn(){
+		const { email, password } = this.props;
+		this.props.loginUser({ email: email, password: password });
 	}
 }
 
-export default SignIn;
+
+const mapStateToProps = (props) => {
+	const { email, password, error } = props.auth
+	return { email, password, error };
+}
+
+export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser })(SignIn);
