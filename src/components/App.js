@@ -103,7 +103,7 @@ class App extends Component {
 			}
 
 			if (this.state.signUp === true) {
-				signUpComponent = <SignUp createUser={this.createUser} />;
+				signUpComponent = <SignUp />;
 			}
 		}
 

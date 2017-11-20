@@ -3,9 +3,13 @@ import firebase from 'firebase';
 import { 
 	EMAIL_CHANGED, 
 	PASSWORD_CHANGED, 
+	NAME_CHANGED, 
+	ADDRESS_CHANGED, 
+	ZIP_CHANGED, 
 	LOGIN_USER_SUCCESS, 
 	LOGIN_USER_FAILURE, 
-	LOGIN_USER 
+	LOGIN_USER,
+	CREATE_USER
 } from './types';
 //import Actions from 'react-native-router-flux';
 
@@ -23,6 +27,27 @@ export const passwordChanged = (password) => {
 	}
 }	
 
+export const nameChanged = (name) => {
+	return{
+		type: NAME_CHANGED,
+		payload: name
+	}
+}	
+
+export const addressChanged = (address) => {
+	return{
+		type: ADDRESS_CHANGED,
+		payload: address
+	}
+}	
+
+export const zipChanged = (zip) => {
+	return{
+		type: ZIP_CHANGED,
+		payload: zip
+	}
+}	
+
 export const loginUser = ({ email, password }) => {
 	return(dispatch) => {
 		dispatch({ type: LOGIN_USER })
@@ -31,11 +56,16 @@ export const loginUser = ({ email, password }) => {
 		.then(user => loginUserSuccess(dispatch, user))
 		.catch((error) => {
 			console.log(error);
-			firebase.auth().createUserWithEmailAndPassword(email, password)
-			.then(user => loginUserSuccess(dispatch, user))
-			.catch(() => loginUserFailure(dispatch))
 		})
 	}
+}
+
+export const createUser = ({ email, password, name, address, zip }) => {
+	return(dispatch => {
+		firebase.auth().createUserWithEmailAndPassword(email, password)
+			.then(user => loginUserSuccess(dispatch, user))
+			.catch(() => loginUserFailure(dispatch))
+	})
 }
 
 export const loginUserSuccess = (dispatch, user) => {
