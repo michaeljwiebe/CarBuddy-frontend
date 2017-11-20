@@ -9,7 +9,8 @@ import {
 	LOGIN_USER_SUCCESS, 
 	LOGIN_USER_FAILURE, 
 	LOGIN_USER,
-	CREATE_USER
+	CREATE_USER,
+	UPDATE_USER
 } from './types';
 //import Actions from 'react-native-router-flux';
 
@@ -62,9 +63,32 @@ export const loginUser = ({ email, password }) => {
 
 export const createUser = ({ email, password, name, address, zip }) => {
 	return(dispatch => {
+		dispatch({ type: CREATE_USER })
 		firebase.auth().createUserWithEmailAndPassword(email, password)
-			.then(user => loginUserSuccess(dispatch, user))
+			.then((user) => {
+				user.updateProfile({
+					displayName: name
+				})
+				.then(() => console.log('displayName update complete ', name))
+				.catch(() => console.log('displayName update failed'))
+				loginUserSuccess(dispatch, user)
+			})
 			.catch(() => loginUserFailure(dispatch))
+	})
+}
+export const updateUser = ({ email, password, name, address, zip }) => {
+	return( dispatch => {
+		dispatch({ type: UPDATE_USER, payload: { email, password, name, address, zip } })
+		let user = firebase.auth().currentUser;
+		user.updateProfile({
+			displayName: name,
+			email
+		})
+			.then(() => console.log('successful name and email update'))
+			.catch(()=> console.log('failed name and email update'))
+		user.updatePassword(password)
+			.then(() => console.log('successful password update'))
+			.catch(()=> console.log('failed password update'))
 	})
 }
 

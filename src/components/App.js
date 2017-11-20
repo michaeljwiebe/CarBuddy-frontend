@@ -84,10 +84,10 @@ class App extends Component {
 		let signUpBtn;
 		let signUpComponent;
 		if (this.props.user === null) {
-			logoText = "logo logo-sign-in-text";
-			logoImage = "logo logo-sign-in-image";
-			userAvatar = null;
-			openReviewEditor = null;
+			var logoText = "logo logo-sign-in-text";
+			var logoImage = "logo logo-sign-in-image";
+			var userAvatar = null;
+			var openReviewEditor = null;
 
 			if (this.state.signIn === true) {
 				signUpBtn = (
@@ -109,9 +109,9 @@ class App extends Component {
 
 		if (this.props.user !== null) {
 			//on user sign-in, these variables are given values. Button variables will not change values.
-			var userAvatar = this.props.userImage;
-			var logoText = "logo logo-main-text";
-			var logoImage = "logo logo-main-image";
+			userAvatar = this.props.userImage;
+			logoText = "logo logo-main-text";
+			logoImage = "logo logo-main-image";
 			var logoContainer = "logo logo-main-container";
 			var hamburgerIcon = (
 				<div onClick={this.hamburgerToggle} className=" btn hamburger-show-btn">
@@ -202,7 +202,7 @@ class App extends Component {
 			}
 
 			if (this.state.reviewToEdit !== null) {
-				var openReviewEditor = (
+				openReviewEditor = (
 					<EditReview reviewToEdit={this.state.reviewToEdit} updateReview={this.updateReview} />
 				);
 			}
@@ -212,7 +212,7 @@ class App extends Component {
 			}
 
 			if (this.state.viewReservations || this.state.reserveCar || this.state.viewMyCars) {
-				var contentContainerClasses = "content-container reservations-and-reserve-container";
+				contentContainerClasses = "content-container reservations-and-reserve-container";
 			}
 
 			if (this.state.editUser === true) {
@@ -278,9 +278,9 @@ class App extends Component {
 						lng={this.state.lng}
 					/>
 				);
-				var contentContainerClasses = "content-container cars-and-reviews-container";
+				contentContainerClasses = "content-container cars-and-reviews-container";
 				var carAvatar;
-				var carsAndReviewsBtn = "";
+				carsAndReviewsBtn = "";
 				var carsAndReviewsStyles = "cars-and-reviews";
 				var carsAndReviews = this.state.cars.map(
 					function(car, index) {
@@ -353,7 +353,9 @@ class App extends Component {
 		}
 
 		console.log('state',this.state);
-		console.log('props',this.props);
+		console.log('props ',this.props);
+		const user = firebase.auth().currentUser;
+		console.log('user', user)
 
 		//this is the return portion of the app's render function. The values of the variables below as well as their styles are set in the logic above.
 		return (
@@ -800,6 +802,9 @@ class App extends Component {
 	// }
 
 	signOut() {
+		firebase.auth().signOut()
+			.then(() => console.log('Signed Out'))
+			.catch((error) => console.error('Sign Out Error', error));
 		this.hamburgerToggle();
 		this.setState({
 			user: null,

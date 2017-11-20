@@ -10,91 +10,57 @@ import {
 } from '../actions';
 
 class SignUp extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			name: null,
-			address: null,
-			zip: null,
-			username: null,
-			password: null
-		};
-		// this.updateName = this.updateName.bind(this);
-		// this.updateAddress = this.updateAddress.bind(this);
-		// this.updateZip = this.updateZip.bind(this);
-		// this.updateUsername = this.updateUsername.bind(this);
-		// this.updatePassword = this.updatePassword.bind(this);
-		this.handleCreateUser = this.handleCreateUser.bind(this);
-	}
 	render() {
+		const { nameChanged, addressChanged, zipChanged, emailChanged, passwordChanged } = this.props;
 		return (
 			<div className="inputs-container inputs-sign-up">
 				<input
+					onChange={event => nameChanged(event.target.value)}
+					placeholder="name (required)"
 					className="input"
 					type="text"
-					onChange={event => this.props.nameChanged(event.target.value)}
-					placeholder="name (required)"
 					required
 				/>
 				<input
+					onChange={event => addressChanged(event.target.value)}
+					placeholder="address"
 					className="input"
 					type="text"
-					onChange={event => this.props.addressChanged(event.target.value)}
-					placeholder="address"
 				/>
 				<input
+					onChange={event => zipChanged(event.target.value)}
+					placeholder="zip"
 					className="input"
 					type="integer"
-					onChange={event => this.props.zipChanged(event.target.value)}
-					placeholder="zip"
 				/>
 				<input
+					onChange={event => emailChanged(event.target.value)}
+					placeholder="email (required)"
 					className="input"
 					type="text"
-					onChange={event => this.props.emailChanged(event.target.value)}
-					placeholder="email (required)"
 					required
 				/>
 				<input
+					onChange={event => passwordChanged(event.target.value)}
+					placeholder="password  (required)"
 					className="input"
 					type="text"
-					onChange={event => this.props.passwordChanged(event.target.value)}
-					placeholder="password (required)"
 					required
 				/>
 				<form action="" encType="multipart/form-data">
 					<div>Upload a photo:</div>
 					<input className="btn" type="file" name="picture" defaultValue="fileName" />
 				</form>
-				<div className="btn btn-sign-up" onClick={this.handleCreateUser}>Sign Up!</div>
+				<div className="btn btn-sign-up" onClick={this.handleCreateUser.bind(this)}>Sign Up!</div>
 			</div>
 		);
 	}
 
 	handleCreateUser() {
 		const { email, password, name, address, zip } = this.props
-		this.props.createUser({ email, password });
+		this.props.createUser({ email, password, name, address, zip });
 	}
 
-	// updateName(event) {
-	// 	this.setState({ name: event.target.value });
-	// }
-
-	// updateAddress(event) {
-	// 	this.setState({ address: event.target.value });
-	// }
-
-	// updateZip(event) {
-	// 	this.setState({ zip: event.target.value });
-	// }
-
-	// updateUsername(event) {
-	// 	this.setState({ username: event.target.value });
-	// }
-
-	// updatePassword(event) {
-	// 	this.setState({ password: event.target.value });
-	// }
 }
 const mapStateToProps = (props) => {
 	const { email, password, address, zip, name, error } = props.auth

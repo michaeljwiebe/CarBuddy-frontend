@@ -6,7 +6,7 @@ import firebase from 'firebase';
 import { BrowserRouter } from 'react-router-dom';
 
 import reducers from '../reducers';
-import Router from './Router';
+// import Router from './Router'; //use for react native
 import App from './App';
 
 class AppWrapper extends Component {

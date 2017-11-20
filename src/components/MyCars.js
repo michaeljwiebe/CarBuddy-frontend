@@ -6,7 +6,6 @@
 // }
 
 import React, { Component } from "react";
-import axios from "axios";
 
 import "../css/my-cars.css";
 
@@ -61,7 +60,7 @@ class MyCars extends Component {
 					<div className="user-car">
 						<div className="user-car-make-model">{car.year + " " + car.make_model}</div>
 						<div className="flex">
-							<img className="user-car-img" src={car.avatar_url} />
+							<img className="user-car-img" src={car.avatar_url} alt={car.user.name + "'s car"} />
 							<div className="user-car-info">
 								<ul className="user-car-info-list">
 									<li>MPG: {car.mpg}</li>
