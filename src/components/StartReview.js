@@ -1,47 +1,48 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 
-import { reviewTitleChanged, reviewDescriptionChanged, reviewRatingChanged } from '../actions';
+import { 
+	reviewTitleChanged, 
+	reviewDescriptionChanged, 
+	reviewRatingChanged,
+	reviewCreated,
+	reviewsFetch
+} from '../actions';
 
 //Its really nice to have these small components that handle simple functions such as this one. My ability to focus and close in on the problem becomes so much greater using this method of increasing modularity. Though with many of these components, writing them was simple enough that I didn't end up having very many issues to deal with at all. I'd call that a win!
 
+
 class StartReview extends Component {
-	constructor(props) {
-		super(props);
-		// this.state = {
-		// 	title: "",
-		// 	description: "",
-		// 	rating: "",
-		// 	car_id: props.carToReview
-		// };
-		this.updateTitle = this.updateTitle.bind(this);
-		this.updateDescription = this.updateDescription.bind(this);
-		this.updateRating = this.updateRating.bind(this);
-		this.handleMakeReview = this.handleMakeReview.bind(this);
+
+	componentWillMount(){
+		this.props.reviewsFetch();
 	}
+
 	render() {
+		const { reviewTitleChanged, reviewDescriptionChanged, reviewRatingChanged } = this.props;
+		const { title, description, rating } = this.props;
 		return (
 			<div className="inputs-container">
 				<input
 					className="input"
 					type="text"
-					onChange={this.updateTitle}
+					onChange={event => reviewTitleChanged(event.target.value)}
 					placeholder="Title"
-					value={this.props.title}
+					value={ title }
 				/>
 				<input
 					className="input"
 					type="textarea"
-					onChange={this.updateDescription}
+					onChange={event => reviewDescriptionChanged(event.target.value)}
 					placeholder="Description"
-					value={this.props.description}
+					value={ description }
 				/>
 				<select
 					className="input"
 					type="integer"
-					onChange={this.updateRating}
+					onChange={event => reviewRatingChanged(event.target.value)}
 					placeholder="Rating"
-					value={this.props.rating}
+					value={ rating }
 				>
 					<option value="">Click here to select a rating</option>
 					<option value="5">5 Stars</option>
@@ -52,34 +53,28 @@ class StartReview extends Component {
 					<option value="0">0 Stars</option>
 				</select>
 				<br />
-				<div className="btn btn-make-review" onClick={this.handleMakeReview}>
+				<div className="btn btn-make-review" onClick={this.createReview.bind(this)}>
 					Post Review
 				</div>
 			</div>
 		);
 	}
-	handleMakeReview() {
-		this.props.makeReview(this.state);
-	}
-	updateTitle(event) {
-		this.props.reviewTitleChanged(event.target.value);
-	}
-	updateDescription(event) {
-		this.props.reviewDescriptionChanged(event.target.value);
-	}
-	updateRating(event) {
-		this.props.reviewRatingChanged(event.target.value);
+	createReview() {
+		const { title, description, rating } = this.props;
+		this.props.reviewCreated(title, description, rating);
 	}
 
 }
 
-// const mapStateToProps = ({ review }) => {
-// 	const { title = '', description = '', rating = '' } = review;
-// 	return { title, desciption, rating };
-// }
+const mapStateToProps = ({ reviewForm }) => {
+	const { title = '', description = '', rating = '' } = reviewForm;
+	return { title, description, rating };
+}
 
-export default connect(null, { 
+export default connect(mapStateToProps, { 
 	reviewTitleChanged, 
 	reviewDescriptionChanged, 
-	reviewRatingChanged 
+	reviewRatingChanged,
+	reviewCreated,
+	reviewsFetch
 })(StartReview);

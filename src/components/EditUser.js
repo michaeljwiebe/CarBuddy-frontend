@@ -10,23 +10,6 @@ import {
 } from '../actions';
 
 class EditUser extends Component {
-	// constructor(props) {
-	// 	super(props);
-	// 	this.state = {
-	// 		username: props.user.username,
-	// 		password: props.user.password,
-	// 		name: props.user.name,
-	// 		address: props.user.address,
-	// 		zip: props.user.zip
-	// 	};
-	// 	this.updateUsername = this.updateUsername.bind(this);
-	// 	this.updatePassword = this.updatePassword.bind(this);
-	// 	this.updateName = this.updateName.bind(this);
-	// 	this.updateAddress = this.updateAddress.bind(this);
-	// 	this.updateZip = this.updateZip.bind(this);
-	// 	this.handleUpdateUserInfo = this.handleUpdateUserInfo.bind(this);
-	// 	this.handleDeleteUser = this.handleDeleteUser.bind(this);
-	// }
 	render() {
 		//actions
 		const { 
@@ -34,27 +17,20 @@ class EditUser extends Component {
 			addressChanged, 
 			zipChanged, 
 			emailChanged, 
-			passwordChanged, 
-			updateUser, 
+			passwordChanged,
 			deleteUser 
 		} = this.props;
 
 		//redux state
-		const { 
-			name, 
+		let { 
 			email, 
 			password, 
 			address, 
-			zip 
+			zip
 		} = this.props;
-		console.log('name', name);
-		console.log('email', email);
-		console.log('password', password);
-		console.log('address', address);
-		console.log('zip', zip);
-
-		//from firebase datastore
-		const nameDb = this.props.user.displayName;
+		
+		//from user object from firebase
+		let name = this.props.user.displayName;
 
 		return (
 			<div className="inputs-container">
@@ -76,15 +52,14 @@ class EditUser extends Component {
 					className="input"
 					type="text"
 					onChange={ event => nameChanged(event.target.value) }
-					value={ nameDb }
-					placeholder="Name"
+					placeholder= { name }
 				/>
 				<input
 					className="input"
 					type="text"
 					onChange={ event => addressChanged(event.target.value) }
 					value={ address }
-					placeholder="Address"
+					placeholder={ address || "Address" }
 				/>
 				<input
 					className="input"
@@ -121,32 +96,9 @@ class EditUser extends Component {
 			address, 
 			zip 
 		} = this.props;
-		this.props.updateUser({name, email, password, address, zip});
+		this.props.updateUser({ name, email, password, address, zip });
+		// TODO: route to cars page
 	}
-
-	// handleDeleteUser() {
-	// 	this.props.deleteUser();
-	// }
-
-	// updateUsername(event) {
-	// 	this.setState({ username: event.target.value });
-	// }
-
-	// updatePassword(event) {
-	// 	this.setState({ password: event.target.value });
-	// }
-
-	// updateName(event) {
-	// 	this.setState({ name: event.target.value });
-	// }
-
-	// updateAddress(event) {
-	// 	this.setState({ address: event.target.value });
-	// }
-
-	// updateZip(event) {
-	// 	this.setState({ zip: event.target.value });
-	// }
 }
 
 const mapStateToProps = ({ auth }) => {

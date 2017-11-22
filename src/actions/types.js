@@ -13,3 +13,10 @@ export const UPDATE_USER = 'update_user';
 export const REVIEW_TITLE_CHANGED = 'review_title_changed';
 export const REVIEW_DESCRIPTION_CHANGED = 'review_description_changed';
 export const REVIEW_RATING_CHANGED = 'review_rating_changed';
+export const REVIEW_CREATED = 'review_created';
+export const REVIEWS_FETCH_SUCCESS = 'review_fetch_success';
+
+export const CAR_CREATED = 'car_created';
+export const CAR_MAKE_MODEL_CHANGED = 'car_make_model_changed';
+export const CAR_YEAR_CHANGED = 'car_year_changed';
+export const CAR_PRICE_CHANGED = 'car_price_changed';

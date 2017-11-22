@@ -12,14 +12,14 @@ class SignIn extends Component {
 			<div className="input-container sign-in">
 				<input 
 					className="input" 
-					onChange={this.onEmailChange.bind(this)}
+					onChange={ event => this.props.emailChanged(event.target.value)}
 					placeholder="email@email.com" 
 					value={this.props.email}
 				/>
 				<input
 					className="input"
 					type="password"
-					onChange={this.onPasswordChange.bind(this)}
+					onChange={ event => this.props.passwordChanged(event.target.value)}
 					placeholder="password"
 					value={this.props.password}
 				/>
@@ -29,13 +29,13 @@ class SignIn extends Component {
 		);
 	}
 
-	onEmailChange(event){
-		this.props.emailChanged(event.target.value)
-	}
+	// onEmailChange(event){
+	// 	this.props.emailChanged(event.target.value)
+	// }
 
-	onPasswordChange(event){
-		this.props.passwordChanged(event.target.value)
-	}
+	// onPasswordChange(event){
+	// 	this.props.passwordChanged(event.target.value)
+	// }
 	onSignIn(){
 		const { email, password } = this.props;
 		this.props.loginUser({ email: email, password: password });

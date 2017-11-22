@@ -353,7 +353,6 @@ class App extends Component {
 		}
 
 		console.log('state',this.state);
-		console.log('props ',this.props);
 		const user = firebase.auth().currentUser;
 		console.log('user', user)
 
