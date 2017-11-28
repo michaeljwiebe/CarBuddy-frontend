@@ -286,7 +286,7 @@ class App extends Component {
 				myCars = (
 					<MyCars
 						cars={this.state.cars}
-						userId={this.state.user.id}
+						user={this.state.user}
 						updateCarCoordinates={this.updateCarCoordinates}
 						deleteCar={this.deleteCar}
 					/>

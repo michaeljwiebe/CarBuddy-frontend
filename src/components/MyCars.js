@@ -16,14 +16,14 @@ class MyCars extends Component {
 		super(props);
 		this.state = {
 			cars: props.cars,
-			userId: props.userId
+			user: props.user
 		};
 		this.handleUpdateCarCoordinates = this.handleUpdateCarCoordinates.bind(this);
 	}
 	render() {
 		let userCars = this.state.cars.filter(
 			function(car) {
-				return car.owner_id === this.state.userId;
+				return car.owner_id === this.state.user.id;
 			}.bind(this)
 		);
 		let userCarDivs = userCars.map(
@@ -69,7 +69,6 @@ class MyCars extends Component {
 							</div>
 						</div>
 						{googleMap}
-						{updateCoordinatesBtn}
 						{/* updateCoordinatesBtn */}
 					</div>
 				);
