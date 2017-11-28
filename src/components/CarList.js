@@ -3,15 +3,15 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Card } from './common';
 
-class AllCars extends Component {
+class CarList extends Component {
 
 	render(){
 
 		// contentContainerClasses = "content-container cars-and-reviews-container";
 		var carAvatar;
-		// allCarsBtn = "";
-		var allCarsStyles = "cars-and-reviews";
-		var allCars = this.props.cars.map(
+		// carListBtn = "";
+		var carListStyles = "cars-and-reviews";
+		var carList = this.props.cars.map(
 			function(car, index) {
 				let removeCar;
 				let editReviewBtn;
@@ -79,7 +79,7 @@ class AllCars extends Component {
 				);
 			}.bind(this)
 		);
-		return <div className={allCarsStyles}>{allCars}</div>
+		return <div className={carListStyles}>{carList}</div>
 	}
 
 }
@@ -91,4 +91,4 @@ const mapStateToProps = state => {
 	})
 }
 
-export default connect(mapStateToProps, {})(AllCars);
+export default connect(mapStateToProps, {})(CarList);

@@ -1,56 +1,80 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
+
+import { 
+	carCreated, 
+	carMakeModelChanged, 
+	carYearChanged, 
+	carPriceChanged, 
+	carMileageChanged 
+} from '../actions';
 
 class AddCar extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			make_model: "",
-			year: "",
-			mpg: "",
-			price: "",
-			lat: props.lat,
-			lng: props.lng,
-			loading: false
-		};
-		this.updateYear = this.updateYear.bind(this);
-		this.updateMake_Model = this.updateMake_Model.bind(this);
-		this.updateMPG = this.updateMPG.bind(this);
-		this.updatePrice = this.updatePrice.bind(this);
-		this.handleAddCar = this.handleAddCar.bind(this);
-		this.showLoadIcon = this.showLoadIcon.bind(this);
-	}
+	// constructor(props) {
+	// 	super(props);
+	// 	this.state = {
+	// 		make_model: "",
+	// 		year: "",
+	// 		mpg: "",
+	// 		price: "",
+	// 		lat: props.lat,
+	// 		lng: props.lng,
+	// 		loading: false
+	// 	};
+	// 	this.updateYear = this.updateYear.bind(this);
+	// 	this.updateMake_Model = this.updateMake_Model.bind(this);
+	// 	this.updateMPG = this.updateMPG.bind(this);
+	// 	this.updatePrice = this.updatePrice.bind(this);
+	// 	this.handleAddCar = this.handleAddCar.bind(this);
+	// 	this.showLoadIcon = this.showLoadIcon.bind(this);
+	// }
 
 	render() {
-		let loadIcon;
-		if (this.state.loading === true) {
-			loadIcon = <i className="fa fa-cog fa-spin fa-3x fa-fw" />;
-		}
+		const { 
+			carCreated, 
+			carMakeModelChanged, 
+			carYearChanged, 
+			carPriceChanged, 
+			carMileageChanged 
+		} = this.props;
 
-		console.log(this.state.lng, this.state.lat);
+		const { 
+			makeModel,
+			price,
+			year,
+			mileage
+		} = this.props;
+
+		// let loadIcon;
+		// if (this.state.loading === true) {
+		// 	loadIcon = <i className="fa fa-cog fa-spin fa-3x fa-fw" />;
+		// }
+
+		// console.log(this.state.lng, this.state.lat);
 		return (
 			<div className="inputs-container">
 				<input
 					className="input"
-					onChange={this.updateMake_Model}
-					value={this.state.make_model}
+					onChange={event => carMakeModelChanged(event.target.value)}
+					value={makeModel}
 					placeholder="Make and Model"
 				/>
 				<input
 					className="input"
-					onChange={this.updateYear}
-					value={this.state.year}
+					onChange={event => carYearChanged(event.target.value)}
+					value={year}
 					placeholder="Year"
 				/>
 				<input
 					className="input"
-					onChange={this.updateMPG}
-					value={this.state.mpg}
+					onChange={event => carMileageChanged(event.target.value)}
+					value={mileage}
 					placeholder="MPG"
 				/>
 				<input
 					className="input"
-					onChange={this.updatePrice}
-					value={this.state.price}
+					onChange={event => carPriceChanged(event.target.value)}
+					value={price}
 					placeholder="Price"
 				/>
 				<form action="" encType="multipart/form-data">
@@ -63,44 +87,65 @@ class AddCar extends Component {
 					/>
 				</form>
 				<br />
-				<div className="btn" onClick={this.handleAddCar}>Add Car</div>
-				<div>{loadIcon}</div>
+				<div 
+					className="btn" 
+					onClick={this.createCar.bind(this)}>
+					Add Car
+				</div>
+				{/*<div>{loadIcon}</div>*/}
 			</div>
 		);
 	}
 
-	handleAddCar() {
-		this.showLoadIcon();
-		this.props.addCar(this.state);
-		this.setState({
-			make_model: "",
-			year: "",
-			mpg: "",
-			price: "",
-			lat: "",
-			lng: ""
-		});
+
+	// showLoadIcon() {
+	// 	this.setState({ loading: true });
+	// }
+
+	createCar() {
+		const { makeModel, year, price, mileage } = this.props;
+		this.props.carCreated(makeModel, year, price, mileage);
 	}
 
-	showLoadIcon() {
-		this.setState({ loading: true });
-	}
+	// handleAddCar() {
+	// 	this.showLoadIcon();
+	// 	this.props.addCar(this.state);
+	// 	this.setState({
+	// 		make_model: "",
+	// 		year: "",
+	// 		mpg: "",
+	// 		price: "",
+	// 		lat: "",
+	// 		lng: ""
+	// 	});
+	// }
 
-	updateMake_Model(event) {
-		this.setState({ make_model: event.target.value });
-	}
+	// updateMake_Model(event) {
+	// 	this.setState({ make_model: event.target.value });
+	// }
 
-	updateYear(event) {
-		this.setState({ year: event.target.value });
-	}
+	// updateYear(event) {
+	// 	this.setState({ year: event.target.value });
+	// }
 
-	updateMPG(event) {
-		this.setState({ mpg: event.target.value });
-	}
+	// updateMPG(event) {
+	// 	this.setState({ mpg: event.target.value });
+	// }
 
-	updatePrice(event) {
-		this.setState({ price: event.target.value });
-	}
+	// updatePrice(event) {
+	// 	this.setState({ price: event.target.value });
+	// }
 }
 
-export default AddCar;
+const mapStateToProps = ({ carForm }) => {
+	const { makeModel, year, price, mileage } = carForm;
+	return { makeModel, year, price, mileage };
+}
+
+export default connect(mapStateToProps, { 
+	carCreated, 
+	carMakeModelChanged, 
+	carYearChanged, 
+	carPriceChanged, 
+	carMileageChanged 
+})(AddCar);

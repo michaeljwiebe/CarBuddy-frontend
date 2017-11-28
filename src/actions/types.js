@@ -20,3 +20,5 @@ export const CAR_CREATED = 'car_created';
 export const CAR_MAKE_MODEL_CHANGED = 'car_make_model_changed';
 export const CAR_YEAR_CHANGED = 'car_year_changed';
 export const CAR_PRICE_CHANGED = 'car_price_changed';
+export const CAR_MILEAGE_CHANGED = 'car_mileage_changed';
+export const CARS_FETCH_SUCCESS = 'cars_fetch_success';

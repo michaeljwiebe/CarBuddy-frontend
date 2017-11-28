@@ -17,7 +17,9 @@ import StartReview from "./StartReview";
 import EditReview from "./EditReview";
 import GoogleMap from "./GoogleMap";
 import MyCars from "./MyCars";
-import AllCars from './AllCars';
+import CarList from './CarList';
+
+import { carsFetch } from '../actions';
 
 class App extends Component {
 	constructor(props) {
@@ -50,7 +52,7 @@ class App extends Component {
 		// this.signIn = this.signIn.bind(this);
 		this.signUp = this.signUp.bind(this);
 		this.signOut = this.signOut.bind(this);
-		this.createUser = this.createUser.bind(this);
+		// this.createUser = this.createUser.bind(this);
 		this.editUser = this.editUser.bind(this);
 		this.updateUserInfo = this.updateUserInfo.bind(this);
 		this.modifyURL = this.modifyURL.bind(this);
@@ -60,13 +62,13 @@ class App extends Component {
 		this.startReservation = this.startReservation.bind(this);
 		this.makeReservation = this.makeReservation.bind(this);
 		this.startReview = this.startReview.bind(this);
-		this.makeReview = this.makeReview.bind(this);
+		// this.makeReview = this.makeReview.bind(this);
 		this.viewReservations = this.viewReservations.bind(this);
 		this.editReview = this.editReview.bind(this);
 		this.updateReview = this.updateReview.bind(this);
 		this.viewCarsAndReviews = this.viewCarsAndReviews.bind(this);
 		this.viewMyCars = this.viewMyCars.bind(this);
-		this.deleteCar = this.deleteCar.bind(this);
+		// this.deleteCar = this.deleteCar.bind(this);
 		this.addCar = this.addCar.bind(this);
 		this.openAddCar = this.openAddCar.bind(this);
 		this.updateCarCoordinates = this.updateCarCoordinates.bind(this);
@@ -161,7 +163,7 @@ class App extends Component {
 					Find a car
 				</div>
 			);
-			var welcomeMsg = <div className="welcome-msg">Welcome {this.props.user.name}!</div>;
+			var welcomeMsg = <div className="welcome-msg">Welcome {this.props.user.displayName}!</div>;
 
 			if (this.state.reserveCar === true) {
 				var newReservation = (
@@ -235,7 +237,7 @@ class App extends Component {
 				var myCars = (
 					<MyCars
 						cars={this.state.cars}
-						userId={this.props.user.id}
+						userId={this.props.user.uid}
 						updateCarCoordinates={this.updateCarCoordinates}
 						deleteCar={this.deleteCar}
 					/>
@@ -248,7 +250,7 @@ class App extends Component {
 						My Cars
 					</div>
 				);
-				var allCars = <AllCars />
+				var allCars = <CarList cars={this.props.cars} />
 
 				let bigMap = {
 					position: "relative",
@@ -382,28 +384,28 @@ class App extends Component {
 	}
 
 	addCar(props) {
-		axios
-			.post("https://carbuddy.herokuapp.com/cars", {
-				data: {
-					make_model: props.make_model,
-					year: props.year,
-					mpg: props.mpg,
-					price: props.price,
-					lat: props.lat,
-					lng: props.lng,
-					owner_id: this.props.user.id
-				}
-			})
-			.then(
-				function(response) {
-					this.uploadCarImage();
-					this.loadCars();
-					this.setState({
-						addCar: false,
-						viewCarsAndReviews: true
-					});
-				}.bind(this)
-			);
+		this.uploadCarImage();
+		// axios
+		// 	.post("https://carbuddy.herokuapp.com/cars", {
+		// 		data: {
+		// 			make_model: props.make_model,
+		// 			year: props.year,
+		// 			mpg: props.mpg,
+		// 			price: props.price,
+		// 			lat: props.lat,
+		// 			lng: props.lng,
+		// 			owner_id: this.props.user.id
+		// 		}
+		// 	})
+		// 	.then(
+		// 		function(response) {
+		// 			this.loadCars();
+		// 			this.setState({
+		// 				addCar: false,
+		// 				viewCarsAndReviews: true
+		// 			});
+		// 		}.bind(this)
+		// 	);
 	}
 
 	uploadCarImage() {
@@ -439,17 +441,17 @@ class App extends Component {
 		);
 	}
 
-	deleteCar(event) {
-		axios({
-			method: "delete",
-			url: "https://carbuddy.herokuapp.com/cars/" + event.target.value
-		}).then(
-			function(response) {
-				this.loadCars();
-			}.bind(this)
-		);
-		this.getCurrentCoordinates();
-	}
+	// deleteCar(event) {
+	// 	axios({
+	// 		method: "delete",
+	// 		url: "https://carbuddy.herokuapp.com/cars/" + event.target.value
+	// 	}).then(
+	// 		function(response) {
+	// 			this.loadCars();
+	// 		}.bind(this)
+	// 	);
+	// 	this.getCurrentCoordinates();
+	// }
 
 	viewCarsAndReviews() {
 		this.setState({
@@ -521,28 +523,28 @@ class App extends Component {
 		this.getCurrentCoordinates();
 	}
 
-	makeReview(props) {
-		axios
-			.post("https://carbuddy.herokuapp.com/reviews", {
-				data: {
-					car_id: props.car_id,
-					title: props.title,
-					description: props.description,
-					rating: props.rating,
-					reviewer_id: this.props.user.id
-				}
-			})
-			.then(
-				function(response) {
-					this.setState({
-						reviews: response.data,
-						carToReview: null,
-						viewCarsAndReviews: true
-					});
-				}.bind(this)
-			);
-		this.getCurrentCoordinates();
-	}
+	// makeReview(props) {
+	// 	axios
+	// 		.post("https://carbuddy.herokuapp.com/reviews", {
+	// 			data: {
+	// 				car_id: props.car_id,
+	// 				title: props.title,
+	// 				description: props.description,
+	// 				rating: props.rating,
+	// 				reviewer_id: this.props.user.id
+	// 			}
+	// 		})
+	// 		.then(
+	// 			function(response) {
+	// 				this.setState({
+	// 					reviews: response.data,
+	// 					carToReview: null,
+	// 					viewCarsAndReviews: true
+	// 				});
+	// 			}.bind(this)
+	// 		);
+	// 	this.getCurrentCoordinates();
+	// }
 
 	makeReservation(props) {
 		axios
@@ -590,29 +592,29 @@ class App extends Component {
 		this.setState({ signUp: true, signIn: false });
 	}
 
-	createUser(props) {
-		axios
-			.post("https://carbuddy.herokuapp.com/users", {
-				data: {
-					name: props.name,
-					address: props.address,
-					zip: props.zip,
-					username: props.username,
-					password: props.password
-				}
-			})
-			.then(
-				function(response) {
-					this.uploadUserImage({ method: "upload" });
-					this.setState({
-						user: response.data,
-						signUp: false,
-						signIn: true,
-						viewCarsAndReviews: true
-					});
-				}.bind(this)
-			);
-	}
+	// createUser(props) {
+	// 	axios
+	// 		.post("https://carbuddy.herokuapp.com/users", {
+	// 			data: {
+	// 				name: props.name,
+	// 				address: props.address,
+	// 				zip: props.zip,
+	// 				username: props.username,
+	// 				password: props.password
+	// 			}
+	// 		})
+	// 		.then(
+	// 			function(response) {
+	// 				this.uploadUserImage({ method: "upload" });
+	// 				this.setState({
+	// 					user: response.data,
+	// 					signUp: false,
+	// 					signIn: true,
+	// 					viewCarsAndReviews: true
+	// 				});
+	// 			}.bind(this)
+	// 		);
+	// }
 
 	deleteUser() {
 		axios({
@@ -785,13 +787,16 @@ class App extends Component {
 		this.loadReviews();
 		this.loadReservations();
 		this.getCurrentCoordinates();
+
+		this.props.carsFetch();
 	}
 }
 
-const mapStateToProps = ({ auth }) => {
-	const { user } = auth
-	return { user }
+const mapStateToProps = (state) => {
+	const { user } = state.auth;
+	const cars = state.cars;
+	return { user, cars }
 }
 
 // export default App;
-export default connect(mapStateToProps, {})(App);
+export default connect(mapStateToProps, { carsFetch })(App);

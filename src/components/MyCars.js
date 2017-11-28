@@ -69,7 +69,6 @@ class MyCars extends Component {
 							</div>
 						</div>
 						{googleMap}
-						{updateCoordinatesBtn}
 						{/* updateCoordinatesBtn */}
 					</div>
 				);
