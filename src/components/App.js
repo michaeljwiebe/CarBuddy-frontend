@@ -17,6 +17,7 @@ import StartReview from "./StartReview";
 import EditReview from "./EditReview";
 import GoogleMap from "./GoogleMap";
 import MyCars from "./MyCars";
+import AllCars from './AllCars';
 
 class App extends Component {
 	constructor(props) {
@@ -162,28 +163,6 @@ class App extends Component {
 			);
 			var welcomeMsg = <div className="welcome-msg">Welcome {this.props.user.name}!</div>;
 
-			if (this.state.viewCarsAndReviews === true) {
-				var myCarsBtn = (
-					<div onClick={this.viewMyCars} className="btn footer-menu-btn btn-my-cars">
-						My Cars
-					</div>
-				);
-			} else {
-				var carsAndReviewsBtn = (
-					<div onClick={this.viewCarsAndReviews} className="btn footer-menu-btn btn-cars">
-						All Cars
-					</div>
-				);
-			}
-			var footer = (
-				<div className="footer-menu flex">
-					{userReservationsBtn}
-					{startCarReservationBtn}
-					{carsAndReviewsBtn}
-					{myCarsBtn}
-				</div>
-			);
-
 			if (this.state.reserveCar === true) {
 				var newReservation = (
 					<StartReservation
@@ -245,6 +224,13 @@ class App extends Component {
 					/>
 				);
 			}
+
+			// all cars or my cars button control
+			var carsBtn = (
+				<div onClick={this.viewCarsAndReviews} className="btn footer-menu-btn btn-cars">
+					All Cars
+				</div>
+			);
 			if (this.state.viewMyCars === true) {
 				var myCars = (
 					<MyCars
@@ -257,6 +243,13 @@ class App extends Component {
 			}
 
 			if (this.state.viewCarsAndReviews === true) {
+				carsBtn = (
+					<div onClick={this.viewMyCars} className="btn footer-menu-btn btn-my-cars">
+						My Cars
+					</div>
+				);
+				var allCars = <AllCars />
+
 				let bigMap = {
 					position: "relative",
 					width: "100%",
@@ -278,78 +271,14 @@ class App extends Component {
 						lng={this.state.lng}
 					/>
 				);
-				contentContainerClasses = "content-container cars-and-reviews-container";
-				var carAvatar;
-				carsAndReviewsBtn = "";
-				var carsAndReviewsStyles = "cars-and-reviews";
-				var carsAndReviews = this.state.cars.map(
-					function(car, index) {
-						let removeCar;
-						let editReviewBtn;
-						carAvatar = car.avatar_url;
-
-						if (car.owner_id === this.props.user.id) {
-							removeCar = (
-								<button className="btn value-btn" onClick={this.deleteCar} value={car.id}>
-									Remove Car
-								</button>
-							);
-						}
-						let reviews = this.state.reviews.map(
-							function(review, index) {
-								editReviewBtn = "";
-								if (review.reviewer.id === this.props.user.id) {
-									editReviewBtn = (
-										<button
-											className="btn value-btn btn-edit-review"
-											onClick={this.editReview}
-											value={JSON.stringify(review)}
-										>
-											Edit Review
-										</button>
-									);
-								}
-								if (car.id === review.car_id) {
-									return (
-										<div key={index} className="flex review">
-											<div className="review-title">{review.title}</div>
-											<div className="review-description">{review.description}</div>
-											<div className="review-reviewer-rating">
-												{review.rating}
-												<i className="fa fa-star" aria-hidden="true" /> -
-												{" " + review.reviewer.name}
-												{editReviewBtn}
-											</div>
-										</div>
-									);
-								}
-							}.bind(this)
-						);
-						return (
-							<div key={index} className="flex car-description-reviews">
-								<div className="car-make-model">{car.make_model}</div>
-								<div className="car-description">
-									<img src={carAvatar} className="car-img-small" alt="car" />
-									<div>Year: {car.year}</div>
-									<div>MPG: {car.mpg}</div>
-									<div>Cost per day: ${car.price}</div>
-								</div>
-								<div className="car-reviews">{reviews}</div>
-								<div>
-									<button
-										className="btn value-btn"
-										onClick={this.startReview}
-										value={JSON.stringify(car.id)}
-									>
-										Review this car
-									</button>
-									{removeCar}
-								</div>
-							</div>
-						);
-					}.bind(this)
-				);
 			}
+			var footer = (
+				<div className="footer-menu flex">
+					{userReservationsBtn}
+					{startCarReservationBtn}
+					{carsBtn}
+				</div>
+			);
 		}
 
 		console.log('state',this.state);
@@ -380,7 +309,8 @@ class App extends Component {
 						{addCar}
 						{newReview}
 						{newReservation}
-						<div className={carsAndReviewsStyles}>{carsAndReviews}</div>
+						{allCars}
+						{/*<div className={carsAndReviewsStyles}>{carsAndReviews}</div>*/}
 						{editUser}
 						{userReservations}
 						{openReviewEditor}
@@ -831,6 +761,7 @@ class App extends Component {
 	}
 
 	loadReviews() {
+		//replace with call to 
 		axios.get("https://carbuddy.herokuapp.com/reviews").then(
 			function(response) {
 				this.setState({
@@ -857,7 +788,7 @@ class App extends Component {
 	}
 }
 
-const mapStateToProps = ({auth}) => {
+const mapStateToProps = ({ auth }) => {
 	const { user } = auth
 	return { user }
 }

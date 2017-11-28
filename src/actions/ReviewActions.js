@@ -32,7 +32,12 @@ export const reviewCreated = (title, description, rating, car) => {
 	return(dispatch) => {
 		const { currentUser } = firebase.auth();
 		firebase.database().ref(`users/${currentUser.uid}/reviews`)
-			.push({ title, description, rating })
+			.push({ 
+				title, 
+				description, 
+				rating, 
+				currentUser: currentUser.uid 
+			})
 			// .then(() => Actions.employeeList({ type: 'reset' }))
 		dispatch({type: REVIEW_CREATED})
 	}
