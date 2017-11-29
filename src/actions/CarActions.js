@@ -19,13 +19,14 @@ export const carsFetch = () => {
 
 export const carCreated = ( makeModel, year, price) => {
 	return(dispatch) => {
-		const currentUserId = firebase.auth().currentUser.uid;
+		const currentUser = firebase.auth().currentUser;
 		firebase.database().ref(`cars`)
 			.push({ 
 				makeModel, 
 				year, 
 				price, 
-				currentUserId 
+				ownerId: currentUser.uid,
+				ownerName: currentUser.displayName
 			})
 			.then(() => dispatch({type: CAR_CREATED}))
 	}

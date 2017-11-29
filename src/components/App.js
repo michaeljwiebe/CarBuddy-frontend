@@ -178,7 +178,7 @@ class App extends Component {
 
 			if (this.state.carToReview !== null) {
 				var newReview = (
-					<StartReview carToReview={this.state.carToReview} makeReview={this.makeReview} />
+					<StartReview carToReview={this.state.carToReview} startReview={this.startReview} />
 				);
 			}
 
@@ -522,29 +522,6 @@ class App extends Component {
 		});
 		this.getCurrentCoordinates();
 	}
-
-	// makeReview(props) {
-	// 	axios
-	// 		.post("https://carbuddy.herokuapp.com/reviews", {
-	// 			data: {
-	// 				car_id: props.car_id,
-	// 				title: props.title,
-	// 				description: props.description,
-	// 				rating: props.rating,
-	// 				reviewer_id: this.props.user.id
-	// 			}
-	// 		})
-	// 		.then(
-	// 			function(response) {
-	// 				this.setState({
-	// 					reviews: response.data,
-	// 					carToReview: null,
-	// 					viewCarsAndReviews: true
-	// 				});
-	// 			}.bind(this)
-	// 		);
-	// 	this.getCurrentCoordinates();
-	// }
 
 	makeReservation(props) {
 		axios

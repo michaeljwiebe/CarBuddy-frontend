@@ -28,7 +28,7 @@ export const reviewDescriptionChanged = (text) => {
 	}
 }
 
-export const reviewCreated = (title, description, rating, car) => {
+export const reviewCreated = (title, description, rating, carId) => {
 	return(dispatch) => {
 		const { currentUser } = firebase.auth();
 		firebase.database().ref(`users/${currentUser.uid}/reviews`)
@@ -36,7 +36,9 @@ export const reviewCreated = (title, description, rating, car) => {
 				title, 
 				description, 
 				rating, 
-				currentUser: currentUser.uid 
+				userId: currentUser.uid,
+				username: currentUser.displayName,
+				carId
 			})
 			// .then(() => Actions.employeeList({ type: 'reset' }))
 		dispatch({type: REVIEW_CREATED})

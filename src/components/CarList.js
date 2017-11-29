@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
+
+import { reviewsFetch, carsFetch } from '../actions';
 import { Card } from './common';
 
 class CarList extends Component {
+	componentWillMount(){
+		this.props.reviewsFetch();
+		this.props.carsFetch();
+	}
 
 	render(){
-
+		console.log('props',this.props)
 		// contentContainerClasses = "content-container cars-and-reviews-container";
 		var carAvatar;
 		// carListBtn = "";
@@ -17,9 +23,9 @@ class CarList extends Component {
 				let editReviewBtn;
 				carAvatar = car.avatar_url;
 
-				if (car.owner_id === this.props.user.id) {
+				if (car.ownerId === this.props.user.id) {
 					removeCar = (
-						<button className="btn value-btn" onClick={this.deleteCar} value={car.id}>
+						<button className="btn value-btn" onClick={this.deleteCar} value={car.uid}>
 							Remove Car
 						</button>
 					);
@@ -27,7 +33,7 @@ class CarList extends Component {
 				let reviews = this.props.reviews.map(
 					function(review, index) {
 						editReviewBtn = "";
-						if (review.reviewer.id === this.props.user.id) {
+						if (review.userId === this.props.user.uid) {
 							editReviewBtn = (
 								<button
 									className="btn value-btn btn-edit-review"
@@ -38,7 +44,7 @@ class CarList extends Component {
 								</button>
 							);
 						}
-						if (car.id === review.car_id) {
+						if (car.uid === review.carId) {
 							return (
 								<div key={index} className="flex review">
 									<div className="review-title">{review.title}</div>
@@ -57,7 +63,7 @@ class CarList extends Component {
 
 				return (
 					<div key={index} className="flex car-description-reviews">
-						<div className="car-make-model">{car.make_model}</div>
+						<div className="car-make-model">{car.makeModel}</div>
 						<div className="car-description">
 							<img src={carAvatar} className="car-img-small" alt="car" />
 							<div>Year: {car.year}</div>
@@ -68,8 +74,8 @@ class CarList extends Component {
 						<div>
 							<button
 								className="btn value-btn"
-								onClick={this.startReview}
-								value={JSON.stringify(car.id)}
+								onClick={this.props.startReview}
+								value={JSON.stringify(car.uid)}
 							>
 								Review this car
 							</button>
@@ -86,9 +92,13 @@ class CarList extends Component {
 
 const mapStateToProps = state => {
 	const user = state.auth.user
-	const cars = _.map(state.cars, (val, uid) => {
+	const cars = _.map(state.carForm.cars, (val, uid) => {
 		return { ...val, uid };
 	})
+	const reviews = _.map(state.reviews, (val, uid) =>{
+		return { ...val, uid };
+	})
+	return { user, cars, reviews };
 }
 
-export default connect(mapStateToProps, {})(CarList);
+export default connect(mapStateToProps, {carsFetch, reviewsFetch})(CarList);

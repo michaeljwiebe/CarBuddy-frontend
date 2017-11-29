@@ -3,7 +3,8 @@ import {
 	CAR_MAKE_MODEL_CHANGED,
 	CAR_YEAR_CHANGED,
 	CAR_PRICE_CHANGED,
-	CAR_MILEAGE_CHANGED
+	CAR_MILEAGE_CHANGED,
+	CARS_FETCH_SUCCESS
 } from '../actions/types';
 
 const initialState = {
@@ -27,6 +28,8 @@ export default ( state = initialState, action ) => {
 			return { ...state, price: action.payload }
 		case CAR_MILEAGE_CHANGED:
 			return { ...state, mileage: action.payload }
+		case CARS_FETCH_SUCCESS:
+			return { ...state, cars: action.payload }
 		default:
 			return state
 	}

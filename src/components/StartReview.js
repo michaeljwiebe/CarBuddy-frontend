@@ -60,9 +60,8 @@ class StartReview extends Component {
 		);
 	}
 	createReview() {
-		const { title, description, rating } = this.props;
-		console.log(this.props);
-		this.props.reviewCreated(title, description, rating);
+		const { title, description, rating, carToReview } = this.props;
+		this.props.reviewCreated({title, description, rating, carId: carToReview.uid});
 	}
 
 }
