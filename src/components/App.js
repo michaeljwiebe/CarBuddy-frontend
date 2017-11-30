@@ -223,12 +223,11 @@ class App extends Component {
 				</div>
 			);
 			if (this.state.viewMyCars === true) {
+				let myCarsArray = [];
 				var myCars = (
-					<MyCars
-						cars={this.state.cars}
-						userId={this.props.user.uid}
+					<CarList
+						cars={myCarsArray}
 						updateCarCoordinates={this.updateCarCoordinates}
-						deleteCar={this.deleteCar}
 					/>
 				);
 			}
@@ -610,5 +609,4 @@ const mapStateToProps = (state) => {
 	return { user, cars };
 }
 
-// export default App;
 export default connect(mapStateToProps, { carsFetch, reviewsFetch })(App);

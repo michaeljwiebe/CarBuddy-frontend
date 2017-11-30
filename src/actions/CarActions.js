@@ -16,14 +16,6 @@ export const carsFetch = () => {
 			})
 	}
 }
-// export const reviewsFetch = () => {
-// 	return (dispatch) => {
-// 		firebase.database().ref(`reviews`)
-// 			.on('value', snapshot => {
-// 				dispatch({ type: REVIEWS_FETCH_SUCCESS, payload: snapshot.val() })
-// 			})
-// 	}
-// }
 
 export const carCreated = ( makeModel, year, price) => {
 	return(dispatch) => {

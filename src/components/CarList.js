@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
+import firebase from 'firebase';
 
 import { reviewsFetch, carsFetch } from '../actions';
 import { Card } from './common';
 
 class CarList extends Component {
-	componentWillMount(){
-		this.props.reviewsFetch();
-		this.props.carsFetch();
-	}
-
 	render(){
+		console.log('cars props', this.props.cars)
 		// contentContainerClasses = "content-container cars-and-reviews-container";
 		var carAvatar;
 		// carListBtn = "";
@@ -22,9 +19,13 @@ class CarList extends Component {
 				let editReviewBtn;
 				carAvatar = car.avatar_url;
 
-				if (car.ownerId === this.props.user.id) {
+				if (car.ownerId === this.props.user.uid) {
 					removeCar = (
-						<button className="btn value-btn" onClick={this.deleteCar} value={car.uid}>
+						<button 
+							className="btn value-btn" 
+							onClick={this.deleteCar} 
+							value={car.uid}
+						>
 							Remove Car
 						</button>
 					);
@@ -87,9 +88,20 @@ class CarList extends Component {
 		return <div className={carListStyles}>{carList}</div>
 	}
 
+	deleteCar(event){
+		console.log('car uid',event.target.value)
+		firebase.database().ref(`cars/${event.target.value}`).set(null)
+	}
+
+	componentWillMount(){
+		this.props.reviewsFetch();
+		this.props.carsFetch();
+	}
+
 }
 
 const mapStateToProps = state => {
+	console.log("carlist state", state)
 	const user = state.auth.user
 	const cars = _.map(state.cars, (val, uid) => {
 		return { ...val, uid };
