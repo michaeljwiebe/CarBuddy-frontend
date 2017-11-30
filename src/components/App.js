@@ -1,6 +1,7 @@
 //This component controls the app. All other components are rendered inside it and the values in its state determine what the end user sees. This component performs almost all of the API calls using axios or fetch. All of the CSS is also imported into this component for simplicity's sake.
 
 import React, { Component } from "react";
+import _ from 'lodash';
 import axios from "axios";
 import firebase from 'firebase';
 import { connect } from 'react-redux';
@@ -19,16 +20,15 @@ import GoogleMap from "./GoogleMap";
 import MyCars from "./MyCars";
 import CarList from './CarList';
 
-import { carsFetch } from '../actions';
+import { 
+	carsFetch, 
+	reviewsFetch
+} from '../actions';
 
 class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			//these arrays will be filled as API calls return from the backend. The calls happen just before the render function runs.
-			cars: [],
-			reviews: [],
-			reservations: [],
 			//these are the user's coordinates used for centering map and updating car locations
 			lat: "",
 			lng: "",
@@ -37,8 +37,6 @@ class App extends Component {
 			signIn: true,
 			userImage: null,
 			user: null,
-			//user info below for rapid testing purposes, not currently working
-			// user: { username: "arnold", password: "a", name: "Arnold", id: 49 },
 			viewCarsAndReviews: false,
 			viewMyCars: false,
 			carToReview: null,
@@ -52,7 +50,6 @@ class App extends Component {
 		// this.signIn = this.signIn.bind(this);
 		this.signUp = this.signUp.bind(this);
 		this.signOut = this.signOut.bind(this);
-		// this.createUser = this.createUser.bind(this);
 		this.editUser = this.editUser.bind(this);
 		this.updateUserInfo = this.updateUserInfo.bind(this);
 		this.modifyURL = this.modifyURL.bind(this);
@@ -60,22 +57,17 @@ class App extends Component {
 		this.uploadCarImage = this.uploadCarImage.bind(this);
 		this.deleteUser = this.deleteUser.bind(this);
 		this.startReservation = this.startReservation.bind(this);
-		this.makeReservation = this.makeReservation.bind(this);
+		// this.makeReservation = this.makeReservation.bind(this);
 		this.startReview = this.startReview.bind(this);
-		// this.makeReview = this.makeReview.bind(this);
 		this.viewReservations = this.viewReservations.bind(this);
 		this.editReview = this.editReview.bind(this);
 		this.updateReview = this.updateReview.bind(this);
 		this.viewCarsAndReviews = this.viewCarsAndReviews.bind(this);
 		this.viewMyCars = this.viewMyCars.bind(this);
-		// this.deleteCar = this.deleteCar.bind(this);
-		this.addCar = this.addCar.bind(this);
 		this.openAddCar = this.openAddCar.bind(this);
 		this.updateCarCoordinates = this.updateCarCoordinates.bind(this);
-		this.loadCars = this.loadCars.bind(this);
-		this.loadReviews = this.loadReviews.bind(this);
-		this.loadReservations = this.loadReservations.bind(this);
 		this.getCurrentCoordinates = this.getCurrentCoordinates.bind(this);
+		this.resetState = this.resetState.bind(this);
 	}
 
 
@@ -121,7 +113,7 @@ class App extends Component {
 					<i className="fa fa-bars" aria-hidden="true" />
 				</div>
 			);
-			//the three buttons directly below get rendered inside the hamburger variable following them. I chose to do this in order to increase modularity and make it possible to put the same buttons in other places very easily. I didn't end up doing that because I decided that the most logical and user-friendly way to set the app up was to put these less-often-used buttons in the hamburger menu only.
+			//the three buttons directly below get rendered inside the hamburger variable following them. I chose to do this in order to increase modularity and make it possible to put the same buttons in other places very easily. In the future I might build out a button component that I can pass styles to and a function to call when clicked
 			var addCarBtn = (
 				<div className="hamburger-btn" onClick={this.openAddCar}>
 					Add a car
@@ -168,9 +160,6 @@ class App extends Component {
 			if (this.state.reserveCar === true) {
 				var newReservation = (
 					<StartReservation
-						makeReservation={this.makeReservation}
-						reservations={this.state.reservations}
-						cars={this.state.cars}
 						inputs={true}
 					/>
 				);
@@ -268,7 +257,7 @@ class App extends Component {
 					<GoogleMap
 						styles={bigMap}
 						zoom={bigMapZoom}
-						cars={this.state.cars}
+						cars={this.props.cars}
 						lat={this.state.lat}
 						lng={this.state.lng}
 					/>
@@ -283,9 +272,7 @@ class App extends Component {
 			);
 		}
 
-		console.log('state',this.state);
 		const user = firebase.auth().currentUser;
-		console.log('user', user)
 
 		//this is the return portion of the app's render function. The values of the variables below as well as their styles are set in the logic above.
 		return (
@@ -312,7 +299,6 @@ class App extends Component {
 						{newReview}
 						{newReservation}
 						{allCars}
-						{/*<div className={carsAndReviewsStyles}>{carsAndReviews}</div>*/}
 						{editUser}
 						{userReservations}
 						{openReviewEditor}
@@ -324,10 +310,27 @@ class App extends Component {
 		);
 	}
 
+	// if (this.state.loading === true) {
+	// 	loadIcon = <i className="fa fa-cog fa-spin fa-3x fa-fw" />;
+	// }
+
 
 	hamburgerToggle() {
 		let hamburgerMenu = document.getElementsByClassName("hamburger")[0];
 		hamburgerMenu.classList.toggle("hamburger-show");
+	}
+
+	resetState(){
+		this.setState({
+			addCar: false,
+			carToReview: null,
+			reviewToEdit: null,
+			reserveCar: false,
+			viewCarsAndReviews: false,
+			viewReservations: false,
+			editUser: false,
+			viewMyCars: false
+		})
 	}
 
 	viewMyCars() {
@@ -339,22 +342,15 @@ class App extends Component {
 	}
 
 	openAddCar() {
+		this.resetState();
 		this.setState({
 			addCar: true,
-			carToReview: null,
-			reviewToEdit: null,
-			reserveCar: false,
-			viewCarsAndReviews: false,
-			viewReservations: false,
-			editUser: false,
-			viewMyCars: false
 		});
 		this.hamburgerToggle();
 		this.getCurrentCoordinates();
 	}
 
 	getCurrentCoordinates() {
-		console.log("got coords");
 		navigator.geolocation.getCurrentPosition(
 			function(position) {
 				this.setState({
@@ -366,7 +362,6 @@ class App extends Component {
 	}
 
 	updateCarCoordinates(event) {
-		console.log(this.state.lat); //this prints lat
 		axios
 			.post("https://carbuddy.herokuapp.com/cars/update_car_coordinates/" + event.target.value, {
 				data: {
@@ -381,31 +376,6 @@ class App extends Component {
 					});
 				}.bind(this)
 			);
-	}
-
-	addCar(props) {
-		this.uploadCarImage();
-		// axios
-		// 	.post("https://carbuddy.herokuapp.com/cars", {
-		// 		data: {
-		// 			make_model: props.make_model,
-		// 			year: props.year,
-		// 			mpg: props.mpg,
-		// 			price: props.price,
-		// 			lat: props.lat,
-		// 			lng: props.lng,
-		// 			owner_id: this.props.user.id
-		// 		}
-		// 	})
-		// 	.then(
-		// 		function(response) {
-		// 			this.loadCars();
-		// 			this.setState({
-		// 				addCar: false,
-		// 				viewCarsAndReviews: true
-		// 			});
-		// 		}.bind(this)
-		// 	);
 	}
 
 	uploadCarImage() {
@@ -441,42 +411,18 @@ class App extends Component {
 		);
 	}
 
-	// deleteCar(event) {
-	// 	axios({
-	// 		method: "delete",
-	// 		url: "https://carbuddy.herokuapp.com/cars/" + event.target.value
-	// 	}).then(
-	// 		function(response) {
-	// 			this.loadCars();
-	// 		}.bind(this)
-	// 	);
-	// 	this.getCurrentCoordinates();
-	// }
-
 	viewCarsAndReviews() {
+		this.resetState();
 		this.setState({
-			carToReview: null,
-			viewCarsAndReviews: true,
-			addCar: false,
-			reviewToEdit: null,
-			reserveCar: false,
-			viewReservations: false,
-			editUser: false,
-			viewMyCars: false
+			viewCarsAndReviews: true
 		});
 		this.getCurrentCoordinates();
 	}
 
 	viewReservations() {
+		this.resetState();
 		this.setState({
-			carToReview: null,
-			viewCarsAndReviews: false,
-			addCar: false,
-			reviewToEdit: null,
-			reserveCar: false,
-			viewReservations: true,
-			viewMyCars: false,
-			editUser: false
+			viewReservations: true
 		});
 		this.getCurrentCoordinates();
 	}
@@ -510,57 +456,39 @@ class App extends Component {
 	}
 
 	startReview(event) {
+		this.resetState();
 		this.setState({
-			carToReview: JSON.parse(event.target.value),
-			viewCarsAndReviews: false,
-			addCar: false,
-			reviewToEdit: null,
-			reserveCar: false,
-			viewReservations: false,
-			editUser: false,
-			viewMyCars: false
+			carToReview: JSON.parse(event.target.value)
 		});
 		this.getCurrentCoordinates();
 	}
 
-	makeReservation(props) {
-		axios
-			.post("https://carbuddy.herokuapp.com/reservations", {
-				data: {
-					car_id: props.car_id,
-					start_date: props.start_date,
-					end_date: props.end_date,
-					reservation_hours: props.reservation_hours,
-					renter_id: this.props.user.id
-				}
-			})
-			.then(
-				function(response) {
-					this.setState({
-						reservations: response.data,
-						viewCarsAndReviews: false,
-						carToReview: null,
-						reviewToEdit: null,
-						reserveCar: false,
-						addCar: false,
-						viewReservations: true,
-						editUser: false,
-						viewMyCars: false
-					});
-				}.bind(this)
-			);
-	}
+	// makeReservation(props) {
+	// 	axios
+	// 		.post("https://carbuddy.herokuapp.com/reservations", {
+	// 			data: {
+	// 				car_id: props.car_id,
+	// 				start_date: props.start_date,
+	// 				end_date: props.end_date,
+	// 				reservation_hours: props.reservation_hours,
+	// 				renter_id: this.props.user.id
+	// 			}
+	// 		})
+	// 		.then(
+	// 			function(response) {
+	// 				this.resetState();
+	// 				this.setState({
+	// 					reservations: response.data,
+	// 					viewReservations: true
+	// 				});
+	// 			}.bind(this)
+	// 		);
+	// }
 
 	startReservation(event) {
+		this.resetState();
 		this.setState({
-			reserveCar: true,
-			viewCarsAndReviews: false,
-			carToReview: null,
-			addCar: false,
-			reviewToEdit: null,
-			viewReservations: false,
-			editUser: false,
-			viewMyCars: false
+			reserveCar: true
 		});
 		this.getCurrentCoordinates();
 	}
@@ -568,30 +496,6 @@ class App extends Component {
 	signUp() {
 		this.setState({ signUp: true, signIn: false });
 	}
-
-	// createUser(props) {
-	// 	axios
-	// 		.post("https://carbuddy.herokuapp.com/users", {
-	// 			data: {
-	// 				name: props.name,
-	// 				address: props.address,
-	// 				zip: props.zip,
-	// 				username: props.username,
-	// 				password: props.password
-	// 			}
-	// 		})
-	// 		.then(
-	// 			function(response) {
-	// 				this.uploadUserImage({ method: "upload" });
-	// 				this.setState({
-	// 					user: response.data,
-	// 					signUp: false,
-	// 					signIn: true,
-	// 					viewCarsAndReviews: true
-	// 				});
-	// 			}.bind(this)
-	// 		);
-	// }
 
 	deleteUser() {
 		axios({
@@ -605,15 +509,9 @@ class App extends Component {
 	}
 
 	editUser() {
+		this.resetState();
 		this.setState({
-			reserveCar: false,
-			viewCarsAndReviews: false,
-			carToReview: null,
-			addCar: false,
-			reviewToEdit: null,
-			viewReservations: false,
-			editUser: true,
-			viewMyCars: false
+			editUser: true
 		});
 		this.hamburgerToggle();
 		this.getCurrentCoordinates();
@@ -684,96 +582,33 @@ class App extends Component {
 		return returningImageURL;
 	}
 
-// Redux and firebased out
-	// signIn(props) {
-	// 	axios
-	// 		.post("https://carbuddy.herokuapp.com/sign_in", {
-	// 			data: {
-	// 				username: props.username,
-	// 				password: props.password
-	// 			}
-	// 		})
-	// 		.then(
-	// 			function(response) {
-	// 				if (response.data === "") {
-	// 					return;
-	// 				} else {
-	// 					let userImage = this.modifyURL(response.data.avatar_url);
-	// 					this.setState({
-	// 						user: response.data,
-	// 						userImage: userImage,
-	// 						viewCarsAndReviews: true
-	// 					});
-	// 				}
-	// 			}.bind(this)
-	// 		);
-	// }
-
 	signOut() {
 		firebase.auth().signOut()
 			.then(() => console.log('Signed Out'))
 			.catch((error) => console.error('Sign Out Error', error));
 		this.hamburgerToggle();
+		this.resetState();
 		this.setState({
-			user: null,
-			signIn: true,
-			reviewToEdit: null,
-			reserveCar: false,
-			carToReview: null,
-			viewReservations: false,
-			viewMyCars: false,
-			editUser: false
+			signIn: true
 		});
 	}
 
-	loadCars() {
-		axios.get("https://carbuddy.herokuapp.com/cars").then(
-			function(response) {
-				response.data.forEach(
-					function(car) {
-						car.avatar_url = this.modifyURL(car.avatar_url);
-					}.bind(this)
-				);
-				this.setState({ cars: response.data });
-			}.bind(this)
-		);
-	}
-
-	loadReviews() {
-		//replace with call to 
-		axios.get("https://carbuddy.herokuapp.com/reviews").then(
-			function(response) {
-				this.setState({
-					reviews: response.data
-				});
-			}.bind(this)
-		);
-	}
-
-	loadReservations() {
-		axios.get("https://carbuddy.herokuapp.com/reservations").then(
-			function(response) {
-				this.setState({ reservations: response.data });
-			}.bind(this)
-		);
-	}
-
-	//this function will run once before the app renders for the first time. I put each axios call into a seperate function so that I could call them again individually when it was needed.
 	componentWillMount() {
-		this.loadCars();
-		this.loadReviews();
-		this.loadReservations();
 		this.getCurrentCoordinates();
-
 		this.props.carsFetch();
 	}
+	// componentWillReceiveProps(nextProps){
+	// 	console.log('nextProps', nextProps)
+	// }
 }
 
 const mapStateToProps = (state) => {
 	const { user } = state.auth;
-	const cars = state.cars;
-	return { user, cars }
+	const cars = _.map(state.carForm.cars, (val, uid) => {
+		return { ...val, uid };
+	})
+	return { user, cars };
 }
 
 // export default App;
-export default connect(mapStateToProps, { carsFetch })(App);
+export default connect(mapStateToProps, { carsFetch, reviewsFetch })(App);

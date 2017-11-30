@@ -12,7 +12,6 @@ class CarList extends Component {
 	}
 
 	render(){
-		console.log('props',this.props)
 		// contentContainerClasses = "content-container cars-and-reviews-container";
 		var carAvatar;
 		// carListBtn = "";
@@ -92,7 +91,7 @@ class CarList extends Component {
 
 const mapStateToProps = state => {
 	const user = state.auth.user
-	const cars = _.map(state.carForm.cars, (val, uid) => {
+	const cars = _.map(state.cars, (val, uid) => {
 		return { ...val, uid };
 	})
 	const reviews = _.map(state.reviews, (val, uid) =>{

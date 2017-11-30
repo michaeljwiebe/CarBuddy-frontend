@@ -3,8 +3,7 @@ import {
 	CAR_MAKE_MODEL_CHANGED,
 	CAR_YEAR_CHANGED,
 	CAR_PRICE_CHANGED,
-	CAR_MILEAGE_CHANGED,
-	CARS_FETCH_SUCCESS
+	CAR_MILEAGE_CHANGED
 } from '../actions/types';
 
 const initialState = {
@@ -16,7 +15,6 @@ const initialState = {
 }
 
 export default ( state = initialState, action ) => {
-	console.log(action);
 	switch(action.type){
 		case CAR_CREATED:
 			return { ...state, ...initialState, message: 'Car Created'}
@@ -28,8 +26,6 @@ export default ( state = initialState, action ) => {
 			return { ...state, price: action.payload }
 		case CAR_MILEAGE_CHANGED:
 			return { ...state, mileage: action.payload }
-		case CARS_FETCH_SUCCESS:
-			return { ...state, cars: action.payload }
 		default:
 			return state
 	}

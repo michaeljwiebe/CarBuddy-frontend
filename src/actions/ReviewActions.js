@@ -31,7 +31,7 @@ export const reviewDescriptionChanged = (text) => {
 export const reviewCreated = (title, description, rating, carId) => {
 	return(dispatch) => {
 		const { currentUser } = firebase.auth();
-		firebase.database().ref(`users/${currentUser.uid}/reviews`)
+		firebase.database().ref(`reviews`)
 			.push({ 
 				title, 
 				description, 
@@ -47,8 +47,8 @@ export const reviewCreated = (title, description, rating, carId) => {
 
 export const reviewsFetch = () => {
 	return (dispatch) => {
-		const { currentUser } = firebase.auth();
-		firebase.database().ref(`users/${currentUser.uid}/reviews`)
+		// const { currentUser } = firebase.auth();
+		firebase.database().ref(`reviews`)
 			.on('value', snapshot => {
 				dispatch({ type: REVIEWS_FETCH_SUCCESS, payload: snapshot.val() })
 			})

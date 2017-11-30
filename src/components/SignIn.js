@@ -5,7 +5,6 @@ import { emailChanged, passwordChanged, loginUser } from '../actions';
 class SignIn extends Component {
 
 	render() {
-		console.log("signIn props", this.props)
 		let errorMsg = <div>{this.props.error}</div>;
 
 		return (
