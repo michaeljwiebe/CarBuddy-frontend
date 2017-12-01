@@ -14,10 +14,9 @@ import AddCar from "./AddCar";
 import EditUser from "./EditUser";
 import UserReservations from "./UserReservations";
 import StartReservation from "./StartReservation";
-import StartReview from "./StartReview";
 import EditReview from "./EditReview";
 import GoogleMap from "./GoogleMap";
-import MyCars from "./MyCars";
+// import MyCars from "./MyCars";
 import CarList from './CarList';
 
 import { 
@@ -58,9 +57,9 @@ class App extends Component {
 		this.deleteUser = this.deleteUser.bind(this);
 		this.startReservation = this.startReservation.bind(this);
 		// this.makeReservation = this.makeReservation.bind(this);
-		this.startReview = this.startReview.bind(this);
 		this.viewReservations = this.viewReservations.bind(this);
 		this.editReview = this.editReview.bind(this);
+		this.newReview = this.newReview.bind(this);
 		this.updateReview = this.updateReview.bind(this);
 		this.viewCarsAndReviews = this.viewCarsAndReviews.bind(this);
 		this.viewMyCars = this.viewMyCars.bind(this);
@@ -72,6 +71,9 @@ class App extends Component {
 
 
 	render() {
+
+		console.log('app state', this.state)
+
 		//the variables that are being used to control the render are declared near to where they are used for debuggability and readabily's sake. They initially will have no values because they will be assigned values inside the render depending on the state of the app.
 
 		//the values of below variables are first controlled by the state of the user which is the user object if the user is signed in or null if not.
@@ -82,7 +84,7 @@ class App extends Component {
 			var logoText = "logo logo-sign-in-text";
 			var logoImage = "logo logo-sign-in-image";
 			var userAvatar = null;
-			var openReviewEditor = null;
+			var reviewEditor = null;
 
 			if (this.state.signIn === true) {
 				signUpBtn = (
@@ -165,15 +167,13 @@ class App extends Component {
 				);
 			}
 
-			if (this.state.carToReview !== null) {
-				var newReview = (
-					<StartReview carToReview={this.state.carToReview} startReview={this.startReview} />
-				);
-			}
-
-			if (this.state.reviewToEdit !== null) {
-				openReviewEditor = (
-					<EditReview reviewToEdit={this.state.reviewToEdit} updateReview={this.updateReview} />
+			if (this.state.reviewToEdit !== null || this.state.carToReview !== null) {
+				reviewEditor = (
+					<EditReview 
+						reviewToEdit={this.state.reviewToEdit} 
+						carToReview={this.state.carToReview}
+						updateReview={this.updateReview} 
+					/>
 				);
 			}
 
@@ -238,7 +238,13 @@ class App extends Component {
 						My Cars
 					</div>
 				);
-				var allCars = <CarList cars={this.props.cars} />
+				var allCars = (
+					<CarList 
+						cars={this.props.cars} 
+						newReview={this.newReview}
+						editReview={this.editReview} 
+					/>
+				)
 
 				let bigMap = {
 					position: "relative",
@@ -271,8 +277,6 @@ class App extends Component {
 			);
 		}
 
-		const user = firebase.auth().currentUser;
-
 		//this is the return portion of the app's render function. The values of the variables below as well as their styles are set in the logic above.
 		return (
 			<div className="App">
@@ -295,12 +299,11 @@ class App extends Component {
 					<div className={contentContainerClasses}>
 						{googleMap}
 						{addCar}
-						{newReview}
 						{newReservation}
 						{allCars}
 						{editUser}
 						{userReservations}
-						{openReviewEditor}
+						{reviewEditor}
 						{myCars}
 					</div>
 					{footer}
@@ -426,40 +429,38 @@ class App extends Component {
 		this.getCurrentCoordinates();
 	}
 
-	updateReview(props) {
-		axios({
-			method: "patch",
-			url: "https://carbuddy.herokuapp.com/reviews/" + props.id,
-			params: {
-				title: props.title,
-				description: props.description,
-				rating: props.rating
-			}
-		}).then(
-			function(response) {
-				this.setState({
-					reviews: response.data,
-					reviewToEdit: null,
-					viewCarsAndReviews: true
-				});
-			}.bind(this)
-		);
+	updateReview() {
+		// axios({
+		// 	method: "patch",
+		// 	url: "https://carbuddy.herokuapp.com/reviews/" + props.id,
+		// 	params: {
+		// 		title: props.title,
+		// 		description: props.description,
+		// 		rating: props.rating
+		// 	}
+		// }).then(
+		// 	function(response) {
+		this.setState({
+			reviewToEdit: null,
+			carToReview: null,
+			viewCarsAndReviews: true
+		})
 	}
 
 	editReview(event) {
+		console.log('edit review btn');
+		this.resetState();
 		this.setState({
-			reviewToEdit: JSON.parse(event.target.value),
-			viewCarsAndReviews: false
+			reviewToEdit: JSON.parse(event.target.value)
 		});
 		this.getCurrentCoordinates();
 	}
 
-	startReview(event) {
+	newReview(event){
 		this.resetState();
 		this.setState({
 			carToReview: JSON.parse(event.target.value)
-		});
-		this.getCurrentCoordinates();
+		})
 	}
 
 	// makeReservation(props) {
@@ -603,7 +604,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
 	const { user } = state.auth;
-	const cars = _.map(state.carForm.cars, (val, uid) => {
+	const cars = _.map(state.cars, (val, uid) => {
 		return { ...val, uid };
 	})
 	return { user, cars };

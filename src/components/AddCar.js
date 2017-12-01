@@ -12,7 +12,6 @@ import {
 class AddCar extends Component {
 	render() {
 		const { 
-			carCreated, 
 			carMakeModelChanged, 
 			carYearChanged, 
 			carPriceChanged, 

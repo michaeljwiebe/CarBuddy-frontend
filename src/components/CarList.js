@@ -14,7 +14,7 @@ class CarList extends Component {
 		// carListBtn = "";
 		var carListStyles = "cars-and-reviews";
 		var carList = this.props.cars.map(
-			function(car, index) {
+			function(car) {
 				let removeCar;
 				let editReviewBtn;
 				carAvatar = car.avatar_url;
@@ -31,13 +31,13 @@ class CarList extends Component {
 					);
 				}
 				let reviews = this.props.reviews.map(
-					function(review, index) {
+					function(review) {
 						editReviewBtn = "";
 						if (review.userId === this.props.user.uid) {
 							editReviewBtn = (
 								<button
 									className="btn value-btn btn-edit-review"
-									onClick={this.editReview}
+									onClick={this.props.editReview}
 									value={JSON.stringify(review)}
 								>
 									Edit Review
@@ -46,13 +46,13 @@ class CarList extends Component {
 						}
 						if (car.uid === review.carId) {
 							return (
-								<div key={index} className="flex review">
+								<div key={review.uid} className="flex review">
 									<div className="review-title">{review.title}</div>
 									<div className="review-description">{review.description}</div>
 									<div className="review-reviewer-rating">
 										{review.rating}
 										<i className="fa fa-star" aria-hidden="true" /> -
-										{" " + review.reviewer.name}
+										{" " + review.username}
 										{editReviewBtn}
 									</div>
 								</div>
@@ -62,7 +62,7 @@ class CarList extends Component {
 				);
 
 				return (
-					<div key={index} className="flex car-description-reviews">
+					<div key={car.uid} className="flex car-description-reviews">
 						<div className="car-make-model">{car.makeModel}</div>
 						<div className="car-description">
 							<img src={carAvatar} className="car-img-small" alt="car" />
@@ -74,7 +74,7 @@ class CarList extends Component {
 						<div>
 							<button
 								className="btn value-btn"
-								onClick={this.props.startReview}
+								onClick={this.props.newReview}
 								value={JSON.stringify(car.uid)}
 							>
 								Review this car
@@ -95,21 +95,17 @@ class CarList extends Component {
 
 	componentWillMount(){
 		this.props.reviewsFetch();
-		this.props.carsFetch();
 	}
 
 }
 
 const mapStateToProps = state => {
 	console.log("carlist state", state)
-	const user = state.auth.user
-	const cars = _.map(state.cars, (val, uid) => {
-		return { ...val, uid };
-	})
+	const user = state.auth.user;
 	const reviews = _.map(state.reviews, (val, uid) =>{
 		return { ...val, uid };
 	})
-	return { user, cars, reviews };
+	return { user, reviews };
 }
 
 export default connect(mapStateToProps, {carsFetch, reviewsFetch})(CarList);

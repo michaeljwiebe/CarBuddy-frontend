@@ -4,6 +4,7 @@ import {
 	REVIEW_DESCRIPTION_CHANGED, 
 	REVIEW_RATING_CHANGED,
 	REVIEW_CREATED,
+	REVIEW_UPDATED,
 	REVIEWS_FETCH_SUCCESS
 } from './types';
 
@@ -28,20 +29,32 @@ export const reviewDescriptionChanged = (text) => {
 	}
 }
 
-export const reviewCreated = (title, description, rating, carId) => {
+export const reviewCreated = ({title, description, rating, carId}) => {
 	return(dispatch) => {
 		const { currentUser } = firebase.auth();
 		firebase.database().ref(`reviews`)
-			.push({ 
-				title, 
-				description, 
-				rating, 
-				userId: currentUser.uid,
-				username: currentUser.displayName,
-				carId
-			})
+		.push({ 
+			title, 
+			description, 
+			rating, 
+			carId,
+			userId: currentUser.uid,
+			username: currentUser.displayName
+		})
 			// .then(() => Actions.employeeList({ type: 'reset' }))
-		dispatch({type: REVIEW_CREATED})
+		dispatch({ type: REVIEW_CREATED })
+	}
+}
+
+export const reviewUpdated = ({title, description, rating, reviewId}) => {
+	return(dispatch) => {
+		firebase.database().ref(`reviews/${reviewId}`)
+		.set({
+			title,
+			description,
+			rating
+		})
+		dispatch({ type: REVIEW_UPDATED })
 	}
 }
 
