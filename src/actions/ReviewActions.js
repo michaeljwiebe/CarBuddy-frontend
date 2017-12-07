@@ -5,6 +5,7 @@ import {
 	REVIEW_RATING_CHANGED,
 	REVIEW_CREATED,
 	REVIEW_DELETED,
+	REVIEW_INITIALIZED,
 	REVIEW_SAVE_CHANGES,
 	REVIEWS_FETCH_SUCCESS
 } from './types';
@@ -70,6 +71,12 @@ export const reviewDeleted = (reviewId) => {
 		.set(null)
 		dispatch({type: REVIEW_DELETED})
 	}
+}
+
+export const reviewInitialized = () => {
+	return({ 
+		type: REVIEW_INITIALIZED
+	})
 }
 
 export const reviewsFetch = () => {

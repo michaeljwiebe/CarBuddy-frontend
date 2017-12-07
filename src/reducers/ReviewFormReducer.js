@@ -2,7 +2,9 @@ import {
 	REVIEW_TITLE_CHANGED, 
 	REVIEW_DESCRIPTION_CHANGED,
 	REVIEW_RATING_CHANGED,
-	REVIEW_CREATED
+	REVIEW_CREATED,
+	REVIEW_SAVE_CHANGES,
+	REVIEW_INITIALIZED
 } from '../actions/types';
 
 const initialState = {
@@ -22,6 +24,10 @@ export default ( state = initialState, action) => {
 			return {...state, rating: action.payload}
 		case REVIEW_CREATED:
 			return {...state, ...initialState}
+		case REVIEW_SAVE_CHANGES:
+			return {...initialState }
+		case REVIEW_INITIALIZED:
+			return { ...initialState }
 		default:
 			return {...state}
 	}

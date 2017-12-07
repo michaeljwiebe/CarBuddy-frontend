@@ -15,6 +15,7 @@ export const REVIEW_DESCRIPTION_CHANGED = 'review_description_changed';
 export const REVIEW_RATING_CHANGED = 'review_rating_changed';
 export const REVIEW_CREATED = 'review_created';
 export const REVIEW_DELETED = 'review_deleted';
+export const REVIEW_INITIALIZED = 'review_initialized';
 export const REVIEW_SAVE_CHANGES = 'review_save_changes';
 export const REVIEWS_FETCH_SUCCESS = 'review_fetch_success';
 
