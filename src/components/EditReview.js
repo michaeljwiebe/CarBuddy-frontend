@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import _ from 'lodash';
 import { connect } from 'react-redux';
 
+import ReviewForm from './ReviewForm';
 import { 
 	reviewTitleChanged, 
 	reviewDescriptionChanged, 
 	reviewRatingChanged,
-	reviewCreated,
-	reviewsFetch,
-	reviewUpdated
+	reviewSaveChanges,
+	reviewDeleted
 } from '../actions';
 
 //Its really nice to have these small components that handle simple functions such as this one. My ability to focus and close in on the problem becomes so much greater using this method of increasing modularity. Though with many of these components, writing them was simple enough that I didn't end up having very many issues to deal with at all. I'd call that a win!
@@ -17,42 +17,44 @@ class EditReview extends Component {
 
 	constructor(props){
 		super(props);
-		console.log('props' ,props)
+		console.log('props', props)
+		const { title, description, rating } = this.props.reviewToEdit;
 		this.state = {
-			reviews: this.props.reviewsDb,
-			title: '',
-			description: '',
-			rating: '',
-			carId: '',
-			uid: '',
-			username: '',
-			userId: ''
+			title,
+			description,
+			rating
 		}
+		this.updateTitle = this.updateTitle.bind(this);
+		this.updateDescription = this.updateDescription.bind(this);
+		this.updateRating = this.updateRating.bind(this);
 	}
 
 	componentWillMount(){
-		this.props.reviewsFetch();
+		// _.each(this.props.reviewToEdit, (value, prop) => this.props.reviewFieldUpdate({ prop, value }))
+		this.props.reviewRatingChanged(this.state.rating);
+		this.props.reviewTitleChanged(this.state.title);
+		this.props.reviewDescriptionChanged(this.state.description);
 	}
 
-	componentWillReceiveProps(nextProps){
-		let title, description, rating, carId, uid, username, userId;
-		if (nextProps.reviewToEdit !== null){
-			var selectedReview = nextProps.reviewsDb.filter(review => { //this was causing a loop when set to this.state
-				return review.uid === nextProps.reviewToEdit.uid
-			})
-			this.setState({
-				title: selectedReview[0].title,
-				description: selectedReview[0].description,
-				rating: selectedReview[0].rating,
-				carId: selectedReview[0].carId,
-				uid: selectedReview[0].uid,
-				username: selectedReview[0].username,
-				userId: selectedReview[0].userId
-			})
-			console.log('selectedReview', selectedReview)
-		}
-		console.log(title, description, rating);
-	}
+	// componentWillReceiveProps(nextProps){
+	// 	let title, description, rating, carId, uid, username, userId;
+	// 	if (nextProps.reviewToEdit !== null){
+	// 		var selectedReview = nextProps.reviewsDb.filter(review => { //this was causing a loop when set to this.state
+	// 			return review.uid === nextProps.reviewToEdit.uid
+	// 		})
+	// 		this.setState({
+	// 			title: selectedReview[0].title,
+	// 			description: selectedReview[0].description,
+	// 			rating: selectedReview[0].rating,
+	// 			carId: selectedReview[0].carId,
+	// 			uid: selectedReview[0].uid,
+	// 			username: selectedReview[0].username,
+	// 			userId: selectedReview[0].userId
+	// 		})
+	// 		console.log('selectedReview', selectedReview)
+	// 	}
+	// 	console.log(title, description, rating);
+	// }
 
 
 
@@ -60,16 +62,13 @@ class EditReview extends Component {
 		console.log('EditReview props',  this.props);
 		console.log('EditReview state',  this.state);
 		const { 
-			reviewTitleChanged, 
-			reviewDescriptionChanged, 
-			reviewRatingChanged,
 			reviewToEdit
 		} = this.props;
-		const {
-			title,
-			description,
-			rating
-		} = this.state;
+		// const {
+		// 	title,
+		// 	description,
+		// 	rating
+		// } = this.state;
 		
 		//find the specific review to edit if it exists
 		// let title, description, rating, carId, uid, username, userId;
@@ -94,77 +93,59 @@ class EditReview extends Component {
 
 		return (
 			<div className="inputs-container">
-				<input
-					className="input"
-					type="text"
-					onChange={event => reviewTitleChanged(event.target.value)}
-					placeholder="Title"
-					value={ this.props.title || title }
+				<ReviewForm 
+					{...this.state}
 				/>
-				<input
-					className="input"
-					type="textarea"
-					onChange={event => reviewDescriptionChanged(event.target.value)}
-					placeholder="Description"
-					value={ this.props.description || description }
-				/>
-				<select
-					className="input"
-					type="integer"
-					onChange={event => reviewRatingChanged(event.target.value)}
-					placeholder="Rating"
-					value={ this.props.rating || rating }
-				>
-					<option value="">Click here to select a rating</option>
-					<option value="5">5 Stars</option>
-					<option value="4">4 Stars</option>
-					<option value="3">3 Stars</option>
-					<option value="2">2 Stars</option>
-					<option value="1">1 Stars</option>
-					<option value="0">0 Stars</option>
-				</select>
-				<br />
 				<button 
 					className="btn btn-make-review" 
-					onClick={this.createReview.bind(this)}
-					value={reviewToEdit }
+					onClick={this.updateReview.bind(this)}
 				>
-					Post Review
+					Save Review
+				</button>
+				<button
+					className="btn btn-make-review"
+					onClick={event => {
+						this.props.reviewDeleted(event.target.value)
+						this.props.resetView()
+					}}	
+					value={this.props.reviewToEdit.uid}
+				>
+					Delete Review
 				</button>
 			</div>
 		);
 	}
-	createReview(event) {
-		const reviewId = event.target.value.uid;
-		console.log('reviewID', reviewId)
-		const { title, description, rating, carToReview, reviewToEdit } = this.props;
-		if (carToReview !== null){
-			this.props.reviewCreated({title, description, rating, carId: carToReview});
-		} else if (reviewToEdit !== null) {
-			this.props.reviewUpdated({title, description, rating, reviewId})
-		}
-		this.props.updateReview();
+	updateReview () {
+		const { title, description, rating } = this.props;
+		const { uid, username, userId, carId } = this.props.reviewToEdit;
+		console.log('editReview props', this.props)
+		this.props.reviewSaveChanges(carId, description, rating, uid, title, userId, username);
+		this.props.resetView();
 	}
 
-	componentWillMount(){
-		this.props.reviewsFetch();
+	updateTitle(value) {
+		this.setState({ title: value });
+	}
+
+	updateDescription(value) {
+		this.setState({ description: value });
+	}
+
+	updateRating(value) {
+		this.setState({ rating: value });
 	}
 
 }
 
 const mapStateToProps = ({ reviewForm, reviews }) => {
 	const { title = '', description = '', rating = '' } = reviewForm;
-	const reviewsDb = _.map(reviews, (val, uid) => {
-		return { ...val, uid };
-	})
-	return { title, description, rating, reviewsDb };
+	return { title, description, rating };
 }
 
 export default connect(mapStateToProps, { 
 	reviewTitleChanged, 
 	reviewDescriptionChanged, 
 	reviewRatingChanged,
-	reviewCreated,
-	reviewsFetch,
-	reviewUpdated
+	reviewSaveChanges,
+	reviewDeleted
 })(EditReview);

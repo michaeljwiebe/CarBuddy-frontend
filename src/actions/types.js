@@ -14,7 +14,8 @@ export const REVIEW_TITLE_CHANGED = 'review_title_changed';
 export const REVIEW_DESCRIPTION_CHANGED = 'review_description_changed';
 export const REVIEW_RATING_CHANGED = 'review_rating_changed';
 export const REVIEW_CREATED = 'review_created';
-export const REVIEW_UPDATED = 'review_updated';
+export const REVIEW_DELETED = 'review_deleted';
+export const REVIEW_SAVE_CHANGES = 'review_save_changes';
 export const REVIEWS_FETCH_SUCCESS = 'review_fetch_success';
 
 export const CAR_CREATED = 'car_created';

@@ -15,6 +15,7 @@ import EditUser from "./EditUser";
 import UserReservations from "./UserReservations";
 import StartReservation from "./StartReservation";
 import EditReview from "./EditReview";
+import CreateReview from "./CreateReview";
 import GoogleMap from "./GoogleMap";
 // import MyCars from "./MyCars";
 import CarList from './CarList';
@@ -60,7 +61,7 @@ class App extends Component {
 		this.viewReservations = this.viewReservations.bind(this);
 		this.editReview = this.editReview.bind(this);
 		this.newReview = this.newReview.bind(this);
-		this.updateReview = this.updateReview.bind(this);
+		this.resetView = this.resetView.bind(this);
 		this.viewCarsAndReviews = this.viewCarsAndReviews.bind(this);
 		this.viewMyCars = this.viewMyCars.bind(this);
 		this.openAddCar = this.openAddCar.bind(this);
@@ -71,8 +72,8 @@ class App extends Component {
 
 
 	render() {
-
-		console.log('app state', this.state)
+		//this will make sure that the app knows the current user's location
+		this.getCurrentCoordinates();
 
 		//the variables that are being used to control the render are declared near to where they are used for debuggability and readabily's sake. They initially will have no values because they will be assigned values inside the render depending on the state of the app.
 
@@ -167,12 +168,20 @@ class App extends Component {
 				);
 			}
 
-			if (this.state.reviewToEdit !== null || this.state.carToReview !== null) {
+			if (this.state.carToReview !== null){
+				reviewEditor = (
+					<CreateReview 
+						carToReview={this.state.carToReview} 
+						resetView={this.resetView}
+					/>
+				)
+			}
+
+			if (this.state.reviewToEdit !== null) {
 				reviewEditor = (
 					<EditReview 
 						reviewToEdit={this.state.reviewToEdit} 
-						carToReview={this.state.carToReview}
-						updateReview={this.updateReview} 
+						resetView={this.resetView} 
 					/>
 				);
 			}
@@ -340,7 +349,6 @@ class App extends Component {
 			viewMyCars: true,
 			viewCarsAndReviews: false
 		});
-		this.getCurrentCoordinates();
 	}
 
 	openAddCar() {
@@ -349,7 +357,6 @@ class App extends Component {
 			addCar: true,
 		});
 		this.hamburgerToggle();
-		this.getCurrentCoordinates();
 	}
 
 	getCurrentCoordinates() {
@@ -418,7 +425,6 @@ class App extends Component {
 		this.setState({
 			viewCarsAndReviews: true
 		});
-		this.getCurrentCoordinates();
 	}
 
 	viewReservations() {
@@ -426,23 +432,11 @@ class App extends Component {
 		this.setState({
 			viewReservations: true
 		});
-		this.getCurrentCoordinates();
 	}
 
-	updateReview() {
-		// axios({
-		// 	method: "patch",
-		// 	url: "https://carbuddy.herokuapp.com/reviews/" + props.id,
-		// 	params: {
-		// 		title: props.title,
-		// 		description: props.description,
-		// 		rating: props.rating
-		// 	}
-		// }).then(
-		// 	function(response) {
+	resetView(){
+		this.resetState();
 		this.setState({
-			reviewToEdit: null,
-			carToReview: null,
 			viewCarsAndReviews: true
 		})
 	}
@@ -453,7 +447,6 @@ class App extends Component {
 		this.setState({
 			reviewToEdit: JSON.parse(event.target.value)
 		});
-		this.getCurrentCoordinates();
 	}
 
 	newReview(event){
@@ -490,7 +483,6 @@ class App extends Component {
 		this.setState({
 			reserveCar: true
 		});
-		this.getCurrentCoordinates();
 	}
 
 	signUp() {
@@ -514,7 +506,6 @@ class App extends Component {
 			editUser: true
 		});
 		this.hamburgerToggle();
-		this.getCurrentCoordinates();
 	}
 
 	updateUserInfo(props) {

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import firebase from 'firebase';
 
 import { reviewsFetch, carsFetch } from '../actions';
-import { Card } from './common';
+// import { Card } from './common';
 
 class CarList extends Component {
 	render(){

@@ -12,6 +12,7 @@ const initialState = {
 }
 
 export default ( state = initialState, action) => {
+	console.log(action)
 	switch (action.type){
 		case REVIEW_TITLE_CHANGED:
 			return {...state, title: action.payload}
