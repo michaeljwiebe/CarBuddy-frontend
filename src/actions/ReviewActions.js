@@ -50,7 +50,6 @@ export const reviewCreated = ({title, description, rating, carId}) => {
 
 export const reviewSaveChanges = (carId, description, rating, reviewId, title, userId, username) => {
 	console.log(title, description, rating, reviewId)
-	const { currentUser } = firebase.auth();
 	return(dispatch) => {
 		firebase.database().ref(`reviews/${reviewId}`)
 		.set({

@@ -22,7 +22,8 @@ import CarList from './CarList';
 
 import { 
 	carsFetch, 
-	reviewsFetch
+	reviewsFetch,
+	logoutUser
 } from '../actions';
 
 class App extends Component {
@@ -51,7 +52,7 @@ class App extends Component {
 		this.signUp = this.signUp.bind(this);
 		this.signOut = this.signOut.bind(this);
 		this.editUser = this.editUser.bind(this);
-		this.updateUserInfo = this.updateUserInfo.bind(this);
+		// this.updateUserInfo = this.updateUserInfo.bind(this);
 		this.modifyURL = this.modifyURL.bind(this);
 		this.uploadUserImage = this.uploadUserImage.bind(this);
 		this.uploadCarImage = this.uploadCarImage.bind(this);
@@ -199,7 +200,7 @@ class App extends Component {
 					<EditUser
 						user={this.props.user}
 						deleteUser={this.deleteUser}
-						updateUserInfo={this.updateUserInfo}
+						resetState={this.resetState}
 					/>
 				);
 			}
@@ -508,23 +509,23 @@ class App extends Component {
 		this.hamburgerToggle();
 	}
 
-	updateUserInfo(props) {
-		axios({
-			method: "patch",
-			url: "https://carbuddy.herokuapp.com/users/" + this.props.user.id,
-			params: {
-				username: props.username,
-				password: props.password,
-				name: props.name,
-				address: props.address,
-				zip: props.zip
-			}
-		}).then(
-			function(response) {
-				this.uploadUserImage({ method: "update", id: this.props.user.id });
-			}.bind(this)
-		);
-	}
+	// updateUserInfo(props) {
+	// 	axios({
+	// 		method: "patch",
+	// 		url: "https://carbuddy.herokuapp.com/users/" + this.props.user.id,
+	// 		params: {
+	// 			username: props.username,
+	// 			password: props.password,
+	// 			name: props.name,
+	// 			address: props.address,
+	// 			zip: props.zip
+	// 		}
+	// 	}).then(
+	// 		function(response) {
+	// 			this.uploadUserImage({ method: "update", id: this.props.user.id });
+	// 		}.bind(this)
+	// 	);
+	// }
 
 	uploadUserImage(userInfo) {
 		let url;
@@ -574,6 +575,7 @@ class App extends Component {
 	}
 
 	signOut() {
+		this.props.logoutUser();
 		firebase.auth().signOut()
 			.then(() => console.log('Signed Out'))
 			.catch((error) => console.error('Sign Out Error', error));
@@ -601,4 +603,4 @@ const mapStateToProps = (state) => {
 	return { user, cars };
 }
 
-export default connect(mapStateToProps, { carsFetch, reviewsFetch })(App);
+export default connect(mapStateToProps, { carsFetch, reviewsFetch, logoutUser })(App);

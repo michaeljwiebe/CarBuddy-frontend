@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import _ from 'lodash';
 import { connect } from 'react-redux';
 
 import ReviewForm from './ReviewForm';
@@ -30,71 +29,19 @@ class EditReview extends Component {
 	}
 
 	componentWillMount(){
-		// _.each(this.props.reviewToEdit, (value, prop) => this.props.reviewFieldUpdate({ prop, value }))
 		this.props.reviewRatingChanged(this.state.rating);
 		this.props.reviewTitleChanged(this.state.title);
 		this.props.reviewDescriptionChanged(this.state.description);
 	}
 
-	// componentWillReceiveProps(nextProps){
-	// 	let title, description, rating, carId, uid, username, userId;
-	// 	if (nextProps.reviewToEdit !== null){
-	// 		var selectedReview = nextProps.reviewsDb.filter(review => { //this was causing a loop when set to this.state
-	// 			return review.uid === nextProps.reviewToEdit.uid
-	// 		})
-	// 		this.setState({
-	// 			title: selectedReview[0].title,
-	// 			description: selectedReview[0].description,
-	// 			rating: selectedReview[0].rating,
-	// 			carId: selectedReview[0].carId,
-	// 			uid: selectedReview[0].uid,
-	// 			username: selectedReview[0].username,
-	// 			userId: selectedReview[0].userId
-	// 		})
-	// 		console.log('selectedReview', selectedReview)
-	// 	}
-	// 	console.log(title, description, rating);
-	// }
-
-
-
 	render() {
 		console.log('EditReview props',  this.props);
 		console.log('EditReview state',  this.state);
-		const { 
-			reviewToEdit
-		} = this.props;
-		// const {
-		// 	title,
-		// 	description,
-		// 	rating
-		// } = this.state;
-		
-		//find the specific review to edit if it exists
-		// let title, description, rating, carId, uid, username, userId;
-		// if (reviewToEdit !== null){
-		// 	var selectedReview = this.props.reviewsDb.filter(review => { //this was causing a loop when set to this.state
-		// 		return review.uid === reviewToEdit.uid
-		// 	})
-		// 	title = selectedReview[0].title;
-		// 	description = selectedReview[0].description;
-		// 	rating = selectedReview[0].rating;
-		// 	carId = selectedReview[0].carId;
-		// 	uid = selectedReview[0].uid;
-		// 	username = selectedReview[0].username;
-		// 	userId = selectedReview[0].userId;
-		// 	console.log('selectedReview', selectedReview)
-		// } else {
-		// 	title = this.props.title;
-		// 	description = this.props.description;
-		// 	rating = this.props.rating;
-		// }
-		// console.log(title, description, rating);
 
 		return (
 			<div className="inputs-container">
 				<ReviewForm 
-					{...this.state}
+					{...this.props}
 				/>
 				<button 
 					className="btn btn-make-review" 

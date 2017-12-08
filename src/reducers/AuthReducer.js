@@ -16,7 +16,7 @@ const initialState = {
 	password: '',
 	user: null,
 	error: '',
-	address: 'address'
+	address: ''
 }
 
 export default ( state = initialState, action ) => {
@@ -40,7 +40,7 @@ export default ( state = initialState, action ) => {
 		case LOGIN_USER:
 			return { ...state, error: '' }
 		case LOGOUT_USER:
-			return { ...state, user: null }
+			return { ...state, ...initialState }
 		default:
 			return state
 	}
