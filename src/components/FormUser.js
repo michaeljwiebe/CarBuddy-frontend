@@ -66,7 +66,10 @@ class FormUser extends Component{
 }
 
 const mapStateToProps = (state) => {
+	//TODO how to access address from here? saved in db, not getting to frontend
+	//zip is getting through, address not
 	const { address, zip, email, password } = state.auth;
+	console.log('state.auth',state.auth);
 	const displayName = state.auth.name;
 	return { displayName, address, zip, email, password };
 }
