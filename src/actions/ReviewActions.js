@@ -14,8 +14,8 @@ export const reviewTitleChanged = (text) => {
 	return{
 		type: REVIEW_TITLE_CHANGED,
 		payload: text
-	}
-}
+	};
+};
 
 export const reviewRatingChanged = (text) => {
 	return{

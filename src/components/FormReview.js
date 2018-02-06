@@ -7,7 +7,7 @@ import {
 	reviewRatingChanged
 } from '../actions';
 
-class ReviewForm extends Component {
+class FormReview extends Component {
 	render(){
 		const { title, description, rating } = this.props;
 		return(
@@ -48,7 +48,7 @@ class ReviewForm extends Component {
 	}
 }
 const mapStateToProps = (state) => {
-	const { title, description, rating } = state.reviewForm;
+	const { title, description, rating } = state.FormReview;
 	return { title, description, rating };
 }
 
@@ -56,4 +56,4 @@ export default connect(mapStateToProps, {
 	reviewTitleChanged, 
 	reviewDescriptionChanged, 
 	reviewRatingChanged 
-})(ReviewForm);
+})(FormReview);

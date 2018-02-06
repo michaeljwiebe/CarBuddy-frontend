@@ -13,6 +13,7 @@ import {
 
 class EditUser extends Component {
 	render() {
+		console.log('editUser props', this.props);
 		//actions
 		const { 
 			deleteUser 
@@ -47,6 +48,7 @@ class EditUser extends Component {
 			emailChanged,
 			passwordChanged 
 		} = this.props;
+		// console.log('editUser props', this.props)
 		const { email, password, address, zip } = this.props;
 		const displayName = this.props.user.displayName;
 		nameChanged(displayName);
@@ -72,7 +74,9 @@ class EditUser extends Component {
 }
 
 const mapStateToProps = ({ auth }) => {
-	const { email, password, name, address, zip, error } = auth;
+	// console.log('auth', auth);
+	const { email, password, name, error } = auth;
+	const { address, zip } = auth.user;
 	return { email, password, name, address, zip, error };
 }
 

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 
-import ReviewForm from './ReviewForm';
+import FormReview from './FormReview';
 import { reviewCreated, reviewInitialized } from '../actions';
 
 class CreateReview extends Component {
@@ -11,7 +11,7 @@ class CreateReview extends Component {
 	render() {
 		return (
 			<div className="inputs-container">
-				<ReviewForm 
+				<FormReview 
 					title=''
 					description=''
 					rating=''

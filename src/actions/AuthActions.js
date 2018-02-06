@@ -55,7 +55,16 @@ export const loginUser = ({ email, password }) => {
 		dispatch({ type: LOGIN_USER })
 
 		firebase.auth().signInWithEmailAndPassword(email, password)
-		.then(user => loginUserSuccess(dispatch, user))
+		.then(user => {
+			let userInfo = firebase.database().ref(`users/${user.uid}`);
+			userInfo.on("value", function(snapshot) {
+				user.address = snapshot.val().address;
+				user.zip = snapshot.val().zip;
+			}, function (errorObject) {
+			  console.log("The read failed: " + errorObject.code);
+			});
+			loginUserSuccess(dispatch, user);
+		})
 		.catch((error) => {
 			console.log(error);
 		})

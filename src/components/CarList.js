@@ -8,7 +8,6 @@ import { reviewsFetch, carsFetch } from '../actions';
 
 class CarList extends Component {
 	render(){
-		console.log('cars props', this.props.cars)
 		// contentContainerClasses = "content-container cars-and-reviews-container";
 		var carAvatar;
 		// carListBtn = "";
